@@ -10,10 +10,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
+import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.UUID;
 
@@ -45,7 +42,7 @@ public class FileController {
             String rename = md5DigestAsHex + file.getOriginalFilename();
             String filePath = localUploadPath + rename;
             file.transferTo(new File(filePath));
-            return "http://"+ip+":"+port + "/file/"+rename;
+            return "http://" + ip + ":" + port + "/file/" + rename;
         } catch (Exception e) {
             e.printStackTrace();
             return null;
@@ -55,22 +52,25 @@ public class FileController {
 
 
     @RequestMapping("/{name}")
-    public void fun(@PathVariable("name") String name,HttpServletResponse response) throws IOException {
+    public void fun(@PathVariable("name") String name, HttpServletResponse response) throws IOException {
         String localUploadPath = System.getProperty("user.dir") + "/files/" + name;
-
         FileInputStream fileInputStream = new FileInputStream(localUploadPath);
-        ByteArrayOutputStream bytestream = new ByteArrayOutputStream();
+        ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
         byte[] buffer = new byte[1024];
         int ch;
         while ((ch = fileInputStream.read(buffer)) != -1) {
-            bytestream.write(buffer, 0, ch);
+            byteStream.write(buffer, 0, ch);
         }
-        byte[] data = bytestream.toByteArray();
-        bytestream.close();
+        byte[] data = byteStream.toByteArray();
+        byteStream.close();
+        fileInputStream.close();
         response.reset();
         response.setHeader("Content-Disposition", String.format("attachment; filename=%s", name));
         response.addHeader("Content-Length", "" + data.length);
         response.setContentType("application/octet-stream; charset=UTF-8");
-        response.getOutputStream().write(data);
+        OutputStream outputStream = response.getOutputStream();
+        outputStream.write(data);
+        outputStream.flush();
+        outputStream.close();
     }
 }

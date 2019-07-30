@@ -1,3 +1,9 @@
 server:
   port: 8056
-ip: localhost
+spring:
+  servlet:
+    multipart:
+      maxFileSize: "1000MB"
+      maxRequestSize: "10000MB"
+#jar部署的ip和jar包在一个电脑上
+ip: 192.168.30.125
