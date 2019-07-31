@@ -1,0 +1,85 @@
+server:
+  #端口
+  port: 8080
+spring:
+  mail:
+    host: smtp.mxhichina.com
+    username: no-reply@e-ports.com
+    password: norEpl90i2zdeP
+    properties:
+      mail.debug: false
+      mail.smtp.auth: true
+      mail.smtp.port: 465
+      mail.smtp.ssl.enable: true
+      mail.smtp.ssl.socketFactory: sf
+      mail.smtp.starttls.enable: true
+      mail.smtp.starttls.required: true
+  rabbitmq:
+    host: 192.168.30.170
+    port: 5672
+    username: guest
+    password: guest
+    virtual-host: /
+    publisher-confirms: true #开启发送确认
+    publisher-returns: true #开启发送失败退回
+    listener:
+      simple:
+        acknowledge-mode: manual #ack manual
+  #redis配置
+  redis:
+    database: 0
+    host: 192.168.30.170
+    port: 6379
+    password:      # 密码（默认为空）
+    timeout: 3000  # 连接超时时长（毫秒）
+    lettuce:
+      pool:
+        max-active: 200 #连接池最大连接数（使用负值表示没有限制）
+        max-idle: 20 # 连接池中的最大空闲连接
+        min-idle: 5 #连接池中的最小空闲连接
+        max-wait: -1 # 连接池最大阻塞等待时间（使用负值表示没有限制）
+  # 数据源配置
+  datasource:
+    url: jdbc:mysql://192.168.30.170:3306/eports_dev?characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=false&serverTimezone=GMT%2B8
+    username: root
+    password: 123456
+sendmail:
+  deliver: no-reply@e-ports.com
+mybatis-plus:
+  mapper-locations: classpath:/mapper/*Mapper.xml
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    map-underscore-to-camel-case: true
+  global-config:
+    logic-delete-value: 1 # 逻辑已删除值(默认为 1)
+    logic-not-delete-value: 0 # 逻辑未删除值(默认为 0)
+    sql-injector: com.baomidou.mybatisplus.mapper.LogicSqlInjector
+#日志
+logging:
+  config: classpath:log/logback.xml
+  path: D:\log\adms
+
+#自定义配置属性
+#源码生成文件夹
+source-code-dic:  D://adms
+source-code-zipfile:  D://源码.rar
+
+#搜索文件生成包的位置
+#本地路径
+lucence-dic: D://lucence
+
+## pdf export config
+pdfExport:
+  fontPdf: static/layui/font/msyh.ttc
+  pdfFtl: templates/letter/pdfTemplate.ftl
+
+#kindeditor编辑器
+kindeditor:
+  upload-file-max-size: 5120000
+  upload-file-server-url: http://172.16.100.104:10236/filestorage/uploadFilesAndSave
+
+#portal ms URL root
+portal:
+  baseurl: http://www.e-ports-ms.com:8080/
+
+

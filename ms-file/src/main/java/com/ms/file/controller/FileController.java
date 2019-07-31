@@ -9,8 +9,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
+import java.net.UnknownHostException;
 import java.nio.charset.StandardCharsets;
 import java.util.UUID;
 
@@ -22,16 +24,17 @@ import java.util.UUID;
 @RequestMapping("file")
 public class FileController {
 
-    @Value("${ip}")
-    private String ip;
 
     @Value("${server.port}")
     private String port;
 
     @PostMapping("upload")
     @ResponseBody
-    public String localUpload(MultipartFile file) {
+    public String localUpload(MultipartFile file, HttpServletRequest request) throws UnknownHostException {
+        String ip = request.getServerName();
+
         System.out.println(ip);
+        //jar包的同目录的files文件夹下
         String localUploadPath = System.getProperty("user.dir") + "/files/";
         try {
             File dir = new File(localUploadPath);
