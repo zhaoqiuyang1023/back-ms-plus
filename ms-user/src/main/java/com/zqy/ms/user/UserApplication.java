@@ -1,4 +1,4 @@
-package com.ms.work;
+package com.zqy.ms.user;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -8,8 +8,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @date : 2019/7/30  15:09
  */
 @SpringBootApplication
-public class WorkApplication {
+public class UserApplication {
     public static void main(String[] args) {
-        SpringApplication.run(WorkApplication.class, args);
+        SpringApplication.run(UserApplication.class, args);
     }
 }

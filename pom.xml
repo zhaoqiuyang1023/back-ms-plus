@@ -11,7 +11,7 @@
     <modules>
         <module>ms-file</module>
         <module>code-create</module>
-        <module>ms-work</module>
+        <module>ms-user</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>

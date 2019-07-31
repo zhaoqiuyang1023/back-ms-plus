@@ -6,11 +6,11 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="ms-work" />
         <module name="codecreate" />
         <module name="ms-file" />
         <module name="fileupload" />
         <module name="code-create" />
+        <module name="ms-user" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
@@ -24,7 +24,7 @@
       <module name="file-upload" options="-parameters" />
       <module name="fileupload" options="-parameters" />
       <module name="ms-file" options="-parameters" />
-      <module name="ms-work" options="-parameters" />
+      <module name="ms-user" options="-parameters" />
     </option>
   </component>
 </project>
