@@ -6,15 +6,25 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="fileupload" />
+        <module name="ms-file" />
+        <module name="code-create" />
         <module name="codecreate" />
+        <module name="ms-work" />
+        <module name="fileupload" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="file-upload" target="1.8" />
+    </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="code-create" options="-parameters" />
       <module name="codecreate" options="-parameters" />
+      <module name="file-upload" options="-parameters" />
       <module name="fileupload" options="-parameters" />
+      <module name="ms-file" options="-parameters" />
+      <module name="ms-work" options="-parameters" />
     </option>
   </component>
 </project>
