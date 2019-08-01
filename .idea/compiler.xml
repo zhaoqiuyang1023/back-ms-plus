@@ -6,9 +6,9 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="codecreate" />
-        <module name="ms-file" />
         <module name="fileupload" />
+        <module name="ms-file" />
+        <module name="codecreate" />
         <module name="code-create" />
         <module name="ms-user" />
       </profile>

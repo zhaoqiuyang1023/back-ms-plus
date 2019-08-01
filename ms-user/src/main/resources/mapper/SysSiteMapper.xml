@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+       <!--
+        
+        @author Alan
+        @date 2019-08-01 10:54:19
+        -->
+<mapper namespace="com.zqy.ms.user.mapper.SysSiteMapper">
+
+    <resultMap type="com.zqy.ms.user.entity.SysSite" id="sysSiteMap">
+                    <result property="id" column="id"/>
+                    <result property="name" column="name"/>
+                    <result property="url" column="url"/>
+                    <result property="openMessage" column="open_message"/>
+                    <result property="isNoName" column="is_no_name"/>
+                    <result property="version" column="version"/>
+                    <result property="author" column="author"/>
+                    <result property="authorIcon" column="author_icon"/>
+                    <result property="fileUploadType" column="file_upload_type"/>
+                    <result property="weibo" column="weibo"/>
+                    <result property="qq" column="qq"/>
+                    <result property="git" column="git"/>
+                    <result property="github" column="github"/>
+                    <result property="phone" column="phone"/>
+                    <result property="email" column="email"/>
+                    <result property="address" column="address"/>
+                    <result property="logo" column="logo"/>
+                    <result property="server" column="server"/>
+                    <result property="database" column="database"/>
+                    <result property="maxUpload" column="max_upload"/>
+                    <result property="keywords" column="keywords"/>
+                    <result property="description" column="description"/>
+                    <result property="powerby" column="powerby"/>
+                    <result property="record" column="record"/>
+                    <result property="createBy" column="create_by"/>
+                    <result property="createDate" column="create_date"/>
+                    <result property="updateBy" column="update_by"/>
+                    <result property="updateDate" column="update_date"/>
+                    <result property="remarks" column="remarks"/>
+                    <result property="delFlag" column="del_flag"/>
+            </resultMap>
+
+
+</mapper>

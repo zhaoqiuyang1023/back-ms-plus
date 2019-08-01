@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--
+
+ @author Alan
+ @date 2019-08-01 10:54:19
+ -->
+<mapper namespace="com.zqy.ms.user.mapper.SysUserMapper">
+
+    <resultMap type="com.zqy.ms.user.entity.SysUser" id="sysUserMap">
+        <result property="id" column="id"/>
+        <result property="loginName" column="login_name"/>
+        <result property="nickName" column="nick_name"/>
+        <result property="icon" column="icon"/>
+        <result property="password" column="password"/>
+        <result property="salt" column="salt"/>
+        <result property="tel" column="tel"/>
+        <result property="email" column="email"/>
+        <result property="locked" column="locked"/>
+        <result property="createDate" column="create_date"/>
+        <result property="createBy" column="create_by"/>
+        <result property="updateDate" column="update_date"/>
+        <result property="updateBy" column="update_by"/>
+        <result property="remarks" column="remarks"/>
+        <result property="delFlag" column="del_flag"/>
+    </resultMap>
+    <select id="selectRolesByUserName" resultType="java.lang.String">
+        SELECT r.`name` FROM sys_user  u,  sys_role  r, `sys_user_role` urpk
+       where u.login_name =#{loginName} and r.id=urpk.role_id and u.id=urpk.user_id
+    </select>
+
+
+</mapper>

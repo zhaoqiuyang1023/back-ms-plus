@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+       <!--
+        文件上传配置,1,switch-qiniuTestAccess-YES-true-qiniu_test_access,switch-ossTestAccess-YES-true-oss_test_access
+        @author Alan
+        @date 2019-08-01 10:54:19
+        -->
+<mapper namespace="com.zqy.ms.user.mapper.UploadInfoMapper">
+
+    <resultMap type="com.zqy.ms.user.entity.UploadInfo" id="uploadInfoMap">
+                    <result property="id" column="id"/>
+                    <result property="localWindowUrl" column="local_window_url"/>
+                    <result property="localLinuxUrl" column="local_linux_url"/>
+                    <result property="qiniuBasePath" column="qiniu_base_path"/>
+                    <result property="qiniuBucketName" column="qiniu_bucket_name"/>
+                    <result property="qiniuDir" column="qiniu_dir"/>
+                    <result property="qiniuAccessKey" column="qiniu_access_key"/>
+                    <result property="qiniuSecretKey" column="qiniu_secret_key"/>
+                    <result property="qiniuTestAccess" column="qiniu_test_access"/>
+                    <result property="ossBasePath" column="oss_base_path"/>
+                    <result property="ossBucketName" column="oss_bucket_name"/>
+                    <result property="ossDir" column="oss_dir"/>
+                    <result property="ossKeyId" column="oss_key_id"/>
+                    <result property="ossKeySecret" column="oss_key_secret"/>
+                    <result property="ossEndpoint" column="oss_endpoint"/>
+                    <result property="ossTestAccess" column="oss_test_access"/>
+                    <result property="createDate" column="create_date"/>
+                    <result property="createBy" column="create_by"/>
+                    <result property="updateDate" column="update_date"/>
+                    <result property="updateBy" column="update_by"/>
+                    <result property="remarks" column="remarks"/>
+                    <result property="delFlag" column="del_flag"/>
+            </resultMap>
+
+
+</mapper>

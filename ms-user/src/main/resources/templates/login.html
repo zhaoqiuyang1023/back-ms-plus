@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <base th:href="${#request.getContextPath()}+'/'">
+    <link rel="stylesheet" th:href="@{/static/layui/css/layui.css}" href="../static/layui/css/layui.css">
+    <style>
+        .container {
+            width: 100%;
+            height: 400px;
+            display: flex;
+            display: -webkit-flex;
+        }
+
+        .item {
+
+        }
+    </style>
+</head>
+<body style="background-color: #9F9F9F">
+
+<div class="container">
+
+    <div class="item">
+
+    </div>
+    <div class="item">
+
+    </div>
+    <div class="item">
+
+    </div>
+
+</div>
+<div>
+
+    <form class="layui-form" th:action="@{/login/main}" action="" method="post">
+
+        <div class="layui-form-item">
+            <div class="layui-block">
+                <label class="layui-form-label">用户名</label>
+                <div class="layui-input-inline">
+                    <input type="tel" name="username" lay-verify="required" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <div class="layui-block">
+                <label class="layui-form-label">密码</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="password" lay-verify="password" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <div class="layui-block">
+                <label class="layui-form-label"></label>
+                <div class="layui-input-inline">
+                    <input type="checkbox" name="rememberMe" lay-skin="primary" checked title="记住帐号?">
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <div class="layui-block">
+                <label class="layui-form-label"></label>
+                <div class="layui-input-inline">
+                    <img type="checkbox" id="mycode" lay-skin="primary" checked title="记住帐号?">
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button class="layui-btn" lay-submit lay-filter="*">立即提交</button>
+                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+            </div>
+        </div>
+
+
+    </form>
+
+</div>
+<script src="../static/layui/layui.js"></script>
+<script>
+    layui.use(['layer', 'form'], function () {
+        var layer = layui.layer,
+            $ = layui.jquery,
+            form = layui.form;
+
+        // $(document).ready(function() {
+        //     var srcBgArray = ["${base}/static/images/bg1.jpg",
+        //         "${base}/static/images/bg2.png"];
+        //     $('#bg-body').bcatBGSwitcher({
+        //         timeout:5000,
+        //         urls: srcBgArray,
+        //         alt: 'Full screen background image'
+        //     });
+        // });
+        $(function () {
+            var t = Math.random();
+
+            $("#mycode")[0].src = "/genCaptcha?t= " + t;
+        });
+
+        $("#mycode").on('click', function () {
+            var t = Math.random();
+
+            $("#mycode")[0].src = "/genCaptcha?t= " + t;
+        });
+
+        form.on('submit(login)', function (data) {
+            var loadIndex = layer.load(2, {
+                shade: [0.3, '#333']
+            });
+            if ($('form').find('input[type="checkbox"]')[0].checked) {
+                data.field.rememberMe = true;
+            } else {
+                data.field.rememberMe = false;
+            }
+            $.post(data.form.action, data.field, function (res) {
+                layer.close(loadIndex);
+                if (res.success) {
+                    location.href = "${base}/" + res.data.url;
+                } else {
+                    layer.msg(res.message);
+                    $("#mycode").click();
+                }
+            });
+            return false;
+        });
+    });
+</script>
+
+</body>
+</html>

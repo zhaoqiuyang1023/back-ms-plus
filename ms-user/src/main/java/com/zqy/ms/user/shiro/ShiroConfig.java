@@ -1,6 +1,6 @@
 package com.zqy.ms.user.shiro;
 
-
+import org.apache.shiro.mgt.SecurityManager;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.springframework.context.annotation.Bean;
@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Configuration;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
+
 
 
 /**
@@ -18,7 +19,7 @@ import java.util.Map;
 public class ShiroConfig {
 
     @Bean
-    public ShiroFilterFactoryBean shirFilter(DefaultWebSecurityManager securityManager) {
+    public ShiroFilterFactoryBean shirFilter(SecurityManager securityManager) {
         ShiroFilterFactoryBean shiroFilterFactoryBean = new ShiroFilterFactoryBean();
         // 必须设置 SecurityManager
         shiroFilterFactoryBean.setSecurityManager(securityManager);
@@ -36,7 +37,12 @@ public class ShiroConfig {
         //管理员，需要角色权限 “admin”
         filterChainDefinitionMap.put("/admin/**", "roles[admin]");
         //开放登陆接口
-        filterChainDefinitionMap.put("/login", "anon");
+        filterChainDefinitionMap.put("/static/**","anon");
+        filterChainDefinitionMap.put("/blog/**","anon");
+        filterChainDefinitionMap.put("/login/**","anon");
+        filterChainDefinitionMap.put("/genCaptcha","anon");
+
+
         //其余接口一律拦截
         //主要这行代码必须放在所有权限设置的最后，不然会导致所有 url 都被拦截
         filterChainDefinitionMap.put("/**", "authc");
