@@ -2,12 +2,11 @@ package com.zqy.ms.user.util;
 
 import java.util.List;
 
+
 /**
- * @Author: Haixin JIAO
- * @Date: 2019-2-11 11:27:22
- * @Description:
+ * @author Alan
  */
-public class LayerData<T> {
+public class  LayerData<T> {
     private Integer code = 0;
     private Integer count;
     private List<T> data;

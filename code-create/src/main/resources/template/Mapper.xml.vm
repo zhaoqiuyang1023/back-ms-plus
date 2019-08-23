@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+       <!--
+        ${comments}
+        @author ${author}
+        @date ${datetime}
+        -->
+<mapper namespace="${package}.mapper.${className}Mapper">
+
+    <resultMap type="${package}.entity.${className}" id="${classname}Map">
+        #foreach($column in $columns)
+            <result property="${column.lowerAttrName}" column="${column.columnName}"/>
+        #end
+    </resultMap>
+
+    <select id="get${className}ListByPage" resultType="${package}.entity.${className}">
+
+        select * from ${tableName}
+
+        <where>
+            #foreach($column in $columns)
+                <if test="param.${column.lowerAttrName} != null and param.${column.lowerAttrName} != ''">
+                    AND ${column.columnName}=param.${column.lowerAttrName}
+                </if>
+            #end
+
+
+            and a.is_del=0 and c.is_del=0
+
+            order by a.date_update desc
+        </where>
+
+
+
+    </select>
+
+</mapper>

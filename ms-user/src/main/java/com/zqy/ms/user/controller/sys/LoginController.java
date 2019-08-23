@@ -2,6 +2,7 @@ package com.zqy.ms.user.controller.sys;
 
 
 import com.google.common.collect.Maps;
+import com.zqy.ms.user.entity.SysUser;
 import com.zqy.ms.user.util.Constants;
 import com.zqy.ms.user.util.RestResponse;
 import com.zqy.ms.user.util.VerifyCodeUtil;
@@ -13,6 +14,7 @@ import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -26,18 +28,23 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.Map;
 
+/**
+ * @author Alan
+ */
 @Controller
-public class LoginController  {
+public class LoginController {
     private static final Logger LOGGER = LoggerFactory.getLogger(LoginController.class);
-    public static final int SESSION_EXPIRE_HOURS = 4;
 
-  //  @Value("${server.port}")
-    private String port;
-  //  @Value("${ignore-login-code}")
-    private boolean ignoreLoginCode = true;
-  //  @Value("${permissions-encryted}")
-    private boolean permissionsEncryted = false;
 
+
+    @GetMapping("index")
+    public String index(Model model) {
+        Subject s = SecurityUtils.getSubject();
+        SysUser sysUser=(SysUser)s.getPrincipal();
+        model.addAttribute("user",sysUser);
+        return "index";
+
+    }
 
 
     @GetMapping("login")
@@ -54,7 +61,6 @@ public class LoginController  {
 
     @PostMapping("login/main")
     @ResponseBody
-
     public RestResponse loginMain(HttpServletRequest request) {
         String username = request.getParameter("username");
         String password = request.getParameter("password");
@@ -66,7 +72,7 @@ public class LoginController  {
         if (StringUtils.isBlank(rememberMe)) {
             return RestResponse.failure("记住我不能为空");
         }
-        if (!ignoreLoginCode && StringUtils.isBlank(code)) {
+        if (StringUtils.isBlank(code)) {
             return RestResponse.failure("验证码不能为空");
         }
         Map<String, Object> map = Maps.newHashMap();
@@ -80,7 +86,7 @@ public class LoginController  {
             return RestResponse.failure("验证码超时");
         }
 
-        if (!ignoreLoginCode && !trueCode.toLowerCase().equals(code.toLowerCase())) {
+        if (!trueCode.toLowerCase().equals(code.toLowerCase())) {
             error = "验证码错误";
         } else {
             /*就是代表当前的用户。*/
@@ -112,12 +118,9 @@ public class LoginController  {
             String sessionId = SecurityUtils.getSubject().getSession().getId().toString();
             return RestResponse.success("登录成功").setData(map);
         } else {
-           return RestResponse.failure(error);
+            return RestResponse.failure(error);
         }
     }
-
-
-
 
 
     /**

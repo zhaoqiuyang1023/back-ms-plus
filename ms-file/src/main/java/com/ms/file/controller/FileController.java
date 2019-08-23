@@ -1,6 +1,7 @@
 package com.ms.file.controller;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,11 +16,13 @@ import java.io.*;
 import java.net.UnknownHostException;
 import java.nio.charset.StandardCharsets;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 
 /**
  * @author : Alan
  * @date : 2019/7/29  16:02
  */
+@Async
 @Controller
 @RequestMapping("file")
 public class FileController {
@@ -30,7 +33,7 @@ public class FileController {
 
     @PostMapping("upload")
     @ResponseBody
-    public String localUpload(MultipartFile file, HttpServletRequest request) throws UnknownHostException {
+    public CompletableFuture<String> localUpload(MultipartFile file, HttpServletRequest request) throws UnknownHostException {
         String ip = request.getServerName();
 
         System.out.println(ip);
@@ -45,17 +48,18 @@ public class FileController {
             String rename = md5DigestAsHex + file.getOriginalFilename();
             String filePath = localUploadPath + rename;
             file.transferTo(new File(filePath));
-            return "http://" + ip + ":" + port + "/file/" + rename;
+            return CompletableFuture.completedFuture("http://" + ip + ":" + port + "/file/" + rename);
         } catch (Exception e) {
             e.printStackTrace();
-            return null;
+            return CompletableFuture.completedFuture(null);
         }
 
     }
 
 
+
     @RequestMapping("/{name}")
-    public void fun(@PathVariable("name") String name, HttpServletResponse response) throws IOException {
+    public void download(@PathVariable("name") String name, HttpServletResponse response) throws IOException {
         String localUploadPath = System.getProperty("user.dir") + "/files/" + name;
         FileInputStream fileInputStream = new FileInputStream(localUploadPath);
         ByteArrayOutputStream byteStream = new ByteArrayOutputStream();

@@ -2,6 +2,7 @@ package com.zqy.ms.user.shiro;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.zqy.ms.user.entity.SysUser;
+import com.zqy.ms.user.service.SysMenuService;
 import com.zqy.ms.user.service.SysUserService;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.*;
@@ -24,6 +25,9 @@ public class CustomRealm extends AuthorizingRealm {
     @Autowired
     private SysUserService sysUserService;
 
+    @Autowired
+    private SysMenuService sysMenuService;
+
 
     /**
      * 获取身份验证信息
@@ -36,15 +40,15 @@ public class CustomRealm extends AuthorizingRealm {
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authenticationToken) throws AuthenticationException {
         System.out.println("————身份认证方法————,UsernamePasswordToken是前端传过来的明文对象");
         UsernamePasswordToken token = (UsernamePasswordToken) authenticationToken;
-        // 从数据库获取对应用户名密码的用户
-        System.out.println(token.getPassword());
         SysUser user = sysUserService.getOne(new QueryWrapper<SysUser>().eq("login_name", token.getUsername()));
         if (null == user) {
             throw new AccountException("用户名不正确");
-        } else if (!user.getPassword().equals(new String((char[]) token.getCredentials()))) {
-            throw new AccountException("密码不正确");
+            //这里用明文
+        } else if (!user.getPassword().equals(new String(token.getPassword()))) {
+            throw new IncorrectCredentialsException("密码不正确");
         }
-        return new SimpleAuthenticationInfo(token.getPrincipal(), user.getPassword(), getName());
+        //这里把SysUser对象封装以便使用
+        return new SimpleAuthenticationInfo(user, user.getPassword(), getName());
     }
 
     /**
@@ -60,13 +64,10 @@ public class CustomRealm extends AuthorizingRealm {
         SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
         //获得该用户角色
         Set<String> roles = sysUserService.selectRolesByUserName(loginName);
-     //   Set<String> permissionSet=sysUserService
-
+        Set<String> permissionSet = sysMenuService.selectPermissionByUserName(loginName);
         //设置该用户拥有的角色和权限
         info.setRoles(roles);
-     //   info.setStringPermissions(permissionSet);
-
-
+        info.setStringPermissions(permissionSet);
         return info;
     }
 }

@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+       <!--
+        
+        @author Alan
+        @date 2019-08-23 17:59:18
+        -->
+<mapper namespace="com.zqy.ms.user.mapper.SysMenuMapper">
+
+    <resultMap type="com.zqy.ms.user.entity.SysMenu" id="sysMenuMap">
+                    <result property="id" column="id"/>
+                    <result property="name" column="name"/>
+                    <result property="parentId" column="parent_id"/>
+                    <result property="level" column="level"/>
+                    <result property="parentIds" column="parent_ids"/>
+                    <result property="sort" column="sort"/>
+                    <result property="href" column="href"/>
+                    <result property="target" column="target"/>
+                    <result property="icon" column="icon"/>
+                    <result property="bgColor" column="bg_color"/>
+                    <result property="isShow" column="is_show"/>
+                    <result property="permission" column="permission"/>
+                    <result property="createBy" column="create_by"/>
+                    <result property="createDate" column="create_date"/>
+                    <result property="updateBy" column="update_by"/>
+                    <result property="updateDate" column="update_date"/>
+                    <result property="remarks" column="remarks"/>
+                    <result property="delFlag" column="del_flag"/>
+            </resultMap>
+
+    <select id="getSysMenuListByPage" resultType="com.zqy.ms.user.entity.SysMenu">
+
+        select * from sys_menu
+
+        <where>
+                            <if test="param.id != null and param.id != ''">
+                    AND id=param.id
+                </if>
+                            <if test="param.name != null and param.name != ''">
+                    AND name=param.name
+                </if>
+                            <if test="param.parentId != null and param.parentId != ''">
+                    AND parent_id=param.parentId
+                </if>
+                            <if test="param.level != null and param.level != ''">
+                    AND level=param.level
+                </if>
+                            <if test="param.parentIds != null and param.parentIds != ''">
+                    AND parent_ids=param.parentIds
+                </if>
+                            <if test="param.sort != null and param.sort != ''">
+                    AND sort=param.sort
+                </if>
+                            <if test="param.href != null and param.href != ''">
+                    AND href=param.href
+                </if>
+                            <if test="param.target != null and param.target != ''">
+                    AND target=param.target
+                </if>
+                            <if test="param.icon != null and param.icon != ''">
+                    AND icon=param.icon
+                </if>
+                            <if test="param.bgColor != null and param.bgColor != ''">
+                    AND bg_color=param.bgColor
+                </if>
+                            <if test="param.isShow != null and param.isShow != ''">
+                    AND is_show=param.isShow
+                </if>
+                            <if test="param.permission != null and param.permission != ''">
+                    AND permission=param.permission
+                </if>
+                            <if test="param.createBy != null and param.createBy != ''">
+                    AND create_by=param.createBy
+                </if>
+                            <if test="param.createDate != null and param.createDate != ''">
+                    AND create_date=param.createDate
+                </if>
+                            <if test="param.updateBy != null and param.updateBy != ''">
+                    AND update_by=param.updateBy
+                </if>
+                            <if test="param.updateDate != null and param.updateDate != ''">
+                    AND update_date=param.updateDate
+                </if>
+                            <if test="param.remarks != null and param.remarks != ''">
+                    AND remarks=param.remarks
+                </if>
+                            <if test="param.delFlag != null and param.delFlag != ''">
+                    AND del_flag=param.delFlag
+                </if>
+            
+
+            and a.is_del=0 and c.is_del=0
+
+            order by a.date_update desc
+        </where>
+
+
+
+    </select>
+    <select id="selectPermissionByUserName" resultType="java.lang.String">
+       select DISTINCT d.name
+        from sys_user a ,
+        sys_user_role b ,
+        sys_role_menu c ,
+        sys_menu d
+
+       where a.id=b.user_id and b.role_id=c.role_id and c.menu_id=d.id and a.login_name=#{loginName}
+
+
+    </select>
+
+</mapper>
