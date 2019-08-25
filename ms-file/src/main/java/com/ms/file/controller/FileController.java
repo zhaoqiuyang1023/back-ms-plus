@@ -22,7 +22,7 @@ import java.util.concurrent.CompletableFuture;
  * @author : Alan
  * @date : 2019/7/29  16:02
  */
-@Async
+
 @Controller
 @RequestMapping("file")
 public class FileController {
@@ -33,7 +33,7 @@ public class FileController {
 
     @PostMapping("upload")
     @ResponseBody
-    public CompletableFuture<String> localUpload(MultipartFile file, HttpServletRequest request) throws UnknownHostException {
+    public R localUpload(MultipartFile file, HttpServletRequest request)  {
         String ip = request.getServerName();
 
         System.out.println(ip);
@@ -48,16 +48,17 @@ public class FileController {
             String rename = md5DigestAsHex + file.getOriginalFilename();
             String filePath = localUploadPath + rename;
             file.transferTo(new File(filePath));
-            return CompletableFuture.completedFuture("http://" + ip + ":" + port + "/file/" + rename);
+            return new R<>("http://" + ip + ":" + port + "/file/" + rename);
         } catch (Exception e) {
             e.printStackTrace();
-            return CompletableFuture.completedFuture(null);
+            return new R<>(e);
         }
 
     }
 
 
 
+    @Async
     @RequestMapping("/{name}")
     public void download(@PathVariable("name") String name, HttpServletResponse response) throws IOException {
         String localUploadPath = System.getProperty("user.dir") + "/files/" + name;
