@@ -2,28 +2,16 @@ server:
   #端口
   port: 9898
 spring:
-
-  #redis配置
-  redis:
-    database: 0
-    host: 192.168.30.170
-    port: 6379
-    password:      # 密码（默认为空）
-    timeout: 3000  # 连接超时时长（毫秒）
-    lettuce:
-      pool:
-        max-active: 200 #连接池最大连接数（使用负值表示没有限制）
-        max-idle: 20 # 连接池中的最大空闲连接
-        min-idle: 5 #连接池中的最小空闲连接
-        max-wait: -1 # 连接池最大阻塞等待时间（使用负值表示没有限制）
   # 数据源配置
   datasource:
-    url: jdbc:mysql://192.168.30.170:3306/back-ms?characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=false&serverTimezone=GMT%2B8
+    url: jdbc:mysql://192.168.0.100:3306/back-ms?characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=false&serverTimezone=GMT%2B8
     username: root
     password: 123456
     driver-class-name: com.mysql.cj.jdbc.Driver
-
-
+  thymeleaf:
+      cache: false
+code:
+  verify: false
 
 
 

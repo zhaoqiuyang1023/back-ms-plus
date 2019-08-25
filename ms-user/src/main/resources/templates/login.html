@@ -5,11 +5,13 @@
     <title>Title</title>
     <base th:href="${#request.getContextPath()}+'/'">
     <link rel="stylesheet" th:href="@{/static/layui/css/layui.css}" href="../static/layui/css/layui.css">
+    <script th:src="@{/static/layui/layui.js}" src="../static/layui/layui.js"></script>
     <style>
         html, body {
             width: 100%;
             height: 100%;
             margin: 0;
+            overflow: hidden;
             padding: 0;
         }
 
@@ -26,17 +28,21 @@
         .item {
             min-width: 300px;
             margin: 10px;
-            width: 50%;
+            width: 33%;
             height: 30%;
         }
 
         .loginContain {
-            border: #2D93CA 1px solid;
+            border: #FFFFFF 1px solid;
+            border-radius: 5px;
+            max-width: 300px;
+            max-height: 600px;
         }
 
         .loginInput {
-            border: #2D93CA 1px solid;
-            margin: 10%;
+            margin-left: 10%;
+            margin-top: 10%;
+            margin-right: 10%;
             text-align: center;
         }
 
@@ -48,72 +54,90 @@
         }
     </style>
 </head>
+
+<script type="text/javascript" src="../static/js/jquery.min.js"></script>
+
 <body>
+<div style="width: 100%;   height: 100%;position: absolute;z-index: 99">
 
-<div class="container">
+    <div class="container">
 
-    <div class="item">
-
-    </div>
-    <div class="item">
-
-        <div class="loginContain">
-            <form class="layui-form" th:action="@{/login/main}" action="" method="post">
-
-                <div class="layui-form-item loginInput">
-                    <input type="tel" name="username" lay-verify="required" autocomplete="off" placeholder="用户名"
-                           class="layui-input">
-                </div>
-                <div class="layui-form-item loginInput">
-                    <input type="text" name="password" lay-verify="password" autocomplete="off" placeholder="密码"
-                           class="layui-input">
-                </div>
-
-
-                <div class="layui-form-item loginBtn ">
-
-                    <input type="checkbox" name="rememberMe" lay-skin="primary" checked title="记住帐号?">
-
-                </div>
-
-                <div class="layui-form-item loginBtn">
-
-                    <img type="checkbox" id="mycode" lay-skin="primary" checked>
-
-                </div>
-
-
-                <button class="layui-btn loginBtn"
-                        lay-submit lay-filter="login">&nbsp登&nbsp&nbsp录&nbsp
-                </button>
-
-
-            </form>
+        <div class="item">
 
         </div>
+
+        <div class="item">
+
+            <div class="loginContain">
+                <form class="layui-form" th:action="@{/login/main}" action="" method="post">
+
+                    <div class="layui-form-item loginInput">
+                        <input type="tel" name="username" lay-verify="required" autocomplete="off" placeholder="用户名" value="test"
+                               class="layui-input">
+                    </div>
+                    <div class="layui-form-item loginInput" style="margin-top: 5%">
+                        <input type="text" name="password" lay-verify="password" autocomplete="off" placeholder="密码" value="test"
+                               class="layui-input">
+                    </div>
+
+                    <div class="layui-form-item" style="margin-left: 10%">
+
+                        <div class="layui-input-inline" style="height: 38px;width: 100%">
+                            <input type="text" name="code" style="width: 40%;float: left" lay-verify="required"
+                                   autocomplete="off" placeholder="验证码" value="1111"
+                                   class="layui-input">
+                            <img style="height: 80%;float: left;margin-left: 10px" type="checkbox" id="mycode"
+                                 lay-skin="primary" checked>
+                        </div>
+
+                    </div>
+
+
+                    <div class="layui-form-item " style="margin-left: 10%;">
+
+                        <input type="checkbox" name="rememberMe" lay-skin="primary" checked title="记住帐号?">
+
+                    </div>
+
+
+                    <button class="layui-btn loginBtn"
+                            lay-submit lay-filter="login">&nbsp登&nbsp&nbsp录&nbsp
+                    </button>
+
+
+                </form>
+
+            </div>
+        </div>
+        <div class="item">
+        </div>
     </div>
-    <div class="item">
+</div>
+<div class="layui-carousel" style="width: 100%;height: 100%" id="test1">
+    <div carousel-item style="width: 100%;height: 980px">
+        <div><img style="width: 100%;height: 100%" src="../static/images/bg1.jpg"></div>
+        <div><img style="width: 100%;height: 100%" src="../static/images/bg2.jpg"></div>
 
     </div>
-
 </div>
 
-<script src="../static/layui/layui.js"></script>
+
 <script>
-    layui.use(['layer', 'form'], function () {
+    layui.use(['layer', 'form', 'carousel'], function () {
         var layer = layui.layer,
             $ = layui.jquery,
+            carousel = layui.carousel,
             form = layui.form;
 
-        // $(document).ready(function() {
-        //     var srcBgArray = ["${base}/static/images/bg1.jpg",
-        //         "${base}/static/images/bg2.png"];
-        //     $('#bg-body').bcatBGSwitcher({
-        //         timeout:5000,
-        //         urls: srcBgArray,
-        //         alt: 'Full screen background image'
-        //     });
-        // });
+        carousel.render({
+            elem: '#test1'
+            , width: '100%' //设置容器宽度
+            , arrow: 'none' //始终显示箭头
+            , indicator: 'none' //是否显示指示器
+            ,interval: '15000' //切换时间
+            , anim: 'fade' //切换动画方式
+        });
+
         /**
          * 获取二维码
          */

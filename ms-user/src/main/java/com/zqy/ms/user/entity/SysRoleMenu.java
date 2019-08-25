@@ -14,8 +14,6 @@ import java.io.Serializable;
 
 
 /**
- * 
- *
  * @author Alan
  * @date 2019-08-01 10:54:19
  */
@@ -23,23 +21,23 @@ import java.io.Serializable;
 @EqualsAndHashCode(callSuper = true)
 @TableName("sys_role_menu")
 public class SysRoleMenu extends Model<SysRoleMenu> {
-private static final long serialVersionUID=1L;
+    private static final long serialVersionUID = 1L;
 
 
-        @TableId(type = IdType.UUID)
+    @TableId(type = IdType.UUID)
     @TableField(value = "role_id")
-@ApiModelProperty(value = "")
-private Long roleId;
+    @ApiModelProperty(value = "")
+    private Long roleId;
 
     @TableField(value = "menu_id")
-@ApiModelProperty(value = "")
-private Long menuId;
+    @ApiModelProperty(value = "")
+    private Long menuId;
 
-/**
- * primary key
- */
-@Override
-protected Serializable pkVal(){
+    /**
+     * primary key
+     */
+    @Override
+    protected Serializable pkVal() {
         return this.roleId;
-        }
-        }
+    }
+}

@@ -3,7 +3,7 @@ package com.zqy.ms.codegen.util;
 import java.util.HashMap;
 
 public class DataTypeUtils {
-    static HashMap<String, String> map = new HashMap<>();
+    private static HashMap<String, String> map = new HashMap<>();
 
     static {
         map.put("tinyint", "Boolean");
@@ -28,7 +28,7 @@ public class DataTypeUtils {
     }
 
 
-    public static String getDataType(String dataType) {
+     static String getDataType(String dataType) {
         return map.get(dataType);
     }
 }

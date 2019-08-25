@@ -118,7 +118,6 @@
 <script type="text/javascript" src="${base}/static/layui/layui.js"></script>
 <script>
     layui.use(['layer', 'laydate', 'form', 'table', 'element'], function () {
-        var tableName = '';
         var dateStart = '';
         var dateEnd = '';
         let genConfig =
@@ -131,8 +130,6 @@
 
         let layer = layui.layer,
             $ = layui.jquery,
-            form = layui.form,
-            element = layui.element,
             laydate = layui.laydate,
             table = layui.table;
 
@@ -167,36 +164,6 @@
 
                     }
                 });
-            }
-            if (obj.event === 'code') {
-                layer.open({
-                    title: "编辑公司信息",
-                    type: 2,
-                    area: ['512px', '450px'],
-                    content: "${base}/edit/" + data.id,
-                    success: function (layero, index) {
-
-                    }
-                });
-            }
-            if (obj.event === "del") {
-
-                layer.confirm("你确定要删除该公司信息么？", {btn: ['是的,我确定', '我再想想']},
-                    function () {
-                        $.post("${base}/del/" + data.id, function (res) {
-                            if (res.success) {
-                                $(obj).remove();
-                                obj.del(); //删除对应行（tr）的DOM结构
-                                layer.close();
-                                layer.msg("删除成功", {time: 1000}, function () {
-
-                                });
-                            } else {
-                                layer.msg(res.message);
-                            }
-                        });
-                    }
-                )
             }
         });
 

@@ -8,7 +8,7 @@ import java.util.List;
  */
 public class  LayerData<T> {
     private Integer code = 0;
-    private Integer count;
+    private Long count;
     private List<T> data;
     private String msg = "";
 
@@ -20,11 +20,11 @@ public class  LayerData<T> {
         this.code = code;
     }
 
-    public Integer getCount() {
+    public Long getCount() {
         return count;
     }
 
-    public void setCount(Integer count) {
+    public void setCount(Long count) {
         this.count = count;
     }
 

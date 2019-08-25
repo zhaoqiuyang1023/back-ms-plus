@@ -9,8 +9,7 @@ import java.io.Serializable;
 @SuppressWarnings("ALL")
 @ToString
 public class R<T> implements Serializable {
-    private static final String SUCCESS = "0";
-    private static final String FAIL = "1";
+    private static final boolean SUCCESS = true;
     private static final long serialVersionUID = 1L;
     @Getter
     @Setter
@@ -18,7 +17,7 @@ public class R<T> implements Serializable {
 
     @Getter
     @Setter
-    private String code = SUCCESS;
+    private String code = "0";
 
     @Getter
     @Setter
@@ -38,6 +37,7 @@ public class R<T> implements Serializable {
         this.data = data;
         this.msg = msg;
     }
+
     public R(T data, String code, String msg) {
         super();
         this.data = data;
@@ -48,7 +48,7 @@ public class R<T> implements Serializable {
     public R(Throwable e) {
         super();
         this.msg = e.getMessage();
-        this.code = FAIL;
+        this.code = "1";
     }
 
 }

@@ -18,7 +18,7 @@ public class UserApplicationTest {
 
     @Test
     public void ff (){
-        UsernamePasswordToken usernamePasswordToken=new UsernamePasswordToken("810339f5426fe2dcaf92c5cac718acc6471a034b", "810339f5426fe2dcaf92c5cac718acc6471a034b");
-        SecurityUtils.getSubject().login(usernamePasswordToken);
+      //  UsernamePasswordToken usernamePasswordToken=new UsernamePasswordToken("810339f5426fe2dcaf92c5cac718acc6471a034b", "810339f5426fe2dcaf92c5cac718acc6471a034b");
+      //  SecurityUtils.getSubject().login(usernamePasswordToken);
     }
 }

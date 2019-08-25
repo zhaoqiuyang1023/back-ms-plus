@@ -6,12 +6,14 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
+import com.zqy.ms.user.entity.vo.ShowMenu;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 
 /**
@@ -25,7 +27,7 @@ public class SysUser extends Model<SysUser> {
     private static final long serialVersionUID = 1L;
 
 
-    @TableId(type = IdType.UUID)
+    @TableId(type = IdType.AUTO)
     @TableField(value = "id")
     @ApiModelProperty(value = "用户ID")
     private Long id;
@@ -85,6 +87,21 @@ public class SysUser extends Model<SysUser> {
     @TableField(value = "del_flag")
     @ApiModelProperty(value = "")
     private Boolean delFlag;
+
+
+
+    @ApiModelProperty(value = "用户角色")
+    @TableField(exist = false)
+    private List<SysRole> sysRoles;
+
+
+    @ApiModelProperty(value = "用户可以操作的权限")
+    @TableField(exist = false)
+    private List<SysMenu> sysMenus;
+
+    @ApiModelProperty(value = "展示的菜单")
+    @TableField(exist = false)
+    private List<ShowMenu> showSysMenus;
 
     /**
      * primary key

@@ -16,7 +16,7 @@ public class MyCommandRunner implements CommandLineRunner {
     @Override
     public void run(String... args) {
         try {
-           // Runtime.getRuntime().exec("cmd   /c   start   http://localhost:" + port + "/generator/index");
+           Runtime.getRuntime().exec("cmd   /c   start   http://localhost:" + port + "/index");
         } catch (Exception ex) {
             ex.printStackTrace();
         }

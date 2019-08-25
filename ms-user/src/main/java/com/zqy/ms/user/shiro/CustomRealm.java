@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.zqy.ms.user.entity.SysUser;
 import com.zqy.ms.user.service.SysMenuService;
 import com.zqy.ms.user.service.SysUserService;
+import com.zqy.ms.user.util.Log;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
@@ -48,6 +49,8 @@ public class CustomRealm extends AuthorizingRealm {
             throw new IncorrectCredentialsException("密码不正确");
         }
         //这里把SysUser对象封装以便使用
+        user.setSysRoles(sysUserService.findSysRolesByUserId(user.getId()));
+        user.setSysMenus(sysUserService.findSysMenusByUserId(user.getId()));
         return new SimpleAuthenticationInfo(user, user.getPassword(), getName());
     }
 
@@ -60,14 +63,15 @@ public class CustomRealm extends AuthorizingRealm {
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
         System.out.println("————权限认证————");
-        String loginName = (String) SecurityUtils.getSubject().getPrincipal();
+        SysUser sysUser =  (SysUser) SecurityUtils.getSubject().getPrincipal();
         SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
         //获得该用户角色
-        Set<String> roles = sysUserService.selectRolesByUserName(loginName);
-        Set<String> permissionSet = sysMenuService.selectPermissionByUserName(loginName);
+        Set<String> roles = sysUserService.selectRolesByUserName(sysUser.getLoginName());
+        Set<String> permissionSet = sysMenuService.selectPermissionByUserName(sysUser.getLoginName());
+        Log.i(roles);
         //设置该用户拥有的角色和权限
         info.setRoles(roles);
-        info.setStringPermissions(permissionSet);
+     //   info.setStringPermissions(permissionSet);
         return info;
     }
 }

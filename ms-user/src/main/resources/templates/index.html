@@ -1,10 +1,11 @@
 <!DOCTYPE html>
-<html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 
 <head>
     <meta charset="utf-8"/>
-    <title>layTabPlus</title>
+    <title>后台管理</title>
     <link rel="stylesheet" href="../static/layui/css/layui.css">
+    <link rel="stylesheet" th:href="@{/static/layui/css/layui.css}" href="../static/layui/css/layui.css">
 </head>
 
 <body class="layui-layout-body">
@@ -13,7 +14,7 @@
         <a href="">
             <div class="layui-logo">后台管理系统</div>
         </a>
-        <!-- 头部区域（可配合layui已有的水平导航） -->
+        <!-- 头部左面区域（可配合layui已有的水平导航） -->
         <ul class="layui-nav layui-layout-left">
             <li class="layui-nav-item">
                 <a href="/">返回前台</a>
@@ -39,87 +40,47 @@
                 </dl>
             </li>
         </ul>
+        <!-- 头部右面区域 -->
         <ul class="layui-nav layui-layout-right">
             <li class="layui-nav-item">
                 <a href="javascript:;">
-                    <img src="https://gitee.com/uploads/66/890966_Leytton.png?1512991922" class="layui-nav-img"> Leytton
+                    <img src="https://gitee.com/uploads/66/890966_Leytton.png?1512991922" class="layui-nav-img"><span
+                        th:text="${user.loginName}"> </span>
                 </a>
                 <dl class="layui-nav-child">
                     <dd>
-                        <a href="javascript:;" onclick="addTab(this);" tab_url="http://www.llqqww.com">基本资料</a>
+                        <a href="javascript:;" class="layTabPlus" th:attr="tab_url=@{/admin/user/edit/}">基本资料</a>
                     </dd>
                     <dd>
-                        <a href="">安全设置</a>
+                        <a href="/logout">退出</a>
                     </dd>
                 </dl>
             </li>
             <li class="layui-nav-item">
-                <a href="/mp.php/login/logout">退了</a>
+                <a></a>
             </li>
         </ul>
     </div>
+    <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
     <div class="layui-side layui-bg-black">
         <div class="layui-side-scroll">
-            <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
             <ul class="layui-nav layui-nav-tree">
-
-                <li class="layui-nav-item layui-nav-itemed">
-                    <a class="" href="javascript:;">我的信息</a>
+                <li th:each="mean,userStat: ${user.getShowSysMenus()}" class="layui-nav-item layui-nav-itemed">
+                    <a th:text="${mean.name}" class="" href="javascript:;"></a>
                     <dl class="layui-nav-child">
-                        <dd><a href="javascript:void(0);" class="layTabPlus"
-                               tab_url="./index2.html">
-                            <i class="layui-icon layui-icon-star"> </i>
-                            网站</a>
-                        </dd>
-                        <dd><a href="javascript:void(0);" class="layTabPlus"
-                               tab_url="./index2.html">博客</a></dd>
-                    </dl>
-                </li>
-                <li class="layui-nav-item layui-nav-itemed">
-                    <a href="javascript:;">开源作品</a>
-                    <dl class="layui-nav-child">
-
-                        <dd>
-                            <a href="javascript:;" class="layTabPlus" tab_url="https://gitee.com/Leytton/ThinkJD">
-                                <i class="layui-icon layui-icon-star"> </i>
-                                ThinJDBC
+                        <dd th:each="chileMean,index:${mean.getChildren()}">
+                            <a th:text="${chileMean.name}" href="javascript:void(0);" class="layTabPlus"
+                               th:attr="tab_url=@{${chileMean.href}}">
+                                <i th:class="${chileMean.icon}" class="layui-icon layui-icon-star"> </i>
                             </a>
-
-                        </dd>
-                        <dd>
-                            <a href="javascript:;" class="layTabPlus"
-                               tab_url="https://gitee.com/Leytton/SimJQ">SimJQ</a>
-                        </dd>
-                        <dd>
-                            <a href="javascript:;" class="layTabPlus" tab_url="https://gitee.com/Leytton/layTabPlus"
-                               tab_jump="true">layTabPlus</a>
                         </dd>
                     </dl>
-
-                </li>
-                <li class="layui-nav-item layui-nav-itemed">
-                    <a href="javascript:;">关于作者</a>
-                    <dl class="layui-nav-child">
-                        <dd><a href="javascript:void(0);" class="layTabPlus" tab_url="http://www.llqqww.com">网站</a></dd>
-                        <dd><a href="javascript:void(0);" class="layTabPlus"
-                               tab_url="https://blog.csdn.net/leytton">博客</a></dd>
-                    </dl>
-                </li>
-                <li class="layui-nav-item">
-                    <a href="javascript:;">其它</a>
-                    <dl class="layui-nav-child">
-                        <dd><a href="javascript:void(0);" class="layTabPlus" tab_url="http://www.llqqww.com">网站</a></dd>
-                        <dd><a href="javascript:void(0);" class="layTabPlus"
-                               tab_url="https://blog.csdn.net/leytton">博客</a></dd>
-                    </dl>
-                </li>
-                <li class="layui-nav-item">
-                    <a href="javascript:void(0);" class="layTabPlus" tab_url="https://blog.csdn.net/leytton">CSDN</a>
                 </li>
             </ul>
         </div>
     </div>
 
+    <!--默认展示的节目-->
     <div class="layui-body">
         <!-- 内容主体区域 -->
         <div class="layui-tab" lay-filter="demoTab" lay-allowClose="true">
@@ -138,11 +99,11 @@
                             </tr>
                             <tr>
                                 <td>开发作者</td>
-                                <td class="author">Leytton</td>
+                                <td class="author">Alan</td>
                             </tr>
                             <tr>
                                 <td>项目首页</td>
-                                <td class="homePage"><a href="https://gitee.com/Leytton/layTabPlus">https://gitee.com/Leytton/layTabPlus</a>
+                                <td class="homePage"><a href="https://gitee.com/Leytton/layTabPlus">www.baidu.com</a>
                                 </td>
                             </tr>
 
@@ -153,8 +114,10 @@
             </div>
         </div>
     </div>
+    <!--页脚-->
+
     <div class="layui-footer">
-        © 2018 <a href="https://gitee.com/Leytton/layTabPlus">layTabPlus</a> - by Leytton
+        © 2018 <a href="https://gitee.com/Leytton/layTabPlus">后台管理</a> - by Alan
     </div>
 </div>
 <script src="../static/layui/layui.all.js"></script>
