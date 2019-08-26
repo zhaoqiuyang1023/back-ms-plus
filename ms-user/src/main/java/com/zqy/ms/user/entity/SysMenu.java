@@ -12,6 +12,7 @@ import lombok.EqualsAndHashCode;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 
 /**
@@ -99,6 +100,10 @@ public class SysMenu extends Model<SysMenu> {
     @TableField(value = "del_flag")
     @ApiModelProperty(value = "")
     private Boolean delFlag;
+
+
+    @TableField(exist = false)
+    private List<SysMenu> childSysMenus;
 
     /**
      * primary key

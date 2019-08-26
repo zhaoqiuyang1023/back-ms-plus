@@ -1,9 +1,10 @@
 <!DOCTYPE html>
-<html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 
 <head>
     <meta charset="utf-8"/>
     <title>layTabPlus</title>
+    <link rel="stylesheet" th:href="@{/static/layui/css/layui.css}" href="../static/layui/css/layui.css">
     <link rel="stylesheet" href="../static/layui/css/layui.css">
 
 </head>
@@ -65,7 +66,6 @@
             <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
             <ul class="layui-nav layui-nav-tree">
 
-
                 <li class="layui-nav-item layui-nav-itemed">
                     <a href="javascript:;">开源作品</a>
                     <dl class="layui-nav-child">
@@ -84,27 +84,21 @@
                                tab_jump="true">layTabPlus</a>
                         </dd>
                     </dl>
+                </li>
 
-                </li>
-                <li class="layui-nav-item layui-nav-itemed">
-                    <a href="javascript:;">关于作者</a>
+                <li th:each="mean,userStat: ${user.getShowSysMenus()}" class="layui-nav-item layui-nav-itemed">
+                    <a th:text="${mean.name}" class="" href="javascript:;"></a>
                     <dl class="layui-nav-child">
-                        <dd><a href="javascript:void(0);" class="layTabPlus" tab_url="http://www.llqqww.com">网站</a></dd>
-                        <dd><a href="javascript:void(0);" class="layTabPlus"
-                               tab_url="https://blog.csdn.net/leytton">博客</a></dd>
+                        <dd th:each="chileMean,index:${mean.getChildren()}">
+                            <a th:text="${chileMean.name}" href="javascript:void(0);" class="layTabPlus"
+                               th:attr="tab_url=@{${chileMean.href}}">
+                                <i th:class="${chileMean.icon}" class="layui-icon layui-icon-star"> </i>
+                            </a>
+                        </dd>
                     </dl>
                 </li>
-                <li class="layui-nav-item">
-                    <a href="javascript:;">其它</a>
-                    <dl class="layui-nav-child">
-                        <dd><a href="javascript:void(0);" class="layTabPlus" tab_url="http://www.llqqww.com">网站</a></dd>
-                        <dd><a href="javascript:void(0);" class="layTabPlus"
-                               tab_url="https://blog.csdn.net/leytton">博客</a></dd>
-                    </dl>
-                </li>
-                <li class="layui-nav-item">
-                    <a href="javascript:void(0);" class="layTabPlus" tab_url="https://blog.csdn.net/leytton">CSDN</a>
-                </li>
+
+
             </ul>
 
     </div>
@@ -146,7 +140,7 @@
         © 2018 <a href="https://gitee.com/Leytton/layTabPlus">layTabPlus</a> - by Leytton
     </div>
 </div>
-<script src="../static/layui/layui.all.js"></script>
+<script th:src="@{/static/layui/layui.all.js}" src="../static/layui/layui.all.js"></script>
 <script>
     var $ = layui.jquery;
     var layer = layui.layer;
@@ -154,7 +148,7 @@
     var util = layui.util;
     var table = layui.table;
 </script>
-<script src="../static/js/layTabPlus.js"></script>
+<script th:src="@{/static/js/layTabPlus.js}" src="../static/js/layTabPlus.js"></script>
 <script>
     layTabPlus.init({
         lay_filter: 'demoTab'

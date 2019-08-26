@@ -4,9 +4,9 @@ server:
 spring:
   # 数据源配置
   datasource:
-    url: jdbc:mysql://192.168.0.100:3306/back-ms?characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=false&serverTimezone=GMT%2B8
+    url: jdbc:mysql://172.16.100.117:3306/test?characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=false&serverTimezone=GMT%2B8
     username: root
-    password: 123456
+    password: abc123456
     driver-class-name: com.mysql.cj.jdbc.Driver
   thymeleaf:
       cache: false

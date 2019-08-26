@@ -22,5 +22,7 @@ public interface SysMenuService extends IService<SysMenu> {
     Set<String> selectPermissionByUserName(String loginName);
 
     List<ShowMenu> getShowMenuByUser(Long id);
+
+    List<SysMenu> findAllMenusByLevel();
 }
 
