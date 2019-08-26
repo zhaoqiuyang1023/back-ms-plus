@@ -53,9 +53,11 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
     private void recursion(List<SysMenu> parentSysMenuList) {
         for (SysMenu sysMenu : parentSysMenuList) {
             List<SysMenu> sysMenus = sysMenuMapper.selectList(new QueryWrapper<SysMenu>().eq("parent_id", sysMenu.getId()));
-            sysMenu.setChildSysMenus(sysMenus);
+
             if(sysMenus.size()>0){
                 recursion(parentSysMenuList);
+            }else {
+                sysMenu.setChildSysMenus(sysMenus);
             }
 
         }

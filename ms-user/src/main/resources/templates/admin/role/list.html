@@ -118,7 +118,7 @@
                     addIndex = layer.open({
                     title : "添加角色",
                     type : 2,
-                    content : "${base}/admin/role/add",
+                    content : "/admin/role/add",
                     success : function(layero, addIndex){
                         setTimeout(function(){
                             layer.tips('点击此处返回角色列表', '.layui-layer-setwin .layui-layer-close', {
@@ -144,7 +144,7 @@
                                 var deleteindex = layer.msg('删除中，请稍候',{icon: 16,time:false,shade:0.8});
                                 $.ajax({
                                     type:"POST",
-                                    url:"${base}/admin/role/deleteSome",
+                                    url:"/admin/role/deleteSome",
                                     dataType:"json",
                                     contentType:"application/json",
                                     data:JSON.stringify(data),
