@@ -40,28 +40,4 @@ public class RestResponse extends HashMap<String, Object> {
         return this;
     }
 
-    public RestResponse setPage(Integer page) {
-        if (page != null) put("page", page);
-        return this;
-    }
-    
-    public RestResponse setCurrentPage(Integer currentPage){
-    	if (currentPage != null) put("currentPage", currentPage);
-        return this;
-    }
-
-    public RestResponse setLimit(Integer limit) {
-        if (limit != null) put("limit", limit);
-        return this;
-    }
-
-    public RestResponse setTotal(Long total) {
-        if (total != null) put("total", total);
-        return this;
-    }
-
-    public RestResponse setAny(String key, Object value) {
-        if (key != null && value != null) put(key, value);
-        return this;
-    }
 }

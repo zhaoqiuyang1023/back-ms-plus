@@ -13,6 +13,7 @@ import lombok.EqualsAndHashCode;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 
 /**
@@ -62,6 +63,19 @@ public class SysRole extends Model<SysRole> {
     @TableField(exist = false)
     @ApiModelProperty(value = "")
     private List<SysMenu> sysMenus;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        SysRole sysRole = (SysRole) o;
+        return Objects.equals(id, sysRole.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
 
     /**
      * primary key

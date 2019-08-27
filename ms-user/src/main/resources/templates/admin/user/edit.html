@@ -74,22 +74,10 @@
         <label class="layui-form-label">用户角色</label>
         <div class="layui-input-block role-box">
             <div class="jq-role-inline">
-
-
-                <span th:each="allrole,userStat : ${allRoles}">
-
-                    <span th:each="role,index : ${user.sysRoles}">
-
-                        <input
-                               class="layui-field-box" style="float: left" th:checked="${allrole.id==role.id}"
-                               type="checkbox" name="roles" th:attr="title=${allrole.name}" th:value="${user.id}"
-                               lay-filter="role"/>
-
-                    </span>
-
-                </span>
-
-
+                <input th:each="allrole,userStat : ${allRoles}" th:checked="${#lists.contains(user.sysRoles,allrole)}"
+                       class="layui-field-box" style="float: left"
+                       type="checkbox" name="roles" th:attr="title=${allrole.name}" th:value="${user.id}"
+                       lay-filter="role"/>
             </div>
         </div>
     </div>
@@ -126,6 +114,10 @@
             //给角色赋值
             delete data.field["roles"];
             var selectRole = [];
+            let sysMenus = [];
+            let sysMenu = {
+                "id": "",
+            };
             $('input[name="roles"]:checked').each(function () {
                 selectRole.push({"id": $(this).val()});
             });

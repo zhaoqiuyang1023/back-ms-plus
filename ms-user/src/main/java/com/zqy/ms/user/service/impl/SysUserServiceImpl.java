@@ -1,25 +1,23 @@
 package com.zqy.ms.user.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.extension.service.additional.query.impl.QueryChainWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.zqy.ms.user.entity.*;
+import com.zqy.ms.user.entity.SysMenu;
+import com.zqy.ms.user.entity.SysRole;
+import com.zqy.ms.user.entity.SysUser;
+import com.zqy.ms.user.entity.SysUserRole;
 import com.zqy.ms.user.entity.vo.ShowMenu;
 import com.zqy.ms.user.mapper.SysMenuMapper;
-import com.zqy.ms.user.mapper.SysRoleMapper;
 import com.zqy.ms.user.mapper.SysUserMapper;
-import com.zqy.ms.user.service.SysMenuService;
 import com.zqy.ms.user.service.SysRoleService;
 import com.zqy.ms.user.service.SysUserRoleService;
 import com.zqy.ms.user.service.SysUserService;
 import com.zqy.ms.user.util.Log;
-import net.bytebuddy.asm.Advice;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.management.relation.Role;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -73,7 +71,9 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
 
     @Override
     public SysUser findUserById(Long id) {
-        return null;
+        SysUser sysUser = getById(id);
+        sysUser.setSysRoles(findSysRolesByUserId(id));
+        return sysUser;
     }
 
     @Transactional
@@ -109,5 +109,19 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         Log.i(showMenuList);
 
         return showMenuList;
+    }
+
+    @Override
+    @Transactional
+    public boolean saveSysUser(SysUser sysUser) {
+        saveOrUpdate(sysUser);
+        sysUserRoleService.remove(new QueryWrapper<SysUserRole>().eq("user_id", sysUser.getId()));
+        for (SysRole sysRole : sysUser.getSysRoles()) {
+            SysUserRole sysUserRole = new SysUserRole();
+            sysUserRole.setUserId(sysUser.getId());
+            sysUserRole.setRoleId(sysRole.getId());
+            sysUserRoleService.save(sysUserRole);
+        }
+        return true;
     }
 }

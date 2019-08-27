@@ -34,5 +34,7 @@ public interface SysUserService extends IService<SysUser> {
     int userCount(String email);
 
     List<ShowMenu> findShowSysMenusByUserId(Long id);
+
+    boolean saveSysUser(SysUser sysUser);
 }
 

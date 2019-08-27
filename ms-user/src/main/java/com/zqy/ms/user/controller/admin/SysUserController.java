@@ -8,6 +8,7 @@ import com.zqy.ms.user.entity.SysUser;
 import com.zqy.ms.user.entity.vo.ShowMenu;
 import com.zqy.ms.user.service.SysMenuService;
 import com.zqy.ms.user.service.SysRoleService;
+import com.zqy.ms.user.service.SysUserRoleService;
 import com.zqy.ms.user.service.SysUserService;
 import com.zqy.ms.user.util.Constants;
 import com.zqy.ms.user.util.LayerData;
@@ -40,27 +41,21 @@ public class SysUserController {
     @Autowired
     private SysRoleService sysRoleService;
 
+    @Autowired
+    private SysUserRoleService sysUserRoleService;
+
 
     @Autowired
     private SysMenuService sysMenuService;
 
 
-    @GetMapping("/edit")
-    public String index(Model model) {
-        Subject s = SecurityUtils.getSubject();
-        SysUser sysUser = (SysUser) s.getPrincipal();
-        model.addAttribute("user", sysUser);
-        System.out.println(sysUser.getSysRoles());
-        System.out.println(sysRoleService.list());
-        model.addAttribute("allRoles", sysRoleService.list());
-        return "admin/user/edit";
-    }
+
 
     @PostMapping("/save")
     @ResponseBody
     public RestResponse save(@RequestBody SysUser sysUser) {
 
-        return sysUserService.saveOrUpdate(sysUser) ? RestResponse.success("修改成功") : RestResponse.failure("验证码超时");
+        return sysUserService.saveSysUser(sysUser) ? RestResponse.success("修改成功") : RestResponse.failure("验证码超时");
     }
 
     @GetMapping("list")
@@ -106,16 +101,16 @@ public class SysUserController {
         if (user.getSysRoles() == null || user.getSysRoles().size() == 0) {
             return RestResponse.failure("用户角色至少选择一个");
         }
-        if (sysUserService.count(new QueryWrapper<SysUser>().eq("login_name",user.getLoginName())) > 0) {
+        if (sysUserService.count(new QueryWrapper<SysUser>().eq("login_name", user.getLoginName())) > 0) {
             return RestResponse.failure("登录名称已经存在");
         }
         if (StringUtils.isNotBlank(user.getEmail())) {
-            if (sysUserService.count(new QueryWrapper<SysUser>().eq("email",user.getEmail())) > 0) {
+            if (sysUserService.count(new QueryWrapper<SysUser>().eq("email", user.getEmail())) > 0) {
                 return RestResponse.failure("该邮箱已被使用");
             }
         }
         if (StringUtils.isNoneBlank(user.getTel())) {
-            if (sysUserService.count(new QueryWrapper<SysUser>().eq("tel",user.getTel())) > 0) {
+            if (sysUserService.count(new QueryWrapper<SysUser>().eq("tel", user.getTel())) > 0) {
                 return RestResponse.failure("该手机号已被绑定");
             }
         }
@@ -127,24 +122,13 @@ public class SysUserController {
         return RestResponse.success();
     }
 
-//    @GetMapping("edit")
-//    public String edit(Long id, Model model) {
-//        SysUser user = sysUserService.findUserById(id);
-//        List<Long> roleIdList = Lists.newArrayList();
-//        if (user != null) {
-//            List<SysRole> roleSet = user.getSysRoles();
-//            if (roleSet != null && roleSet.size() > 0) {
-//                for (SysRole r : roleSet) {
-//                    roleIdList.add(r.getId());
-//                }
-//            }
-//        }
-//        List<SysRole> roleList = sysRoleService.list();
-//        model.addAttribute("localuser", user);
-//        model.addAttribute("roleIds", roleIdList);
-//        model.addAttribute("roleList", roleList);
-//        return "admin/system/user/edit";
-//    }
+    @GetMapping("edit")
+    public String edit(Long id, Model model) {
+        SysUser user = sysUserService.findUserById(id);
+        model.addAttribute("user", user);
+        model.addAttribute("allRoles", sysRoleService.list());
+        return "admin/user/edit";
+    }
 //
 //    @RequiresPermissions("admin:user:edit")
 //    @PostMapping("edit")
@@ -236,7 +220,6 @@ public class SysUserController {
     }
 
 
-
     @PostMapping("saveUserinfo")
     @ResponseBody
     public RestResponse saveUserInfo(SysUser user) {
@@ -249,14 +232,14 @@ public class SysUserController {
         SysUser oldUser = sysUserService.findUserById(user.getId());
         if (StringUtils.isNotBlank(user.getEmail())) {
             if (!user.getEmail().equals(oldUser.getEmail())) {
-                if (sysUserService.count(new QueryWrapper<SysUser>().eq("email",user.getEmail())) > 0) {
+                if (sysUserService.count(new QueryWrapper<SysUser>().eq("email", user.getEmail())) > 0) {
                     return RestResponse.failure("该邮箱已被使用");
                 }
             }
         }
         if (StringUtils.isNotBlank(user.getTel())) {
             if (!user.getTel().equals(oldUser.getTel())) {
-                if (sysUserService.count(new QueryWrapper<SysUser>().eq("tel",user.getTel())) > 0) {
+                if (sysUserService.count(new QueryWrapper<SysUser>().eq("tel", user.getTel())) > 0) {
                     return RestResponse.failure("该手机号已经被绑定");
                 }
             }

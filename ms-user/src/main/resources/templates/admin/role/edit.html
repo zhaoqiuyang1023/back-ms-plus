@@ -64,10 +64,7 @@
                                   th:attr="data-parentIds=${menu.parentIds},title=${menu.name}"
                                   lay-filter="roleMenu"/>
                        </legend>
-                        <legend th:if="menu.id!=myMenu.id">
-                           <input type="checkbox" th:value="${menu.id}" th:checked="menu.id==myMenu.id"
-                                  th:attr="data-parentIds=${menu.parentIds},title=${menu.name}"
-                                  lay-filter="roleMenu"/>
+
                        </legend>
                       <div class="layui-field-box">
                         <ul style="padding: 0 15px">
