@@ -56,21 +56,18 @@
     <div class="layui-form-item">
         <div class="layui-input-block" style="width: 80%">
 
-
-
-
             <span th:each="menu,userStat : ${menus}">
 
                 <!--目前只有🎧-->
                   <fieldset class="layui-elem-field">
-                   <legend><input type="checkbox" th:value="${menu.id}" data-parentIds="${menu.parentIds}"
-                                  th:attr="title=${menu.name}" lay-filter="roleMenu"/>
+                   <legend><input type="checkbox" th:value="${menu.id}" th:attr="data-parentIds=${menu.parentIds},title=${menu.name}"
+                                  lay-filter="roleMenu"/>
                    </legend>
                   <div class="layui-field-box">
                     <ul style="padding: 0 15px">
                         <span th:each="child,index:${menu.childSysMenus}">
-                             <input class="layui-field-box" style="float: left" type="checkbox" name="roles"
-                                    th:attr="title=${menu.name}" th:value="${child.id}" lay-filter="role"/>
+                             <input class="layui-field-box" style="float: left" type="checkbox"
+                                    th:attr="title=${child.name}" th:value="${child.id}" lay-filter="role"/>
                         </span>
                     </ul>
                  </div>
@@ -85,8 +82,7 @@
         </div>
     </div>
 </form>
-<script type="text/javascript" src="${base}/static/layui/layui.js"></script>
-<!-- 注意：如果你直接复制所有代码到本地，上述js路径需要改成你本地的 -->
+
 <script>
     Array.prototype.contains = function (needle) {
         for (i in this) {
@@ -98,58 +94,65 @@
         var form = layui.form,
             layer = layui.layer,
             $ = layui.jquery;
-        form.on('checkbox(roleMenu)', function (data) {
-            var v = data.elem.getAttribute("data-parentIds"),
-                myarr = v.split(",");
-            var child = $(data.elem).parents('form').find('input[type="checkbox"]');
-            if (data.elem.checked) {//勾选的时候的动作,父栏目层级全部勾选
-                child.each(function (index, item) {
-                    if (myarr.contains(item.value)) {
-                        item.checked = data.elem.checked;
-                    }
-                });
-            } else { //取消选择的时候，子栏目层级全部取消选择
-                child.each(function (index, item) {
-                    //获取每一个checkbox的 父栏目ID组
-                    var r = item.getAttribute("data-parentIds"),
-                        noarr = r.split(",");
-                    if (noarr.contains(data.value)) {
-                        item.checked = data.elem.checked;
-                    }
-                });
-            }
-            form.render('checkbox');
-        });
+        // form.on('checkbox(roleMenu)', function (data) {
+        //     var v = data.elem.getAttribute("data-parentIds"),
+        //         myarr = v.split(",");
+        //     var child = $(data.elem).parents('form').find('input[type="checkbox"]');
+        //     if (data.elem.checked) {//勾选的时候的动作,父栏目层级全部勾选
+        //         child.each(function (index, item) {
+        //             if (myarr.contains(item.value)) {
+        //                 item.checked = data.elem.checked;
+        //             }
+        //         });
+        //     } else { //取消选择的时候，子栏目层级全部取消选择
+        //         child.each(function (index, item) {
+        //             //获取每一个checkbox的 父栏目ID组
+        //             var r = item.getAttribute("data-parentIds"),
+        //                 noarr = r.split(",");
+        //             if (noarr.contains(data.value)) {
+        //                 item.checked = data.elem.checked;
+        //             }
+        //         });
+        //     }
+        //     form.render('checkbox');
+        // });
         form.on('submit(addRole)', function (data) {
-            var menus = [];
-            var c = $('form').find('input[type="checkbox"]');
+            let sysMenus = [];
+
+            let c = $('form').find('input[type="checkbox"]');
             c.each(function (index, item) {
-                var m = {};
+                let sysMenu={
+                    "id":"",
+                };
                 if (item.checked) {
-                    m.id = parseInt(item.value);
-                    menus.push(m);
+                    sysMenu.id = parseInt(item.value);
+                    sysMenus.push(sysMenu);
                 }
             });
-            data.field.menuSet = menus;
+            data.field.sysMenus = sysMenus;
             var loadIndex = layer.load(2, {
                 shade: [0.3, '#333']
             });
             $.ajax({
                 type: "POST",
-                url: "${base}/admin/system/role/add",
+                url: "/admin/role/add",
                 dataType: "json",
                 contentType: "application/json",
                 data: JSON.stringify(data.field),
                 success: function (res) {
                     layer.close(loadIndex);
                     if (res.success) {
-                        parent.layer.msg("用户添加成功！", {time: 1000}, function () {
+                        parent.layer.msg("用户添加成功！", {time: 500}, function () {
                             //刷新父页面
                             parent.location.reload();
                         });
                     } else {
                         layer.msg(res.message);
                     }
+                },
+                error: function (error) {
+                    layer.msg(error.toLocaleString());
+                    layer.close(loadIndex);
                 }
             });
             return false;

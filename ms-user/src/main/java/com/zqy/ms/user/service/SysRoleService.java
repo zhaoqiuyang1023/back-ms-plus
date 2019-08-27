@@ -2,7 +2,10 @@ package com.zqy.ms.user.service;
 
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.zqy.ms.user.entity.SysMenu;
 import com.zqy.ms.user.entity.SysRole;
+
+import java.util.List;
 
 /**
  * 
@@ -11,5 +14,10 @@ import com.zqy.ms.user.entity.SysRole;
  * @date 2019-08-01 10:54:19
  */
 public interface SysRoleService extends IService<SysRole> {
+    void saveRole(SysRole role);
+
+    List<SysMenu> findMenusByRoleId(String id);
+
+    List<SysMenu> findParentMenusByRoleId(Long id);
 }
 

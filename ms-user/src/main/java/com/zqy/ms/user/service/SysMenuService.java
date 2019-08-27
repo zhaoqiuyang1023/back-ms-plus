@@ -24,5 +24,7 @@ public interface SysMenuService extends IService<SysMenu> {
     List<ShowMenu> getShowMenuByUser(Long id);
 
     List<SysMenu> findAllMenusByLevel();
+
+    List<SysMenu> findAllMenusByLevel(Long id);
 }
 

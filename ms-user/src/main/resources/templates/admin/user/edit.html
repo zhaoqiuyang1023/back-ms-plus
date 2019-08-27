@@ -78,18 +78,13 @@
 
                 <span th:each="allrole,userStat : ${allRoles}">
 
-                    <span th:each="role,userStat1 : ${user.sysRoles}">
+                    <span th:each="role,index : ${user.sysRoles}">
 
-
-                        <input th:if="${allrole.id==role.id}"
+                        <input
                                class="layui-field-box" style="float: left" th:checked="${allrole.id==role.id}"
                                type="checkbox" name="roles" th:attr="title=${allrole.name}" th:value="${user.id}"
                                lay-filter="role"/>
 
-                      <input th:if="${allrole.id!=role.id}"
-                             class="layui-field-box" style="float: left" th:checked="${allrole.id==role.id}"
-                             type="checkbox" name="roles" th:attr="title=${allrole.name}" th:value="${user.id}"
-                             lay-filter="role"/>
                     </span>
 
                 </span>

@@ -1,8 +1,12 @@
 package com.zqy.ms.user.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.zqy.ms.user.entity.SysMenu;
 import com.zqy.ms.user.entity.SysRole;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 /**
  * 
@@ -13,4 +17,7 @@ import org.apache.ibatis.annotations.Mapper;
 @Mapper
 public interface SysRoleMapper extends BaseMapper<SysRole> {
 
+    List<SysMenu> findMenusByRoleId(@Param("id") String id);
+
+    List<SysMenu> findParentMenusByRoleId(Long id);
 }
