@@ -55,34 +55,54 @@
             <legend>请分配角色权限</legend>
         </fieldset>
     </div>
+
     <div class="layui-form-item">
+        <span th:fragment="row(menus)">
+           <span th:each="child:${menus}">
 
-        <span th:each="menu,index : ${menus}">
-            <fieldset th:each="myMenu,index : ${sysRole.sysMenus}">
-                       <legend th:if="menu.id==myMenu.id">
-                           <input type="checkbox" th:value="${menu.id}" th:checked="menu.id==myMenu.id"
-                                  th:attr="data-parentIds=${menu.parentIds},title=${menu.name}"
-                                  lay-filter="roleMenu"/>
-                       </legend>
+               <legend th:unless="${#lists.isEmpty(child.childSysMenus)}">
+                     //如果有字菜单
+                    <input type="checkbox" th:value="${child.id}"
+                           th:checked="${#lists.contains(sysRole.sysMenus,child)}"
+                           th:attr="data-parentIds=${child.parentIds},title=${child.name}"
+                           lay-filter="roleMenu"/>
+               </legend>
 
-                       </legend>
-                      <div class="layui-field-box">
-                        <ul style="padding: 0 15px">
-                            <span th:each="child,index:${menu.childSysMenus}">
-                                 <span th:each="myChild,index:${myMenu.childSysMenus}">
-                                 <input th:checked="child.id==myChild.id" class="layui-field-box" style="float: left"
+                <span class="layui-field-box"  style="float: left;width: 20%" th:if="${#lists.isEmpty(child.childSysMenus)}">
+                    //如果没有子菜单
+                    <input type="checkbox" th:value="${child.id}"
+                           th:checked="${#lists.contains(sysRole.sysMenus,child)}"
+                           th:attr="data-parentIds=${child.parentIds},title=${child.name}"
+                           lay-filter="roleMenu"/>
+                </span>
+                 <fieldset style="margin-bottom: 10px" th:unless="${#lists.isEmpty(child.childSysMenus)}"
+                           th:include="this::row(${child.childSysMenus})">
+                 </fieldset>
+
+           </span>
+        </span>
+
+
+        <fieldset th:each="menu,index : ${menus}">
+            <legend>
+                <input type="checkbox" th:value="${menu.id}"
+                       th:checked="${#lists.contains(sysRole.sysMenus,menu)}"
+                       th:attr="data-parentIds=${menu.parentIds},title=${menu.name}"
+                       lay-filter="roleMenu"/>
+            </legend>
+            <div class="layui-field-box">
+                <ul style="padding: 0 15px">
+                    <span th:each="child,index:${menu.childSysMenus}">
+                                 <input th:checked="${#lists.contains(sysRole.sysMenus,child)}" class="layui-field-box"
+                                        style="float: left"
                                         type="checkbox" name="roles"
                                         th:attr="title=${child.name}" th:value="${child.id}" lay-filter="role"/>
-
-                                <input th:checked="child.id!=myChild.id" class="layui-field-box" style="float: left"
-                                       type="checkbox" name="roles"
-                                       th:attr="title=${child.name}" th:value="${child.id}" lay-filter="role"/>
                                  </span>
-                            </span>
-                        </ul>
-                     </div>
-            </fieldset>
-        </span>
+                    </span>
+                </ul>
+            </div>
+        </fieldset>
+
 
     </div>
     <div class="layui-form-item" style="padding-left: 30%;">
@@ -93,6 +113,7 @@
     </div>
 </form>
 <script>
+
 
     layui.use(['form', 'jquery', 'layer'], function () {
         var form = layui.form,

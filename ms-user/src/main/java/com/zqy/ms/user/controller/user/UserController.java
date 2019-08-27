@@ -33,7 +33,7 @@ import java.util.Map;
  * @date 2019-08-01 10:54:19
  */
 @Controller
-@RequestMapping("/admin/user")
+@RequestMapping("/user")
 public class UserController {
 
     @Autowired

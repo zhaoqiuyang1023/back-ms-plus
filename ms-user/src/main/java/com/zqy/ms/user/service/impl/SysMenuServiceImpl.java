@@ -50,8 +50,9 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
     @Override
     public List<SysMenu> findAllMenusByLevel() {
         List<SysMenu> parentSysMenuList = sysMenuMapper.selectList(new QueryWrapper<SysMenu>().isNull("parent_id"));
+        Log.i("顶级菜单"+parentSysMenuList);
         recursion(parentSysMenuList);
-        Log.i(parentSysMenuList);
+
         return parentSysMenuList;
     }
 

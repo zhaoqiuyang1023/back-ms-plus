@@ -1,11 +1,19 @@
 package com.zqy.ms.user;
 
+import com.zqy.ms.user.entity.SysMenu;
+import com.zqy.ms.user.entity.SysRole;
+import com.zqy.ms.user.service.SysMenuService;
+import com.zqy.ms.user.service.SysRoleService;
+import com.zqy.ms.user.util.Log;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
+
+import java.util.List;
 
 /**
  * @author : Alan
@@ -16,9 +24,19 @@ import org.springframework.test.context.junit4.SpringRunner;
 @SpringBootTest
 public class UserApplicationTest {
 
+
+    @Autowired
+    private SysMenuService sysMenuService;
+
+    @Autowired
+    private SysRoleService sysRoleService;
+
     @Test
     public void ff (){
-      //  UsernamePasswordToken usernamePasswordToken=new UsernamePasswordToken("810339f5426fe2dcaf92c5cac718acc6471a034b", "810339f5426fe2dcaf92c5cac718acc6471a034b");
-      //  SecurityUtils.getSubject().login(usernamePasswordToken);
+
+        Log.i(sysMenuService.findAllMenusByLevel());
+        List<SysMenu> sysMenus = sysMenuService.findAllMenusByLevel(1L);
+        Log.i(sysMenus);
+
     }
 }
