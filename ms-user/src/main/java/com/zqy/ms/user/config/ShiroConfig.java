@@ -1,4 +1,4 @@
-package com.zqy.ms.user.shiro;
+package com.zqy.ms.user.config;
 
 import org.apache.shiro.mgt.SecurityManager;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;

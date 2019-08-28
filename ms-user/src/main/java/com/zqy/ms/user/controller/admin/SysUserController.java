@@ -41,8 +41,6 @@ public class SysUserController {
     @Autowired
     private SysRoleService sysRoleService;
 
-    @Autowired
-    private SysUserRoleService sysUserRoleService;
 
 
     @Autowired
@@ -50,12 +48,39 @@ public class SysUserController {
 
 
 
-
     @PostMapping("/save")
     @ResponseBody
-    public RestResponse save(@RequestBody SysUser sysUser) {
-
-        return sysUserService.saveSysUser(sysUser) ? RestResponse.success("修改成功") : RestResponse.failure("验证码超时");
+    public RestResponse save(@RequestBody SysUser user) {
+        if (StringUtils.isBlank(user.getLoginName())) {
+            return RestResponse.failure("登录名不能为空");
+        }
+        if (user.getSysRoles() == null || user.getSysRoles().size() == 0) {
+            return RestResponse.failure("用户角色至少选择一个");
+        }
+        SysUser oldUser = sysUserService.findUserById(user.getId());
+        if (StringUtils.isNotBlank(user.getEmail())) {
+            if (!user.getEmail().equals(oldUser.getEmail())) {
+                if (sysUserService.userCount(user.getEmail()) > 0) {
+                    return RestResponse.failure("该邮箱已被使用");
+                }
+            }
+        }
+        if (StringUtils.isNotBlank(user.getLoginName())) {
+            if (!user.getLoginName().equals(oldUser.getLoginName())) {
+                if (sysUserService.userCount(user.getLoginName()) > 0) {
+                    return RestResponse.failure("该登录名已存在");
+                }
+            }
+        }
+        if (StringUtils.isNotBlank(user.getTel())) {
+            if (!user.getTel().equals(oldUser.getTel())) {
+                if (sysUserService.userCount(user.getTel()) > 0) {
+                    return RestResponse.failure("该手机号已经被绑定");
+                }
+            }
+        }
+        user.setIcon(oldUser.getIcon());
+        return sysUserService.saveSysUser(user) ? RestResponse.success("修改成功") : RestResponse.failure("验证码超时");
     }
 
     @GetMapping("list")
@@ -91,36 +116,6 @@ public class SysUserController {
         return "admin/user/add";
     }
 
-    @RequiresPermissions("admin:user:add")
-    @PostMapping("add")
-    @ResponseBody
-    public RestResponse add(@RequestBody SysUser user) {
-        if (StringUtils.isBlank(user.getLoginName())) {
-            return RestResponse.failure("登录名不能为空");
-        }
-        if (user.getSysRoles() == null || user.getSysRoles().size() == 0) {
-            return RestResponse.failure("用户角色至少选择一个");
-        }
-        if (sysUserService.count(new QueryWrapper<SysUser>().eq("login_name", user.getLoginName())) > 0) {
-            return RestResponse.failure("登录名称已经存在");
-        }
-        if (StringUtils.isNotBlank(user.getEmail())) {
-            if (sysUserService.count(new QueryWrapper<SysUser>().eq("email", user.getEmail())) > 0) {
-                return RestResponse.failure("该邮箱已被使用");
-            }
-        }
-        if (StringUtils.isNoneBlank(user.getTel())) {
-            if (sysUserService.count(new QueryWrapper<SysUser>().eq("tel", user.getTel())) > 0) {
-                return RestResponse.failure("该手机号已被绑定");
-            }
-        }
-        user.setPassword(Constants.DEFAULT_PASSWORD);
-        sysUserService.saveUser(user);
-        if (user.getId() == null || user.getId() == 0) {
-            return RestResponse.failure("保存用户信息出错");
-        }
-        return RestResponse.success();
-    }
 
     @GetMapping("edit")
     public String edit(Long id, Model model) {
@@ -129,46 +124,6 @@ public class SysUserController {
         model.addAttribute("allRoles", sysRoleService.list());
         return "admin/user/edit";
     }
-//
-//    @RequiresPermissions("admin:user:edit")
-//    @PostMapping("edit")
-//    @ResponseBody
-//    public RestResponse edit(@RequestBody SysUser user) {
-//        if (user.getId() == 0 || user.getId() == null) {
-//            return RestResponse.failure("用户ID不能为空");
-//        }
-//        if (StringUtils.isBlank(user.getLoginName())) {
-//            return RestResponse.failure("登录名不能为空");
-//        }
-//        if (user.getSysRoles() == null || user.getSysRoles().size() == 0) {
-//            return RestResponse.failure("用户角色至少选择一个");
-//        }
-//        SysUser oldUser = sysUserService.findUserById(user.getId());
-//        if (StringUtils.isNotBlank(user.getEmail())) {
-//            if (!user.getEmail().equals(oldUser.getEmail())) {
-//                if (sysUserService.userCount(user.getEmail()) > 0) {
-//                    return RestResponse.failure("该邮箱已被使用");
-//                }
-//            }
-//        }
-//        if (StringUtils.isNotBlank(user.getLoginName())) {
-//            if (!user.getLoginName().equals(oldUser.getLoginName())) {
-//                if (sysUserService.userCount(user.getLoginName()) > 0) {
-//                    return RestResponse.failure("该登录名已存在");
-//                }
-//            }
-//        }
-//        if (StringUtils.isNotBlank(user.getTel())) {
-//            if (!user.getTel().equals(oldUser.getTel())) {
-//                if (sysUserService.userCount(user.getTel()) > 0) {
-//                    return RestResponse.failure("该手机号已经被绑定");
-//                }
-//            }
-//        }
-//        user.setIcon(oldUser.getIcon());
-//        sysUserService.updateUser(user);
-//        return RestResponse.success();
-//    }
 
     @RequiresPermissions("admin:user:delete")
     @PostMapping("delete")
@@ -220,72 +175,6 @@ public class SysUserController {
     }
 
 
-    @PostMapping("saveUserinfo")
-    @ResponseBody
-    public RestResponse saveUserInfo(SysUser user) {
-        if (user.getId() == 0 || user.getId() == null) {
-            return RestResponse.failure("用户ID不能为空");
-        }
-        if (StringUtils.isBlank(user.getLoginName())) {
-            return RestResponse.failure("登录名不能为空");
-        }
-        SysUser oldUser = sysUserService.findUserById(user.getId());
-        if (StringUtils.isNotBlank(user.getEmail())) {
-            if (!user.getEmail().equals(oldUser.getEmail())) {
-                if (sysUserService.count(new QueryWrapper<SysUser>().eq("email", user.getEmail())) > 0) {
-                    return RestResponse.failure("该邮箱已被使用");
-                }
-            }
-        }
-        if (StringUtils.isNotBlank(user.getTel())) {
-            if (!user.getTel().equals(oldUser.getTel())) {
-                if (sysUserService.count(new QueryWrapper<SysUser>().eq("tel", user.getTel())) > 0) {
-                    return RestResponse.failure("该手机号已经被绑定");
-                }
-            }
-        }
-        user.setSysRoles(oldUser.getSysRoles());
-        sysUserService.updateUser(user);
-        return RestResponse.success();
-    }
-
-    @GetMapping("changePassword")
-    public String changePassword() {
-        return "admin/system/user/changePassword";
-    }
-
-    @RequiresPermissions("admin:user:changePassword")
-    @PostMapping("changePassword")
-    @ResponseBody
-    public RestResponse changePassword(@RequestParam(value = "oldPwd", required = false) String oldPwd,
-                                       @RequestParam(value = "newPwd", required = false) String newPwd,
-                                       @RequestParam(value = "confirmPwd", required = false) String confirmPwd) {
-        if (StringUtils.isBlank(oldPwd)) {
-            return RestResponse.failure("旧密码不能为空");
-        }
-        if (StringUtils.isBlank(newPwd)) {
-            return RestResponse.failure("新密码不能为空");
-        }
-        if (StringUtils.isBlank(confirmPwd)) {
-            return RestResponse.failure("确认密码不能为空");
-        }
-        if (!confirmPwd.equals(newPwd)) {
-            return RestResponse.failure("确认密码与新密码不一致");
-        }
-        Subject s = SecurityUtils.getSubject();
-        SysUser sysUser = (SysUser) s.getPrincipal();
-        SysUser user = sysUserService.getById(sysUser.getId());
-
-        //旧密码不能为空
-        //  String pw = ToolUtil.entryptPassword(oldPwd,user.getSalt()).split(",")[0];
-//        if(!user.getPassword().equals(pw)){
-//            return RestResponse.failure("旧密码错误");
-//        }
-        user.setPassword(newPwd);
-        //  ToolUtil.entryptPassword(user);
-        sysUserService.updateById(user);
-        return RestResponse.success();
-    }
 
 
 }

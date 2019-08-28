@@ -7,9 +7,11 @@ import com.baomidou.mybatisplus.extension.service.additional.query.impl.QueryCha
 import com.zqy.ms.user.entity.SysMenu;
 import com.zqy.ms.user.entity.SysRole;
 import com.zqy.ms.user.entity.SysRoleMenu;
+import com.zqy.ms.user.entity.SysUserRole;
 import com.zqy.ms.user.service.SysMenuService;
 import com.zqy.ms.user.service.SysRoleMenuService;
 import com.zqy.ms.user.service.SysRoleService;
+import com.zqy.ms.user.service.SysUserRoleService;
 import com.zqy.ms.user.util.LayerData;
 import com.zqy.ms.user.util.Log;
 import com.zqy.ms.user.util.RestResponse;
@@ -38,9 +40,6 @@ public class SysRoleController {
     private SysMenuService sysMenuService;
 
 
-    @Autowired
-    private SysRoleMenuService sysRoleMenuService;
-
     @GetMapping("list")
     public String list() {
         return "admin/role/list";
@@ -61,24 +60,26 @@ public class SysRoleController {
         return userLayerData;
     }
 
-    @GetMapping("/save")
+    @GetMapping("/add")
     public String add(Model model) {
-        model.addAttribute("menus", sysMenuService.findAllMenusByLevel());
+        model.addAttribute("menus", sysMenuService.findAllTreeMenus());
         return "admin/role/add";
     }
 
     @GetMapping("/edit/{id}")
     public String edit(@PathVariable("id") Long id, Model model) {
-        model.addAttribute("menus", sysMenuService.findAllMenusByLevel());
+        model.addAttribute("menus", sysMenuService.findAllTreeMenus());
         SysRole sysRole = sysRoleService.getById(id);
-        List<SysMenu> sysMenus = sysMenuService.findAllMenusByLevel(id);
-        Log.i(sysMenus);
+        List<SysMenu> sysMenus = sysMenuService.findAllMenusByRoleId(id);
+        Log.i("角色菜单"+sysMenus);
         sysRole.setSysMenus(sysMenus);
         model.addAttribute("sysRole", sysRole);
         return "admin/role/edit";
     }
 
-    @PostMapping("add")
+
+
+    @PostMapping("save")
     @ResponseBody
     public RestResponse add(@RequestBody SysRole role) {
         if (StringUtils.isBlank(role.getName())) {
@@ -99,13 +100,16 @@ public class SysRoleController {
     }
 
 
+
+
     @PostMapping("delete")
     @ResponseBody
     public RestResponse delete(@RequestParam(value = "id", required = false) Long id) {
         if (id == null || id == 0) {
             return RestResponse.failure("角色ID不能为空");
         }
-        sysRoleService.removeById(id);
+        sysRoleService.deleteRoleByRoleId(id);
+
         return RestResponse.success("操作成功");
     }
 

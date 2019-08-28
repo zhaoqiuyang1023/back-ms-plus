@@ -105,6 +105,10 @@
                 layer.full(editIndex);
             }
             if (obj.event === "del") {
+                if (data.id === 1) {
+                    layer.msg("不能停用超级管理员");
+                    return false;
+                }
                 layer.confirm("你确定要停用该用户么？", {btn: ['是的,我确定', '我再想想']},
                     function () {
                         $.post("/admin/user/delete", {"id": data.id}, function (res) {

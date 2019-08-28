@@ -16,9 +16,26 @@
         </a>
         <!-- 头部左面区域（可配合layui已有的水平导航） -->
         <ul class="layui-nav layui-layout-left">
-            <li class="layui-nav-item">
-                <a href="/">返回前台</a>
-            </li>
+            <!-- 天气信息 -->
+            <div class="weather" pc>
+                <div id="tp-weather-widget"></div>
+                <script>(function(T,h,i,n,k,P,a,g,e){g=function(){P=h.createElement(i);a=h.getElementsByTagName(i)[0];P.src=k;P.charset="utf-8";P.async=1;a.parentNode.insertBefore(P,a)};T["ThinkPageWeatherWidgetObject"]=n;T[n]||(T[n]=function(){(T[n].q=T[n].q||[]).push(arguments)});T[n].l=+new Date();if(T.attachEvent){T.attachEvent("onload",g)}else{T.addEventListener("load",g,false)}}(window,document,"script","tpwidget","//widget.seniverse.com/widget/chameleon.js"))</script>
+                <script>tpwidget("init", {
+                    "flavor": "slim",
+                    "location": "WX4FBXXFKE4F",
+                    "geolocation": "enabled",
+                    "language": "zh-chs",
+                    "unit": "c",
+                    "theme": "chameleon",
+                    "container": "tp-weather-widget",
+                    "bubble": "disabled",
+                    "alarmType": "badge",
+                    "color": "#FFFFFF",
+                    "uid": "U9EC08A15F",
+                    "hash": "039da28f5581f4bcb5c799fb4cdfb673"
+                });
+                tpwidget("show");</script>
+            </div>
             <li class="layui-nav-item">
                 <a href="">商品管理</a>
             </li>
@@ -49,7 +66,7 @@
                 </a>
                 <dl class="layui-nav-child">
                     <dd>
-                        <a href="javascript:;" class="layTabPlus" th:attr="tab_url=@{/admin/user/edit/}">基本资料</a>
+                        <a href="javascript:;" class="layTabPlus" th:attr="tab_url=@{/user/edit}">基本资料</a>
                     </dd>
                     <dd>
                         <a href="/logout">退出</a>
@@ -147,6 +164,8 @@
         padding: 10px 15px;
         margin-bottom: 0;
     }
+
+    .weather{ color:#fff; float:left; margin:15px 0 0 0;}
 
     .sysNotice {
         width: 75%;

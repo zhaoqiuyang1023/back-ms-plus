@@ -22,4 +22,6 @@ public interface SysMenuMapper extends BaseMapper<SysMenu> {
     List<SysMenu> getSysMenuListByPage(Page page, @Param("param") Map<String, Object> map);
 
     Set<String> selectPermissionByUserName(@Param("loginName") String loginName);
+
+    List<SysMenu> findAllMenusByRoleId(Long id);
 }

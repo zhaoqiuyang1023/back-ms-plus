@@ -74,9 +74,9 @@
         <label class="layui-form-label">用户角色</label>
         <div class="layui-input-block role-box">
             <div class="jq-role-inline">
-                <input th:each="allrole,userStat : ${allRoles}" th:checked="${#lists.contains(user.sysRoles,allrole)}"
+                <input th:each="role,userStat : ${allRoles}" th:checked="${#lists.contains(user.sysRoles,role)}"
                        class="layui-field-box" style="float: left"
-                       type="checkbox" name="roles" th:attr="title=${allrole.name}" th:value="${user.id}"
+                       type="checkbox" name="roles" th:attr="title=${role.name}" th:value="${role.id}"
                        lay-filter="role"/>
             </div>
         </div>
@@ -139,9 +139,10 @@
                 data: JSON.stringify(data.field),
                 success: function (res) {
                     layer.close(loadIndex);
+                    parent.location.reload();
                     if (res.success) {
-                        parent.layer.msg("用户编辑成功！", {time: 1500}, function () {
-                            parent.location.reload();
+                        parent.layer.msg("用户编辑成功！", {time: 100}, function () {
+
                         });
                     } else {
                         layer.msg(res.message);

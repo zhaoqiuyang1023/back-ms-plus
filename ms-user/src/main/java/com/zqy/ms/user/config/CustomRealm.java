@@ -1,4 +1,4 @@
-package com.zqy.ms.user.shiro;
+package com.zqy.ms.user.config;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.zqy.ms.user.entity.SysUser;
@@ -43,7 +43,7 @@ public class CustomRealm extends AuthorizingRealm {
         UsernamePasswordToken token = (UsernamePasswordToken) authenticationToken;
         SysUser user = sysUserService.getOne(new QueryWrapper<SysUser>().eq("login_name", token.getUsername()));
         if (null == user) {
-            throw new AccountException("用户名不正确");
+            throw new UnknownAccountException("用户名不正确");
             //这里用明文
         } else if (!user.getPassword().equals(new String(token.getPassword()))) {
             throw new IncorrectCredentialsException("密码不正确");

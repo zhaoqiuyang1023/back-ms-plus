@@ -17,9 +17,9 @@ import java.util.List;
 @Mapper
 public interface SysRoleMapper extends BaseMapper<SysRole> {
 
-    List<SysMenu> findMenusByRoleId(@Param("id") String id);
+    List<SysMenu> findMenusByRoleId(@Param("id") Long id);
 
     List<SysMenu> findParentMenusByRoleId(Long id);
 
-    List<SysMenu> findMenusByRoleIdAndParentId(Long roleId, Long parentId);
+    List<SysMenu> findMenusByRoleIdAndParentId(@Param("roleId") Long roleId,@Param("parentId") Long parentId);
 }

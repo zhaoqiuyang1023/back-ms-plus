@@ -34,9 +34,6 @@ public class UserApplicationTest {
     @Test
     public void ff (){
 
-        Log.i(sysMenuService.findAllMenusByLevel());
-        List<SysMenu> sysMenus = sysMenuService.findAllMenusByLevel(1L);
-        Log.i(sysMenus);
 
     }
 }

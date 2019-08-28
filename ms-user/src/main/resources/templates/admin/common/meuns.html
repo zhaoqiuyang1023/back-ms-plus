@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div>
+    <th:block th:fragment="row(menus,lv)">
+        <th:block th:each="child: ${menus}">
+
+            <legend th:unless="${#lists.isEmpty(child.childSysMenus)}">
+                //如果有字菜单
+                <input type="checkbox" th:value="${child.id}"  class="layui-field-box"
+                       th:checked="${#lists.contains(sysRole.sysMenus,child)}"
+                       th:attr="data-parentIds=${child.parentIds},title=${child.name}"
+                       lay-filter="roleMenu"/>
+            </legend>
+
+            <div class="layui-field-box" style="float: left;width: 20%"
+                  th:if="${#lists.isEmpty(child.childSysMenus)}">
+                    //如果没有子菜单
+                    <input type="checkbox" th:value="${child.id}"  class="layui-field-box"
+                           th:checked="${#lists.contains(sysRole.sysMenus,child)}"
+                           th:attr="data-parentIds=${child.parentIds},title=${child.name}"
+                           lay-filter="roleMenu"/>
+
+            </div>
+
+            <fieldset  style="margin-bottom: 10px" th:unless="${#lists.isEmpty(child.childSysMenus)}"
+                      th:include="this::row(${child.childSysMenus},1)">
+            </fieldset>
+
+        </th:block>
+    </th:block>
+</div>
+</body>
+</html>

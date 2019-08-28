@@ -47,31 +47,27 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
     }
 
     @Override
-    public List<SysMenu> findAllMenusByLevel() {
+    public List<SysMenu> findAllTreeMenus() {
         List<SysMenu> parentSysMenuList = sysMenuMapper.selectList(new QueryWrapper<SysMenu>().isNull("parent_id"));
         Log.i("顶级菜单"+parentSysMenuList);
         //查询所有的不需要roleId
-        recursion(parentSysMenuList,-1L);
-
+        recursion(null,parentSysMenuList);
+        Log.i("顶级菜单汇总"+parentSysMenuList);
         return parentSysMenuList;
     }
 
     @Override
-    public List<SysMenu> findAllMenusByLevel(Long id) {
-        //找到最顶层的集合菜单
-        List<SysMenu> parentSysMenuList = sysRoleMapper.findParentMenusByRoleId(id);
-        recursion(parentSysMenuList,id);
-        Log.i(parentSysMenuList);
-        return parentSysMenuList;
+    public List<SysMenu> findAllMenusByRoleId(Long id) {
+        return sysMenuMapper.findAllMenusByRoleId(id);
     }
 
-    private void recursion(List<SysMenu> parentSysMenuList,Long roleId) {
+    private void recursion(Long roleId,List<SysMenu> parentSysMenuList) {
         for (SysMenu sysMenu : parentSysMenuList) {
             List<SysMenu> sysMenus = sysRoleMapper.findMenusByRoleIdAndParentId(roleId,sysMenu.getId());
             Log.i("有二级及以下菜单");
             if(sysMenus.size()>0){
                 sysMenu.setChildSysMenus(sysMenus);
-                recursion(sysMenus,roleId);
+                recursion(roleId,sysMenus);
             }
 
         }

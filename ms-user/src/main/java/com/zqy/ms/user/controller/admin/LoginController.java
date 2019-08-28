@@ -118,7 +118,8 @@ public class LoginController {
                     map.put("url", "index");
                     map.put("code", "index");
                 }
-            } catch (IncorrectCredentialsException e) {
+            }
+            catch (IncorrectCredentialsException e) {
                 error = "登录密码错误.";
             } catch (ExcessiveAttemptsException e) {
                 error = "登录失败次数过多";
