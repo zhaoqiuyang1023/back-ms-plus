@@ -4,7 +4,6 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.zqy.ms.user.entity.SysMenu;
-import com.zqy.ms.user.entity.SysUser;
 import com.zqy.ms.user.entity.vo.ShowMenu;
 import com.zqy.ms.user.mapper.SysMenuMapper;
 import com.zqy.ms.user.mapper.SysRoleMapper;
@@ -51,7 +50,8 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
     public List<SysMenu> findAllMenusByLevel() {
         List<SysMenu> parentSysMenuList = sysMenuMapper.selectList(new QueryWrapper<SysMenu>().isNull("parent_id"));
         Log.i("顶级菜单"+parentSysMenuList);
-        recursion(parentSysMenuList);
+        //查询所有的不需要roleId
+        recursion(parentSysMenuList,-1L);
 
         return parentSysMenuList;
     }
@@ -60,18 +60,18 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
     public List<SysMenu> findAllMenusByLevel(Long id) {
         //找到最顶层的集合菜单
         List<SysMenu> parentSysMenuList = sysRoleMapper.findParentMenusByRoleId(id);
-        recursion(parentSysMenuList);
+        recursion(parentSysMenuList,id);
         Log.i(parentSysMenuList);
         return parentSysMenuList;
     }
 
-    private void recursion(List<SysMenu> parentSysMenuList) {
+    private void recursion(List<SysMenu> parentSysMenuList,Long roleId) {
         for (SysMenu sysMenu : parentSysMenuList) {
-            List<SysMenu> sysMenus = sysMenuMapper.selectList(new QueryWrapper<SysMenu>().eq("parent_id", sysMenu.getId()));
+            List<SysMenu> sysMenus = sysRoleMapper.findMenusByRoleIdAndParentId(roleId,sysMenu.getId());
             Log.i("有二级及以下菜单");
             if(sysMenus.size()>0){
                 sysMenu.setChildSysMenus(sysMenus);
-                recursion(sysMenus);
+                recursion(sysMenus,roleId);
             }
 
         }

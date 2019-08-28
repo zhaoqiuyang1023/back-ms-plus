@@ -1,14 +1,12 @@
 package com.zqy.ms.user.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.extension.service.additional.query.impl.QueryChainWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.zqy.ms.user.entity.SysMenu;
 import com.zqy.ms.user.entity.SysRole;
 import com.zqy.ms.user.entity.SysRoleMenu;
 import com.zqy.ms.user.mapper.SysRoleMapper;
 import com.zqy.ms.user.mapper.SysRoleMenuMapper;
-import com.zqy.ms.user.service.SysRoleMenuService;
 import com.zqy.ms.user.service.SysRoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -52,5 +50,11 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
     @Override
     public List<SysMenu> findParentMenusByRoleId(Long id) {
         return sysRoleMapper.findParentMenusByRoleId(id);
+    }
+
+    @Override
+    public List<SysMenu> findMenusByRoleIdAndParentId(Long roleId, Long parentId) {
+
+        return  sysRoleMapper.findMenusByRoleIdAndParentId(roleId, parentId);
     }
 }

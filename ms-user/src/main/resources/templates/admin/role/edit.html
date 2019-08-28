@@ -56,8 +56,8 @@
         </fieldset>
     </div>
 
-    <div class="layui-form-item">
-        <span th:fragment="row(menus)">
+
+    <span class="layui-form-item" th:fragment="row(menus)">
            <span th:each="child:${menus}">
 
                <legend th:unless="${#lists.isEmpty(child.childSysMenus)}">
@@ -68,7 +68,8 @@
                            lay-filter="roleMenu"/>
                </legend>
 
-                <span class="layui-field-box"  style="float: left;width: 20%" th:if="${#lists.isEmpty(child.childSysMenus)}">
+                <span class="layui-field-box" style="float: left;width: 20%"
+                      th:if="${#lists.isEmpty(child.childSysMenus)}">
                     //如果没有子菜单
                     <input type="checkbox" th:value="${child.id}"
                            th:checked="${#lists.contains(sysRole.sysMenus,child)}"
@@ -82,7 +83,7 @@
            </span>
         </span>
 
-
+    <div class="layui-form-item">
         <fieldset th:each="menu,index : ${menus}">
             <legend>
                 <input type="checkbox" th:value="${menu.id}"
@@ -102,9 +103,8 @@
                 </ul>
             </div>
         </fieldset>
-
-
     </div>
+
     <div class="layui-form-item" style="padding-left: 30%;">
         <div class="layui-input-block">
             <button class="layui-btn" lay-submit="" lay-filter="editRole">我要修改</button>

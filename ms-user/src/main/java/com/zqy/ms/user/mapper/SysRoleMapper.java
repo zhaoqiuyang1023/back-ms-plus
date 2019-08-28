@@ -20,4 +20,6 @@ public interface SysRoleMapper extends BaseMapper<SysRole> {
     List<SysMenu> findMenusByRoleId(@Param("id") String id);
 
     List<SysMenu> findParentMenusByRoleId(Long id);
+
+    List<SysMenu> findMenusByRoleIdAndParentId(Long roleId, Long parentId);
 }

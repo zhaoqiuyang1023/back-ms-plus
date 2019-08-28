@@ -19,5 +19,13 @@ public interface SysRoleService extends IService<SysRole> {
     List<SysMenu> findMenusByRoleId(String id);
 
     List<SysMenu> findParentMenusByRoleId(Long id);
+
+    /**
+     *
+     * @param roleId
+     * @param parentId
+     * @return
+     */
+    List<SysMenu> findMenusByRoleIdAndParentId(Long roleId,Long parentId);
 }
 
