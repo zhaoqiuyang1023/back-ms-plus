@@ -26,5 +26,6 @@ public interface SysMenuService extends IService<SysMenu> {
     List<SysMenu> findAllTreeMenus();
 
     List<SysMenu> findAllMenusByRoleId(Long roleId);
+
 }
 

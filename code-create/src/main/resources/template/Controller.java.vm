@@ -35,7 +35,7 @@ public class ${className}Controller {
     */
     @GetMapping("/page")
     public Page page(@RequestParam Map<String, Object> params) {
-        Page<VisitorLog> page = new Page<>(Integer.parseInt(params.get("current").toString()), Integer.parseInt(params.get("size").toString()));
+        Page<${className}> page = new Page<>(Integer.parseInt(params.get("current").toString()), Integer.parseInt(params.get("size").toString()));
         page.setRecords(${classname}Service.page(page, queryWrapper));
         return page;
     }

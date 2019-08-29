@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta charset="UTF-8">
+    <title>tree-table</title>
+    <script src="../../../static/layui/layui.js" th:src="@{/static/layui/layui.js}"></script>
+    <link rel="stylesheet" href="../../../static/layui/css/layui.css" th:href="@{/static/layui/css/layui.css}"
+          media="all">
+
+    <link rel="stylesheet" href="../../../static/module/treetable-lay/treetable.css"
+          th:href="@{/static/module/treetable-lay/treetable.css}" media="all">
+    <script href="../../../static/module/treetable-lay/treetable.js"
+            th:href="@{/static/module/treetable-lay/treetable.js}"></script>
+    <style>
+        input {
+            height: 33px;
+            line-height: 33px;
+            padding: 0 7px;
+            border: 1px solid #ccc;
+            border-radius: 2px;
+            margin-bottom: -2px;
+            outline: none;
+        }
+
+        input:focus {
+            border-color: #009E94;
+        }
+    </style>
+</head>
+<body>
+<div>
+    <br><br>
+    &nbsp;&nbsp;
+    <div class="layui-btn-group">
+        <button class="layui-btn" id="btn-expand">全部展开</button>
+        <button class="layui-btn" id="btn-fold">全部折叠</button>
+    </div>
+    &nbsp;&nbsp;
+    <input id="edt-search" type="text" placeholder="输入关键字" style="width: 120px;"/>&nbsp;&nbsp;
+    <button class="layui-btn" id="btn-search">&nbsp;&nbsp;搜索&nbsp;&nbsp;</button>
+
+    <table id="auth-table" style="width: 100%" class="layui-table" lay-filter="auth-table"></table>
+</div>
+<!-- 操作列 -->
+<script type="text/html" id="oper-col">
+    <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="add"><i class="layui-icon">&#xe654;</i>添加子菜单</a>
+    <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="edit"><i class="layui-icon">&#xe642;</i>编辑菜单</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+
+</script>
+
+<script th:inline="none">
+    layui.config({
+        base: '../../../static/module/'
+    }).extend({
+        treetable: 'treetable-lay/treetable'
+    }).use(['table', 'treetable'], function () {
+        var $ = layui.jquery;
+        var table = layui.table;
+        var treetable = layui.treetable;
+
+        // 渲染表格
+        layer.load(2);
+        treetable.render({
+            treeColIndex: 1,
+            treeSpid: null,
+            treeIdName: 'id',
+            treePidName: 'parentId',
+            elem: '#auth-table',
+            url:  'json/menus.json',
+            method:'POST',
+            page: false,
+            cols: [[
+                {type: 'count'},
+                {field: 'name', align: 'center', width: '25%', minWidth: 200, title: '菜单名称'},
+                {field: 'href', align: 'center', title: '菜单跳转地址', width: '15%'},
+                {field: 'icon', align: 'center', title: '图标', width: '10%'},
+                {field: 'sort', align: 'center', title: '排序', width: '5%'},
+                {field: 'createDate', align: 'center', title: '创建时间', width: '10%'},
+                {templet: '#oper-col', align: 'center', title: '操作', width: '25%'}
+            ]],
+            done: function () {
+                layer.closeAll('loading');
+            }
+        });
+
+        $('#btn-expand').click(function () {
+            treetable.expandAll('#auth-table');
+        });
+
+        $('#btn-fold').click(function () {
+            treetable.foldAll('#auth-table');
+        });
+
+        $('#btn-search').click(function () {
+            var keyword = $('#edt-search').val();
+            var searchCount = 0;
+            $('#auth-table').next('.treeTable').find('.layui-table-body tbody tr td').each(function () {
+                $(this).css('background-color', 'transparent');
+                var text = $(this).text();
+                if (keyword != '' && text.indexOf(keyword) >= 0) {
+                    $(this).css('background-color', 'rgba(250,230,160,0.5)');
+                    if (searchCount == 0) {
+                        treetable.expandAll('#auth-table');
+                        $('html,body').stop(true);
+                        $('html,body').animate({scrollTop: $(this).offset().top - 150}, 500);
+                    }
+                    searchCount++;
+                }
+            });
+            if (keyword == '') {
+                layer.msg("请输入搜索内容", {icon: 5});
+            } else if (searchCount == 0) {
+                layer.msg("没有匹配结果", {icon: 5});
+            }
+        });
+
+        //监听工具条
+        table.on('tool(auth-table)', function (obj) {
+            var data = obj.data;
+            var layEvent = obj.event;
+            if (layEvent === 'add') {
+                let editIndex = layer.open({
+                    title: "菜单添加",
+                    type: 2,
+                    content: "/admin/menus/add/" + data.id,
+                    success: function (layero, index) {
+                        setTimeout(function () {
+                            layer.tips('点击此处返回会员列表', '.layui-layer-setwin .layui-layer-close', {
+                                tips: 3
+                            });
+                        }, 500);
+                    }
+                });
+                //改变窗口大小时，重置弹窗的高度，防止超出可视区域（如F12调出debug的操作）
+                $(window).resize(function () {
+                    layer.full(editIndex);
+                });
+                layer.full(editIndex);
+            }
+            if (layEvent === 'del') {
+                layer.msg('删除' + data.id);
+            } else if (layEvent === 'edit') {
+                layer.msg('修改' + data.id);
+            }
+        });
+    });
+</script>
+</body>
+</html>

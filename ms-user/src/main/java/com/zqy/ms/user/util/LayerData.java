@@ -6,7 +6,7 @@ import java.util.List;
 /**
  * @author Alan
  */
-public class  LayerData<T> {
+public class LayerData<T> {
     private Integer code = 0;
     private Long count;
     private List<T> data;
