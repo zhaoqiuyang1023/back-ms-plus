@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 
 <head>
     <meta charset="UTF-8">
@@ -8,10 +8,6 @@
     <link rel="stylesheet" href="../../../static/layui/css/layui.css" th:href="@{/static/layui/css/layui.css}"
           media="all">
 
-    <link rel="stylesheet" href="../../../static/module/treetable-lay/treetable.css"
-          th:href="@{/static/module/treetable-lay/treetable.css}" media="all">
-    <script href="../../../static/module/treetable-lay/treetable.js"
-            th:href="@{/static/module/treetable-lay/treetable.js}"></script>
     <style>
         input {
             height: 33px;
@@ -26,57 +22,102 @@
         input:focus {
             border-color: #009E94;
         }
+
+        /** 箭头未展开 */
+        #auth-table + .treeTable .treeTable-icon .layui-icon-triangle-d:before {
+            content: "\e602";
+        }
+
+        /** 箭头展开 */
+        #auth-table + .treeTable .treeTable-icon.open .layui-icon-triangle-d:before {
+            content: "\e61a";
+        }
+
+        /** 文件图标 */
+        #auth-table + .treeTable .treeTable-icon .layui-icon-file:before {
+            content: "\e60d";
+        }
+
+        /** 文件夹未展开 */
+        #auth-table + .treeTable .treeTable-icon .layui-icon-layer:before {
+            content: "\e637";
+        }
+
+        /** 文件夹展开 */
+        #auth-table + .treeTable .treeTable-icon.open .layui-icon-layer:before {
+            content: "\e634";
+        }
+
     </style>
 </head>
 <body>
-<div>
-    <br><br>
-    &nbsp;&nbsp;
-    <div class="layui-btn-group">
-        <button class="layui-btn" id="btn-expand">全部展开</button>
-        <button class="layui-btn" id="btn-fold">全部折叠</button>
+<fieldset class="layui-elem-field">
+    <legend>菜单检索</legend>
+    <div class="layui-field-box">
+        <form class="layui-form">
+            <div class="layui-inline">
+                <input id="edt-search" type="text" placeholder="输入关键字" style="width: 120px;"/>&nbsp;&nbsp;
+            </div>
+            <div class="layui-inline">
+                <button class="layui-btn" id="btn-search">搜索</button>
+            </div>
+            <div class="layui-inline">
+                <button id="addParent" class="layui-btn layui-btn-normal">添加</button>
+            </div>
+            <div class="layui-inline">
+                <button class="layui-btn" id="btn-expand">全部展开/全部折叠</button>
+            </div>
+        </form>
     </div>
-    &nbsp;&nbsp;
-    <input id="edt-search" type="text" placeholder="输入关键字" style="width: 120px;"/>&nbsp;&nbsp;
-    <button class="layui-btn" id="btn-search">&nbsp;&nbsp;搜索&nbsp;&nbsp;</button>
-
+</fieldset>
+<div class="layui-form-item">
     <table id="auth-table" style="width: 100%" class="layui-table" lay-filter="auth-table"></table>
 </div>
 <!-- 操作列 -->
 <script type="text/html" id="oper-col">
-    <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="add"><i class="layui-icon">&#xe654;</i>添加子菜单</a>
-    <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="edit"><i class="layui-icon">&#xe642;</i>编辑菜单</a>
-    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
-
+    <button type="button" class="layui-btn layui-btn-primary layui-btn-sm" lay-event="add"><i class="layui-icon">&#xe654;</i>添加子菜单
+    </button>
+    <button type="button" class="layui-btn layui-btn-primary layui-btn-sm" lay-event="edit"><i class="layui-icon">&#xe642;</i>编辑菜单
+    </button>
+    <button type="button" class="layui-btn layui-btn-danger  layui-btn-sm" lay-event="del">删除</button>
 </script>
 
 <script th:inline="none">
+
     layui.config({
         base: '../../../static/module/'
     }).extend({
         treetable: 'treetable-lay/treetable'
     }).use(['table', 'treetable'], function () {
-        var $ = layui.jquery;
-        var table = layui.table;
-        var treetable = layui.treetable;
+        $ = layui.jquery;
+        let table = layui.table;
+        let treetable = layui.treetable;
+        let expandAll = true;
 
         // 渲染表格
-        layer.load(2);
+        layer.load(1000);
         treetable.render({
             treeColIndex: 1,
-            treeSpid: null,
+            treeSpid: 0,
             treeIdName: 'id',
             treePidName: 'parentId',
             elem: '#auth-table',
-            url:  'json/menus.json',
-            method:'POST',
+            url: '/admin/menu/data',
+            type: "POST",
             page: false,
             cols: [[
-                {type: 'count'},
-                {field: 'name', align: 'center', width: '25%', minWidth: 200, title: '菜单名称'},
-                {field: 'href', align: 'center', title: '菜单跳转地址', width: '15%'},
+                {type: 'numbers'},
+               // {field: 'name', align: 'left', width: '20%', minWidth: 200, title: '菜单名称'},
+                {field: 'href', align: 'left', title: '菜单跳转地址', width: '20%'},
                 {field: 'icon', align: 'center', title: '图标', width: '10%'},
                 {field: 'sort', align: 'center', title: '排序', width: '5%'},
+                {
+                    field: 'name', width: '20%', align: 'center', templet: function (d) {
+
+                        return '<span class="layui-badge-rim">'+d.name+'<i class="layui-icon">'+d.icon+'</i> </span>';
+
+                    }, title: '类型'
+                },
                 {field: 'createDate', align: 'center', title: '创建时间', width: '10%'},
                 {templet: '#oper-col', align: 'center', title: '操作', width: '25%'}
             ]],
@@ -86,12 +127,14 @@
         });
 
         $('#btn-expand').click(function () {
-            treetable.expandAll('#auth-table');
+            if (expandAll) {
+                treetable.foldAll('#auth-table');
+            } else {
+                treetable.expandAll('#auth-table');
+            }
+            expandAll = !expandAll;
         });
 
-        $('#btn-fold').click(function () {
-            treetable.foldAll('#auth-table');
-        });
 
         $('#btn-search').click(function () {
             var keyword = $('#edt-search').val();
@@ -116,6 +159,18 @@
             }
         });
 
+
+        $('#addParent').click(function () {
+            layer.open({
+                title: "菜单添加",
+                type: 2,
+                shadeClose: true,
+                shade: 0.8,
+                area: ['50%', '70%'],
+                content: '/admin/menu/addParent' //iframe的url
+            });
+        });
+
         //监听工具条
         table.on('tool(auth-table)', function (obj) {
             var data = obj.data;
@@ -124,7 +179,10 @@
                 let editIndex = layer.open({
                     title: "菜单添加",
                     type: 2,
-                    content: "/admin/menus/add/" + data.id,
+                    shadeClose: true,
+                    shade: 0.8,
+                    area: ['80%', '30%'],
+                    content: "/admin/menu/addChild/" + data.id,
                     success: function (layero, index) {
                         setTimeout(function () {
                             layer.tips('点击此处返回会员列表', '.layui-layer-setwin .layui-layer-close', {
@@ -141,8 +199,30 @@
             }
             if (layEvent === 'del') {
                 layer.msg('删除' + data.id);
+                $.ajax({
+                    type: "POST",
+                    url: "/admin/menu/delete/" + data.id,
+                    dataType: "json",
+                    contentType: "application/json",
+                    success: function (res) {
+                        if (res.success) {
+                            parent.layer.msg("删除成功!", {time: 500}, function () {
+                                parent.location.reload();
+                            });
+                        } else {
+                            layer.msg(res.message);
+                        }
+                    }
+                });
             } else if (layEvent === 'edit') {
-                layer.msg('修改' + data.id);
+                layer.open({
+                    title: "菜单修改",
+                    type: 2,
+                    shadeClose: true,
+                    shade: 0.8,
+                    area: ['50%', '70%'],
+                    content: '/admin/menu/edit/' + data.id //iframe的url
+                });
             }
         });
     });

@@ -63,7 +63,7 @@ public class LoginController {
         if (s.isAuthenticated()) {
             return "redirect:index";
         } else {
-            return "login";
+            return  "login";
         }
     }
 

@@ -95,7 +95,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
 
     @Override
     public List<ShowMenu> findShowSysMenusByUserId(Long id) {
-        List<SysMenu> sysMenuList = sysMenuMapper.selectList(new QueryWrapper<SysMenu>().isNull("parent_id").eq("is_show", "1"));
+        List<SysMenu> sysMenuList = sysMenuMapper.selectList(new QueryWrapper<SysMenu>().eq("parent_id",0).eq("is_show", "1"));
         Log.i(sysMenuList);
         List<ShowMenu> showMenuList = new ArrayList<>();
         for (SysMenu sysMenu : sysMenuList) {

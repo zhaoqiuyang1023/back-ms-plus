@@ -3,7 +3,9 @@ package com.zqy.ms.user.controller.admin;
 import com.zqy.ms.user.entity.SysMenu;
 import com.zqy.ms.user.service.SysMenuService;
 import com.zqy.ms.user.util.LayerData;
+import com.zqy.ms.user.util.Log;
 import com.zqy.ms.user.util.RestResponse;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -25,8 +27,7 @@ public class SysMenuController {
     private SysMenuService sysMenuService;
 
     @GetMapping("list")
-    public String index(Model model) {
-
+    public String index() {
         return "admin/menu/list";
     }
 
@@ -40,42 +41,44 @@ public class SysMenuController {
         return menus;
     }
 
+    @ApiOperation(value = "添加子菜单")
+    @GetMapping("/addChild/{parentId}")
+    public String addChildMenuByParentId(@PathVariable(value = "parentId") Long id,Model model) {
+        SysMenu parentMenu = sysMenuService.getById(id);
+        model.addAttribute("parentMenu",parentMenu);
+        return "admin/menu/addChild";
+    }
 
-    /**
-     * get single info
-     *
-     * @param id
-     * @return R
-     */
-    @GetMapping("/add/{parentId}")
-    public String addMenusByParentId(@PathVariable(value = "parentId", required = false) Long id) {
-        SysMenu sysMenu = sysMenuService.getById(id);
-        return "admin/menu/add";
+    @ApiOperation(value = "添加顶级菜单")
+    @GetMapping("/addParent")
+    public String addParentMenu() {
+        return "admin/menu/addparent";
+    }
+
+    @ApiOperation(value = "编辑菜单")
+    @GetMapping("/edit/{id}")
+    public String edit(@PathVariable(value = "id") Long id,Model model) {
+        SysMenu menu = sysMenuService.getById(id);
+        model.addAttribute("menu",menu);
+        return "admin/menu/edit";
     }
 
 
-    /**
-     * save
-     *
-     * @param sysMenu
-     * @return R
-     */
+    @ApiOperation(value = "保存菜单")
     @PostMapping("/save")
-    public RestResponse save(@RequestBody SysMenu sysMenu) {
+    @ResponseBody
+    public RestResponse save(SysMenu sysMenu) {
+        Log.i(sysMenu);
         sysMenuService.save(sysMenu);
         return RestResponse.success();
     }
 
 
-    /**
-     * delete
-     *
-     * @param ids
-     * @return R
-     */
-    @DeleteMapping("/delete")
-    public RestResponse delete(@RequestBody Long[] ids) {
-        sysMenuService.removeByIds(Arrays.asList(ids));
+    @ApiOperation(value = "删除菜单")
+    @ResponseBody
+    @PostMapping("/delete/{id}")
+    public RestResponse delete(@PathVariable("id") Long id) {
+        sysMenuService.removeById(id);
         return RestResponse.success();
     }
 

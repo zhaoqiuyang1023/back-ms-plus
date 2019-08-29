@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8">
     <title>菜单添加--layui后台管理模板</title>
@@ -9,6 +9,12 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="format-detection" content="telephone=no">
+
+    <link rel="stylesheet" href="../../../static/layui/css/layui.css" th:href="@{/static/layui/css/layui.css}"
+          media="all">
+    <link rel="stylesheet" href="../../../static/colorpicker/colpick.css" th:href="@{/static/colorpicker/colpick.css}"
+          media="all">
+    <script src="../../../static/layui/layui.js" th:src="@{/static/layui/layui.js}"></script>
 
     <style type="text/css">
         .layui-form-item .layui-inline{ width:33.333%; float:left; margin-right:0; }
@@ -30,48 +36,41 @@
             border: 1px solid white;
         }
     </style>
+    <script src="../../../static/js/jquery.min.js"></script>
 </head>
 <body class="childrenBody">
 <form class="layui-form" style="width:80%;">
-    <#if parentMenu != null>
+
     <div class="layui-form-item">
         <label class="layui-form-label">父菜单名称</label>
         <div class="layui-input-block">
-            <select name="parentId" class="layui-input" disabled="">
-                <option value="${parentMenu.id}">${parentMenu.name}</option>
-            </select>
+            <input th:value="${menu.id}" disabled  placeholder="父菜单id"  name="parentId" class="layui-input layui-hide"/>
         </div>
     </div>
-    </#if>
+
     <div class="layui-form-item">
         <label class="layui-form-label">菜单名称</label>
         <div class="layui-input-block">
-            <input type="text" class="layui-input" name="name" lay-verify="required" placeholder="请输入菜单名称">
+            <input type="text" th:value="${menu.name}" class="layui-input" name="name" lay-verify="required" placeholder="请输入菜单名称">
         </div>
     </div>
     <div class="layui-form-item">
         <label class="layui-form-label">菜单背景色</label>
         <div class="layui-input-block">
-            <input type="hidden" class="layui-input" name="bgColor" >
+            <input type="hidden" class="layui-input" name="bgColor" th:value="${menu.bgColor}" >
             <div class="color-box"></div>
         </div>
     </div>
     <div class="layui-form-item">
         <label class="layui-form-label">菜单地址</label>
         <div class="layui-input-block">
-            <input type="text" class="layui-input" name="href"  placeholder="请输入菜单地址">
-        </div>
-    </div>
-    <div class="layui-form-item">
-        <label class="layui-form-label">菜单权限</label>
-        <div class="layui-input-block">
-            <input type="text" class="layui-input" name="permission"  placeholder="菜单权限">
+            <input type="text" class="layui-input" th:value="${menu.href}" name="href"  placeholder="请输入菜单地址">
         </div>
     </div>
     <div class="layui-form-item">
         <label class="layui-form-label">菜单图标</label>
         <div class="layui-input-block">
-            <input type="hidden" class="layui-input" name="icon" id="iconValue"  placeholder="请选择菜单图标">
+            <input type="hidden" class="layui-input" name="icon" id="iconValue" th:value="${menu.icon}"  placeholder="请选择菜单图标">
             <div class="layui-input-inline" style="width: 100px;">
                 <i class="layui-icon" id="realIcon" style="display: none;font-size: 50px"></i>
             </div>
@@ -83,21 +82,20 @@
     <div class="layui-form-item">
         <label class="layui-form-label">左侧菜单栏是否显示</label>
         <div class="layui-input-block">
-            <input type="checkbox" name="isShow" lay-skin="switch"    lay-text="是|否" checked>
+            <input type="checkbox" name="isShow" lay-skin="switch" th:checked="${menu.delFlag}"   lay-text="是|否" checked>
         </div>
     </div>
     <div class="layui-form-item">
         <div class="layui-input-block">
-            <button class="layui-btn" lay-submit="" lay-filter="addUser">立即提交</button>
+            <button class="layui-btn" lay-submit="" lay-filter="add">立即提交</button>
             <button type="reset" class="layui-btn layui-btn-primary">重置</button>
         </div>
     </div>
 </form>
-<script src="https://code.jquery.com/jquery-2.2.4.min.js"
-        integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
-        crossorigin="anonymous"></script>
-<script type="text/javascript" src="${base}/static/layui/layui.js"></script>
-<script type="text/javascript" src="${base}/static/colorpicker/colpick.js"></script>
+
+
+<script src="../../../static/colorpicker/colpick.js" th:src="@{/static/colorpicker/colpick.js}"></script>
+
 <script>
     var iconShow,$;
     layui.use(['form','jquery','layer'],function(){
@@ -116,18 +114,23 @@
             }
         }).css('background-color', '#ff8800');
 
+        $(function() {
+            $("#realIcon").show().html($("#iconValue").val());
+            $("#iconValue").val($("#iconValue").val());
+        });
+
         //选择图标
         $("#selectIcon").on("click",function () {
             iconShow =layer.open({
                 type: 2,
                 title: '选择图标',
                 shadeClose: true,
-                content: '${base}/static/page/icon.html'
+                content: '/static/icon/page/icon.html'
             });
             layer.full(iconShow);
         });
 
-        form.on("submit(addUser)",function(data){
+        form.on("submit(add)",function(data){
             //判断左侧是否显示
             if(undefined !== data.field.isShow && null != data.field.isShow){
                 data.field.isShow = true;
@@ -137,7 +140,7 @@
             var loadIndex = layer.load(2, {
                 shade: [0.3, '#333']
             });
-            $.post("${base}/admin/menu/add",data.field,function (res) {
+            $.post("/admin/menu/save",data.field,function (res) {
                 layer.close(loadIndex);
                 if(res.success){
                     parent.layer.msg("菜单添加成功!",{time:1500},function(){

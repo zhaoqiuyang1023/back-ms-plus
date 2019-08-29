@@ -27,9 +27,9 @@ public class SysMenu extends Model<SysMenu> {
     private static final long serialVersionUID = 1L;
 
 
-    @TableId(type = IdType.UUID)
+    @TableId(type = IdType.AUTO)
     @TableField(value = "id")
-    @ApiModelProperty(value = "")
+    @ApiModelProperty(value = "主键id")
     private Long id;
 
     @TableField(value = "name")
