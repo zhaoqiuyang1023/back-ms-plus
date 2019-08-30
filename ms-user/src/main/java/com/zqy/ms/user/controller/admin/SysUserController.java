@@ -8,9 +8,7 @@ import com.zqy.ms.user.entity.SysUser;
 import com.zqy.ms.user.entity.vo.ShowMenu;
 import com.zqy.ms.user.service.SysMenuService;
 import com.zqy.ms.user.service.SysRoleService;
-import com.zqy.ms.user.service.SysUserRoleService;
 import com.zqy.ms.user.service.SysUserService;
-import com.zqy.ms.user.util.Constants;
 import com.zqy.ms.user.util.LayerData;
 import com.zqy.ms.user.util.RestResponse;
 import org.apache.commons.lang3.StringUtils;
@@ -22,6 +20,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.WebUtils;
+
 import javax.servlet.ServletRequest;
 import java.util.List;
 import java.util.Map;
@@ -146,7 +145,6 @@ public class SysUserController {
     @RequiresPermissions("admin:user:delete")
     @PostMapping("deleteSome")
     @ResponseBody
-    //@SysLog("停用系统用户数据(多个)")
     public RestResponse deleteSome(@RequestBody List<SysUser> users) {
         if (users == null || users.size() == 0) {
             return RestResponse.failure("请选择需要停用的用户");
@@ -170,8 +168,7 @@ public class SysUserController {
     public List<ShowMenu> getUserMenu() {
         Subject s = SecurityUtils.getSubject();
         SysUser sysUser = (SysUser) s.getPrincipal();
-        List<ShowMenu> list = sysMenuService.getShowMenuByUser(sysUser.getId());
-        return list;
+        return sysMenuService.findAllTreeShowMenuByUserId(sysUser.getId());
     }
 
 

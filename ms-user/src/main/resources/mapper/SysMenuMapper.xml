@@ -111,5 +111,14 @@
        `sys_menu` m
 	 where rm.role_id=#{id} and m.id=rm.menu_id
     </select>
+    <select id="findSysMenusByUserId" resultType="com.zqy.ms.user.entity.SysMenu">
+          SELECT DISTINCT m.* FROM sys_role  r,
+                    `sys_user_role` urpk,
+										sys_role_menu  rmpk ,
+										sys_menu m
+       where  r.id=urpk.role_id and urpk.user_id=#{id}
+			 and r.id=rmpk.role_id and rmpk.menu_id=m.id
+
+    </select>
 
 </mapper>

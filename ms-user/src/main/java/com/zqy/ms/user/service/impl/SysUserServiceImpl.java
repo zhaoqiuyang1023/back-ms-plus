@@ -20,7 +20,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 /**
  * @author Alan
@@ -41,10 +40,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     @Autowired
     private SysUserRoleService sysUserRoleService;
 
-    @Override
-    public Set<String> selectRolesByUserName(String loginName) {
-        return sysUserMapper.selectRolesByUserName(loginName);
-    }
+
 
     @Override
     public List<SysRole> findSysRolesByUserId(Long id) {

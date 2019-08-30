@@ -36,6 +36,10 @@ public class ${className}Controller {
     @GetMapping("/page")
     public Page page(@RequestParam Map<String, Object> params) {
         Page<${className}> page = new Page<>(Integer.parseInt(params.get("current").toString()), Integer.parseInt(params.get("size").toString()));
+        QueryWrapper<${className}> queryWrapper=new QueryWrapper();
+        queryWrapper.eq("name",params.get("name"));
+        queryWrapper.like("",params.get("name"));
+        queryWrapper.select("age","age");
         page.setRecords(${classname}Service.page(page, queryWrapper));
         return page;
     }

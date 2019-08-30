@@ -29,7 +29,7 @@
        where u.login_name =#{loginName} and r.id=urpk.role_id and u.id=urpk.user_id
     </select>
     <select id="findSysRolesByUserId" resultType="com.zqy.ms.user.entity.SysRole">
-      SELECT  r.* FROM sys_role  r,
+      SELECT DISTINCT r.* FROM sys_role  r,
                     `sys_user_role` urpk
 
        where  r.id=urpk.role_id and urpk.user_id=#{id}

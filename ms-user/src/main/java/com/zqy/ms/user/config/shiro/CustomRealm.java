@@ -1,8 +1,11 @@
-package com.zqy.ms.user.config;
+package com.zqy.ms.user.config.shiro;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.zqy.ms.user.entity.SysMenu;
+import com.zqy.ms.user.entity.SysRole;
 import com.zqy.ms.user.entity.SysUser;
 import com.zqy.ms.user.service.SysMenuService;
+import com.zqy.ms.user.service.SysRoleService;
 import com.zqy.ms.user.service.SysUserService;
 import com.zqy.ms.user.util.Log;
 import org.apache.shiro.SecurityUtils;
@@ -14,6 +17,7 @@ import org.apache.shiro.subject.PrincipalCollection;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -22,6 +26,9 @@ import java.util.Set;
  */
 @Component
 public class CustomRealm extends AuthorizingRealm {
+
+    @Autowired
+    private SysRoleService sysRoleService;
 
     @Autowired
     private SysUserService sysUserService;
@@ -50,7 +57,7 @@ public class CustomRealm extends AuthorizingRealm {
         }
         //这里把SysUser对象封装以便使用
         user.setSysRoles(sysUserService.findSysRolesByUserId(user.getId()));
-        user.setSysMenus(sysUserService.findSysMenusByUserId(user.getId()));
+        user.setSysMenus(sysMenuService.findSysMenusByUserId(user.getId()));
         return new SimpleAuthenticationInfo(user, user.getPassword(), getName());
     }
 
@@ -66,12 +73,18 @@ public class CustomRealm extends AuthorizingRealm {
         SysUser sysUser =  (SysUser) SecurityUtils.getSubject().getPrincipal();
         SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
         //获得该用户角色
-        Set<String> roles = sysUserService.selectRolesByUserName(sysUser.getLoginName());
-        Set<String> permissionSet = sysMenuService.selectPermissionByUserName(sysUser.getLoginName());
+        Set<String> roles = new HashSet<>();
+        Set<String> permissionSet=new HashSet<>();
+        for (SysMenu sysMenu : sysUser.getSysMenus()){
+            permissionSet.add(sysMenu.getHref());
+        }
+        for (SysRole sysRole:sysUser.getSysRoles()){
+            roles.add(sysRole.getName());
+        }
         Log.i(roles);
-        //设置该用户拥有的角色和权限
+        //设置该用户拥有的角色和权限url
         info.setRoles(roles);
-     //   info.setStringPermissions(permissionSet);
+        info.setStringPermissions(permissionSet);
         return info;
     }
 }

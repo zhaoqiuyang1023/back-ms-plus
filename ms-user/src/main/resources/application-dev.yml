@@ -8,8 +8,13 @@ spring:
     username: root
     password: abc123456
     driver-class-name: com.mysql.cj.jdbc.Driver
+    #设置换成false
   thymeleaf:
       cache: false
+  servlet:
+      multipart:
+        maxFileSize: "1000MB"
+        maxRequestSize: "10000MB"
 code:
   verify: false
 

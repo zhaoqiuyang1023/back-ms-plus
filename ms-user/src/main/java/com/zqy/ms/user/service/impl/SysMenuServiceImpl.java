@@ -1,7 +1,6 @@
 package com.zqy.ms.user.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.zqy.ms.user.entity.SysMenu;
 import com.zqy.ms.user.entity.vo.ShowMenu;
@@ -9,12 +8,10 @@ import com.zqy.ms.user.mapper.SysMenuMapper;
 import com.zqy.ms.user.mapper.SysRoleMapper;
 import com.zqy.ms.user.service.SysMenuService;
 import com.zqy.ms.user.util.Log;
-import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 /**
@@ -31,20 +28,14 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
     @Autowired
     private SysRoleMapper sysRoleMapper;
 
-    @Override
-    public List<SysMenu> getSysMenuListByPage(Page page, @Param("param") Map<String, Object> map) {
-        return sysMenuMapper.getSysMenuListByPage(page, map);
-    }
+
 
     @Override
-    public Set<String> selectPermissionByUserName(String loginName) {
-        return sysMenuMapper.selectPermissionByUserName(loginName);
-    }
+    public List<ShowMenu> findAllTreeShowMenuByUserId(Long id) {
 
-    @Override
-    public List<ShowMenu> getShowMenuByUser(Long id) {
         return null;
     }
+
 
     @Override
     public List<SysMenu> findAllTreeMenus() {
@@ -59,6 +50,28 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
     @Override
     public List<SysMenu> findAllMenusByRoleId(Long id) {
         return sysMenuMapper.findAllMenusByRoleId(id);
+    }
+
+    @Override
+    public boolean needInterceptor(String requestURI) {
+        List<SysMenu> ps = list();
+        for (SysMenu p : ps) {
+            if (p.getHref().equals(requestURI)){
+                return true;
+            }
+
+        }
+        return false;
+    }
+
+    @Override
+    public Set<String> findPermissionUrlsByUserId(String userName) {
+        return null;
+    }
+
+    @Override
+    public List<SysMenu> findSysMenusByUserId(Long id) {
+        return sysMenuMapper.findSysMenusByUserId(id);
     }
 
     private void recursion(Long roleId,List<SysMenu> parentSysMenuList) {
