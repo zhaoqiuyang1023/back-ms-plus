@@ -47,11 +47,17 @@ public class LoginController {
 
     @GetMapping("index")
     public String index(Model model) {
+
         Subject s = SecurityUtils.getSubject();
         SysUser sysUser = (SysUser) s.getPrincipal();
         sysUser.setShowSysMenus(sysUserService.findShowSysMenusByUserId(sysUser.getId()));
         model.addAttribute("user", sysUser);
         return "index";
+    }
+
+    @GetMapping("unauthorized")
+    public String unauthorized(Model model) {
+        return "unauthorized";
     }
 
 

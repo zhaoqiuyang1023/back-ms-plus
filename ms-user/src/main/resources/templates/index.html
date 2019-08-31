@@ -61,7 +61,7 @@
         <ul class="layui-nav layui-layout-right">
             <li class="layui-nav-item">
                 <a href="javascript:;">
-                    <img src="https://gitee.com/uploads/66/890966_Leytton.png?1512991922" class="layui-nav-img"><span
+                    <img th:src="${user.icon}" src="../static/images/bg1.jpg" class="layui-nav-img"><span
                         th:text="${user.loginName}"> </span>
                 </a>
                 <dl class="layui-nav-child">

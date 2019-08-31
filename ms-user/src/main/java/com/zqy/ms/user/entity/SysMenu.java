@@ -21,7 +21,6 @@ import java.util.Objects;
  * @date 2019-08-23 17:59:18
  */
 @Data
-@EqualsAndHashCode(callSuper = true)
 @TableName("sys_menu")
 public class SysMenu extends Model<SysMenu> {
     private static final long serialVersionUID = 1L;

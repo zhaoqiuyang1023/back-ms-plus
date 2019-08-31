@@ -18,8 +18,6 @@ import java.util.Set;
 public interface SysMenuMapper extends BaseMapper<SysMenu> {
 
 
-    Set<String> selectPermissionByUserName(@Param("loginName") String loginName);
-
     List<SysMenu> findAllMenusByRoleId(Long id);
 
     List<SysMenu> findSysMenusByUserId(Long id);

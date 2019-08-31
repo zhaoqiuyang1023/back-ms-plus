@@ -52,7 +52,7 @@
         <label class="layui-form-label">用户角色</label>
         <div class="layui-input-block">
             <th:block th:each="role,userStat : ${userinfo.sysRoles}">
-                <input type="checkbox" th:attr="title=${role.name}" checked>
+                <input type="checkbox" th:attr="title=${role.name}" style="background: #5FB878" disabled="disabled" checked>
             </th:block>
         </div>
     </div>

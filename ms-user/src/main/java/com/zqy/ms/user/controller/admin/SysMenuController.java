@@ -9,9 +9,8 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Arrays;
 import java.util.List;
 
 
@@ -26,11 +25,14 @@ public class SysMenuController {
     @Autowired
     private SysMenuService sysMenuService;
 
+
+    @ApiOperation(value = "跳转到列表页")
     @GetMapping("list")
     public String index() {
         return "admin/menu/list";
     }
 
+    @ApiOperation(value = "获取递归信息数据")
     @GetMapping("data")
     @ResponseBody
     public LayerData<SysMenu>  list() {
@@ -41,7 +43,7 @@ public class SysMenuController {
         return menus;
     }
 
-    @ApiOperation(value = "添加子菜单")
+    @ApiOperation(value = "跳转到添加子菜单页面")
     @GetMapping("/addChild/{parentId}")
     public String addChildMenuByParentId(@PathVariable(value = "parentId") Long id,Model model) {
         SysMenu parentMenu = sysMenuService.getById(id);
@@ -49,17 +51,19 @@ public class SysMenuController {
         return "admin/menu/addChild";
     }
 
-    @ApiOperation(value = "添加顶级菜单")
+    @ApiOperation(value = "跳转到添加父级菜单页面")
     @GetMapping("/addParent")
     public String addParentMenu() {
         return "admin/menu/addparent";
     }
 
-    @ApiOperation(value = "编辑菜单")
+    @ApiOperation(value = "跳转到编辑菜单")
     @GetMapping("/edit/{id}")
     public String edit(@PathVariable(value = "id") Long id,Model model) {
-        SysMenu menu = sysMenuService.getById(id);
-        model.addAttribute("menu",menu);
+        SysMenu selfMenu = sysMenuService.getById(id);
+        model.addAttribute("menu",selfMenu);
+
+        model.addAttribute("parentMenu",sysMenuService.getById(selfMenu.getParentId()));
         return "admin/menu/edit";
     }
 
@@ -69,7 +73,10 @@ public class SysMenuController {
     @ResponseBody
     public RestResponse save(SysMenu sysMenu) {
         Log.i(sysMenu);
-        sysMenuService.save(sysMenu);
+        if(StringUtils.isEmpty(sysMenu.getParentId())){
+            sysMenu.setParentId(0L);
+        }
+        sysMenuService.saveOrUpdate(sysMenu);
         return RestResponse.success();
     }
 
@@ -79,7 +86,7 @@ public class SysMenuController {
     @PostMapping("/delete/{id}")
     public RestResponse delete(@PathVariable("id") Long id) {
         sysMenuService.removeById(id);
-        return RestResponse.success();
+        return RestResponse.success("删除菜单成功");
     }
 
 }

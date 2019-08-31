@@ -29,7 +29,6 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
     private SysRoleMapper sysRoleMapper;
 
 
-
     @Override
     public List<ShowMenu> findAllTreeShowMenuByUserId(Long id) {
 
@@ -39,11 +38,11 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
 
     @Override
     public List<SysMenu> findAllTreeMenus() {
-        List<SysMenu> parentSysMenuList = sysMenuMapper.selectList(new QueryWrapper<SysMenu>().isNull("parent_id"));
-        Log.i("顶级菜单"+parentSysMenuList);
+        List<SysMenu> parentSysMenuList = sysMenuMapper.selectList(new QueryWrapper<SysMenu>().eq("parent_id",0));
+        Log.i("顶级菜单" + parentSysMenuList);
         //查询所有的不需要roleId
-        recursion(null,parentSysMenuList);
-        Log.i("顶级菜单汇总"+parentSysMenuList);
+        recursion(null, parentSysMenuList);
+        Log.i("顶级菜单汇总" + parentSysMenuList);
         return parentSysMenuList;
     }
 
@@ -52,20 +51,15 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
         return sysMenuMapper.findAllMenusByRoleId(id);
     }
 
+    //如果此requestURI在数据库维护返回true
     @Override
     public boolean needInterceptor(String requestURI) {
-        List<SysMenu> ps = list();
-        for (SysMenu p : ps) {
-            if (p.getHref().equals(requestURI)){
-                return true;
-            }
+        return sysMenuMapper.selectCount(new QueryWrapper<SysMenu>().eq("href", requestURI))>0;
 
-        }
-        return false;
     }
 
     @Override
-    public Set<String> findPermissionUrlsByUserId(String userName) {
+    public Set<String> findPermissionUrlsByUserId(String userId) {
         return null;
     }
 
@@ -74,13 +68,13 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
         return sysMenuMapper.findSysMenusByUserId(id);
     }
 
-    private void recursion(Long roleId,List<SysMenu> parentSysMenuList) {
+    private void recursion(Long roleId, List<SysMenu> parentSysMenuList) {
         for (SysMenu sysMenu : parentSysMenuList) {
-            List<SysMenu> sysMenus = sysRoleMapper.findMenusByRoleIdAndParentId(roleId,sysMenu.getId());
+            List<SysMenu> sysMenus = sysRoleMapper.findMenusByRoleIdAndParentId(roleId, sysMenu.getId());
             Log.i("有二级及以下菜单");
-            if(sysMenus.size()>0){
+            if (sysMenus.size() > 0) {
                 sysMenu.setChildSysMenus(sysMenus);
-                recursion(roleId,sysMenus);
+                recursion(roleId, sysMenus);
             }
 
         }

@@ -28,5 +28,4 @@ public interface SysUserMapper extends BaseMapper<SysUser> {
 
     List<SysRole> findSysRolesByUserId(Long id);
 
-    List<SysMenu> findSysMenusByUserId(Long id);
 }

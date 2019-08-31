@@ -23,30 +23,30 @@
             border-color: #009E94;
         }
 
-        /** 箭头未展开 */
-        #auth-table + .treeTable .treeTable-icon .layui-icon-triangle-d:before {
-            content: "\e602";
-        }
+        /*!** 箭头未展开 *!*/
+        /*#auth-table + .treeTable .treeTable-icon .layui-icon-triangle-d:before {*/
+        /*    content: "\e602";*/
+        /*}*/
 
-        /** 箭头展开 */
-        #auth-table + .treeTable .treeTable-icon.open .layui-icon-triangle-d:before {
-            content: "\e61a";
-        }
+        /*!** 箭头展开 *!*/
+        /*#auth-table + .treeTable .treeTable-icon.open .layui-icon-triangle-d:before {*/
+        /*    content: "\e61a";*/
+        /*}*/
 
-        /** 文件图标 */
-        #auth-table + .treeTable .treeTable-icon .layui-icon-file:before {
-            content: "\e60d";
-        }
+        /*!** 文件图标 *!*/
+        /*#auth-table + .treeTable .treeTable-icon .layui-icon-file:before {*/
+        /*    content: "\e60d";*/
+        /*}*/
 
-        /** 文件夹未展开 */
-        #auth-table + .treeTable .treeTable-icon .layui-icon-layer:before {
-            content: "\e637";
-        }
+        /*!** 文件夹未展开 *!*/
+        /*#auth-table + .treeTable .treeTable-icon .layui-icon-layer:before {*/
+        /*    content: "\e637";*/
+        /*}*/
 
-        /** 文件夹展开 */
-        #auth-table + .treeTable .treeTable-icon.open .layui-icon-layer:before {
-            content: "\e634";
-        }
+        /*!** 文件夹展开 *!*/
+        /*#auth-table + .treeTable .treeTable-icon.open .layui-icon-layer:before {*/
+        /*    content: "\e634";*/
+        /*}*/
 
     </style>
 </head>
@@ -75,11 +75,11 @@
 </div>
 <!-- 操作列 -->
 <script type="text/html" id="oper-col">
-    <button type="button" class="layui-btn layui-btn-primary layui-btn-sm" lay-event="add"><i class="layui-icon">&#xe654;</i>添加子菜单
+    <button type="button" class="layui-btn layui-btn-primary layui-btn-sm" style="font-size: 12px" lay-event="add"><i class="layui-icon">&#xe654;</i>添加子菜单
     </button>
-    <button type="button" class="layui-btn layui-btn-primary layui-btn-sm" lay-event="edit"><i class="layui-icon">&#xe642;</i>编辑菜单
+    <button type="button" class="layui-btn layui-btn-primary layui-btn-sm" style="font-size: 12px" lay-event="edit"><i class="layui-icon">&#xe642;</i>编辑菜单
     </button>
-    <button type="button" class="layui-btn layui-btn-danger  layui-btn-sm" lay-event="del">删除</button>
+    <button type="button" class="layui-btn layui-btn-danger  layui-btn-sm" style="font-size: 12px" lay-event="del">删除</button>
 </script>
 
 <script th:inline="none">
@@ -106,20 +106,26 @@
             type: "POST",
             page: false,
             cols: [[
-                {type: 'numbers'},
-               // {field: 'name', align: 'left', width: '20%', minWidth: 200, title: '菜单名称'},
-                {field: 'href', align: 'left', title: '菜单跳转地址', width: '20%'},
-                {field: 'icon', align: 'center', title: '图标', width: '10%'},
-                {field: 'sort', align: 'center', title: '排序', width: '5%'},
+                {type: 'numbers',width: '3%',title:'序号'},
                 {
-                    field: 'name', width: '20%', align: 'center', templet: function (d) {
+                    field: 'name', width: '15%', align: 'left', templet: function (d) {
 
-                        return '<span class="layui-badge-rim">'+d.name+'<i class="layui-icon">'+d.icon+'</i> </span>';
+                        return '<i class="layui-icon" id="realIcon" style="font-size: 50px;">'+d.icon+'</i>'+d.name;
 
-                    }, title: '类型'
+                    }, title: '名称'
                 },
+                {field: 'href', align: 'left',minWidth:'200px', title: '菜单跳转地址', width: '25%'},
+                {
+                    field: 'icon', width: '5%', align: 'center', templet: function (d) {
+                                if(d.icon!=null){
+                                    return '<i class="layui-icon" style="font-size:30px;">'+d.icon+'</i>';
+                                }
+                                return '<i class="layui-icon" style="font-size:30px;"></i>';
+                    }, title: '图标'
+                },
+                {field: 'sort', align: 'center', title: '排序', width: '5%'},
                 {field: 'createDate', align: 'center', title: '创建时间', width: '10%'},
-                {templet: '#oper-col', align: 'center', title: '操作', width: '25%'}
+                {templet: '#oper-col', align: 'center', title: '操作',minWidth:'200px', width: '25%'}
             ]],
             done: function () {
                 layer.closeAll('loading');
@@ -164,10 +170,12 @@
             layer.open({
                 title: "菜单添加",
                 type: 2,
+                anim: 2,
+                skin: 'layui-layer-molv',
                 shadeClose: true,
                 shade: 0.8,
                 area: ['50%', '70%'],
-                content: '/admin/menu/addParent' //iframe的url
+                content: '/admin/menu/addParent'
             });
         });
 
@@ -176,12 +184,14 @@
             var data = obj.data;
             var layEvent = obj.event;
             if (layEvent === 'add') {
-                let editIndex = layer.open({
+                layer.open({
                     title: "菜单添加",
                     type: 2,
+                    anim: 2,
+                    skin: 'layui-layer-molv',
                     shadeClose: true,
                     shade: 0.8,
-                    area: ['80%', '30%'],
+                    area: ['50%', '70%'],
                     content: "/admin/menu/addChild/" + data.id,
                     success: function (layero, index) {
                         setTimeout(function () {
@@ -191,11 +201,6 @@
                         }, 500);
                     }
                 });
-                //改变窗口大小时，重置弹窗的高度，防止超出可视区域（如F12调出debug的操作）
-                $(window).resize(function () {
-                    layer.full(editIndex);
-                });
-                layer.full(editIndex);
             }
             if (layEvent === 'del') {
                 layer.msg('删除' + data.id);
@@ -218,6 +223,8 @@
                 layer.open({
                     title: "菜单修改",
                     type: 2,
+                    anim: 2,
+                    skin: 'layui-layer-molv',
                     shadeClose: true,
                     shade: 0.8,
                     area: ['50%', '70%'],

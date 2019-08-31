@@ -44,7 +44,10 @@
     <div class="layui-form-item">
         <label class="layui-form-label">父菜单名称</label>
         <div class="layui-input-block">
-            <input th:value="${menu.id}" disabled  placeholder="父菜单id"  name="parentId" class="layui-input layui-hide"/>
+            <input th:value="${menu.id}" disabled   placeholder="菜单id"  name="id" class="layui-input layui-hide"/>
+            <th:block th:if="${parentMenu!=null}">
+                <input th:value="${parentMenu.name}" disabled   placeholder="菜单"  class="layui-input"/>
+            </th:block>
         </div>
     </div>
 

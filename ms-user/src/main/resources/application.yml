@@ -6,15 +6,28 @@ server:
 spring:
   #激活哪一个环境的配置文件
   profiles:
-    active: dev
+    active: master
   main:
     allow-bean-definition-overriding: true #当遇到同样名字的时候，是否允许覆盖注册
   #视图配置
   mvc:
     static-path-pattern: /static/**
   jackson:
-   date-format: yyyy-MM-dd HH:mm:ss
-   time-zone: GMT+8
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+  thymeleaf:
+    cache: false
+    mode: LEGACYHTML5
+  devtools:
+    restart:
+      enabled: true
+      additional-paths: src/main/java
+  servlet:
+    multipart:
+      maxFileSize: "1000MB"
+      maxRequestSize: "10000MB"
+code:
+  verify: false
 
 # 配置slq打印日志
 mybatis-plus:

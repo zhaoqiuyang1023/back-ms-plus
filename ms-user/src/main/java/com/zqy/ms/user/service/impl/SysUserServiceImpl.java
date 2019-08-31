@@ -47,11 +47,6 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         return sysUserMapper.findSysRolesByUserId(id);
     }
 
-    @Override
-    public List<SysMenu> findSysMenusByUserId(Long id) {
-
-        return sysUserMapper.findSysMenusByUserId(id);
-    }
 
     @Transactional
     @Override

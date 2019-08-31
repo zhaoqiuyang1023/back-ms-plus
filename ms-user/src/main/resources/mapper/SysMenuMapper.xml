@@ -97,14 +97,7 @@
 
 
     </select>
-    <select id="selectPermissionByUserName" resultType="java.lang.String">
-       select DISTINCT d.name
-        from sys_user a ,
-        sys_user_role b ,
-        sys_role_menu c ,
-        sys_menu d
-       where a.id=b.user_id and b.role_id=c.role_id and c.menu_id=d.id and a.login_name=#{loginName}
-    </select>
+
 
     <select id="findAllMenusByRoleId" resultType="com.zqy.ms.user.entity.SysMenu">
         SELECT DISTINCT m.* FROM `sys_role_menu` rm,
@@ -118,7 +111,6 @@
 										sys_menu m
        where  r.id=urpk.role_id and urpk.user_id=#{id}
 			 and r.id=rmpk.role_id and rmpk.menu_id=m.id
-
     </select>
 
 </mapper>
