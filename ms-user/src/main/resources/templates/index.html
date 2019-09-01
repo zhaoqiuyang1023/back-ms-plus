@@ -12,14 +12,33 @@
 <div class="layui-layout layui-layout-admin">
     <div class="layui-header">
         <a href="">
-            <div class="layui-logo">后台管理系统</div>
+            <div class="layui-logo"><a style="color: #FFFFFF">zqy管理系统</a></div>
         </a>
         <!-- 头部左面区域（可配合layui已有的水平导航） -->
         <ul class="layui-nav layui-layout-left">
             <!-- 天气信息 -->
             <div class="weather" pc>
                 <div id="tp-weather-widget"></div>
-                <script>(function(T,h,i,n,k,P,a,g,e){g=function(){P=h.createElement(i);a=h.getElementsByTagName(i)[0];P.src=k;P.charset="utf-8";P.async=1;a.parentNode.insertBefore(P,a)};T["ThinkPageWeatherWidgetObject"]=n;T[n]||(T[n]=function(){(T[n].q=T[n].q||[]).push(arguments)});T[n].l=+new Date();if(T.attachEvent){T.attachEvent("onload",g)}else{T.addEventListener("load",g,false)}}(window,document,"script","tpwidget","//widget.seniverse.com/widget/chameleon.js"))</script>
+                <script>(function (T, h, i, n, k, P, a, g, e) {
+                    g = function () {
+                        P = h.createElement(i);
+                        a = h.getElementsByTagName(i)[0];
+                        P.src = k;
+                        P.charset = "utf-8";
+                        P.async = 1;
+                        a.parentNode.insertBefore(P, a)
+                    };
+                    T["ThinkPageWeatherWidgetObject"] = n;
+                    T[n] || (T[n] = function () {
+                        (T[n].q = T[n].q || []).push(arguments)
+                    });
+                    T[n].l = +new Date();
+                    if (T.attachEvent) {
+                        T.attachEvent("onload", g)
+                    } else {
+                        T.addEventListener("load", g, false)
+                    }
+                }(window, document, "script", "tpwidget", "//widget.seniverse.com/widget/chameleon.js"))</script>
                 <script>tpwidget("init", {
                     "flavor": "slim",
                     "location": "WX4FBXXFKE4F",
@@ -83,12 +102,14 @@
         <div class="layui-side-scroll">
             <ul class="layui-nav layui-nav-tree">
                 <li th:each="mean,userStat: ${user.getShowSysMenus()}" class="layui-nav-item layui-nav-itemed">
-                    <a th:text="${mean.name}" class="" href="javascript:;"></a>
+                    <a href="javascript:;"><i class="layui-icon" th:text="${mean.icon}" >&#xe60c;</i> <th:block th:text="${mean.name}"></th:block></a>
                     <dl class="layui-nav-child">
                         <dd th:each="chileMean,index:${mean.getChildren()}">
-                            <a th:text="${chileMean.name}" href="javascript:void(0);" class="layTabPlus"
+                            <a  href="javascript:void(0);" class="layTabPlus"
                                th:attr="tab_url=@{${chileMean.href}}">
-                                <i th:class="${chileMean.icon}" class="layui-icon layui-icon-star"> </i>
+                                <i style="margin-right: 5px;font-size: 15px;width: max-content" th:text="${chileMean.icon}" class="layui-icon">
+                                </i>
+                                <th:block th:style="magrin " th:text="${chileMean.name}"></th:block>
                             </a>
                         </dd>
                     </dl>
@@ -165,7 +186,11 @@
         margin-bottom: 0;
     }
 
-    .weather{ color:#fff; float:left; margin:15px 0 0 0;}
+    .weather {
+        color: #fff;
+        float: left;
+        margin: 15px 0 0 0;
+    }
 
     .sysNotice {
         width: 75%;

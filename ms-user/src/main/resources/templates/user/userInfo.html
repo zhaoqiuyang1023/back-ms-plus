@@ -23,16 +23,14 @@
 <body class="childrenBody">
 <form class="layui-form">
     <input class="layui-hide" name="id" th:value="${userinfo.id}"/>
+    <input type="hidden" name="icon" th:value="${userinfo.icon}">
     <div class="layui-form-item">
         <label class="layui-form-label">头像</label>
         <div class="layui-input-block">
-            <input type="hidden" name="icon" th:value="${userinfo.icon}">
-            <div>
+            <div class="site-demo-upload">
                 <img class="layui-circle" style="width: 200px;height: 200px;margin: 0 auto" th:src="${userinfo.icon}" src="images/bg1.jpg" id="userFace"/>
+                <button type="button" class="layui-btn layui-btn-primary" id="test1"><i class="layui-icon"></i>选择图片</button>
             </div>
-
-            <button type="button" class="layui-btn layui-btn-normal" id="test1"><i class="layui-icon"></i>更换头像</button>
-
         </div>
     </div>
     <div class="layui-form-item">

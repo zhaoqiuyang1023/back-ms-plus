@@ -20,6 +20,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.imageio.ImageIO;
@@ -45,14 +46,17 @@ public class LoginController {
    @Value("${code.verify}")
     private boolean codeVerify=false;
 
-    @GetMapping("index")
+    @RequestMapping({"/index", "/index.html","/"})
     public String index(Model model) {
-
         Subject s = SecurityUtils.getSubject();
-        SysUser sysUser = (SysUser) s.getPrincipal();
-        sysUser.setShowSysMenus(sysUserService.findShowSysMenusByUserId(sysUser.getId()));
-        model.addAttribute("user", sysUser);
-        return "index";
+        if (s.isAuthenticated()) {
+            SysUser sysUser = (SysUser) s.getPrincipal();
+            sysUser.setShowSysMenus(sysUserService.findShowSysMenusByUserId(sysUser.getId()));
+            model.addAttribute("user", sysUser);
+            return "index";
+        } else {
+            return  "login";
+        }
     }
 
     @GetMapping("unauthorized")
