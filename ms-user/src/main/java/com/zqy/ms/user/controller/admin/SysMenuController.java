@@ -57,7 +57,9 @@ public class SysMenuController {
 
     @ApiOperation(value = "添加子菜单页面")
     @PostMapping("/addChild")
+    @ResponseBody
     public RestResponse addChild(SysMenu childSysMenu) {
+        Log.i(childSysMenu);
         if (StringUtils.isEmpty(childSysMenu.getParentId())) {
             return RestResponse.failure("父菜单不能为空");
         }
@@ -83,6 +85,7 @@ public class SysMenuController {
     }
     @ApiOperation(value = "跳转到添加父级菜单页面")
     @PostMapping("/addParent")
+    @ResponseBody
     public RestResponse addParentMenu(SysMenu parentSysMenu) {
         parentSysMenu.setParentId(0L);
         parentSysMenu.setLevel(1L);

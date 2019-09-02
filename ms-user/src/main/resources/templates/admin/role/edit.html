@@ -13,7 +13,7 @@
     <link rel="stylesheet" th:href="@{/static/layui/css/layui.css}">
     <link rel="stylesheet" href="../../../static/layui/css/layui.css" media="all"/>
     <style type="text/css">
-        .layui-form-item .layui-inline {
+        .layui-form-item {
             min-width: 15%;
             float: left;
             margin-right: 0
@@ -39,11 +39,6 @@
                    lay-verify="required" placeholder="请想一个角色名称">
         </div>
     </div>
-    <div class="layui-form-item">
-        <fieldset class="layui-elem-field layui-field-title" style="margin-top: 30px;margin-left: 10px;">
-            <legend>备注</legend>
-        </fieldset>
-    </div>
     <div class="layui-form-item layui-form-text">
         <div class="layui-input-block" style="width: 80%">
             <textarea placeholder="一些可有可无的备注罢了.." name="remarks" th:text="${sysRole.remarks}"
@@ -57,78 +52,22 @@
     </div>
 
 
-    <!--    <div class="layui-inline">-->
-    <!--        <fieldset class="layui-elem-field">-->
-    <!--            <legend>-->
-    <!--                <input type="checkbox" value="${menu.id}" data-parentIds="${menu.parentIds}"-->
-    <!--                       title="${menu.name}" lay-filter="roleMenu"-->
-    <!--                <#if menuIds?contains('|'+menu.id?string+'|')>checked-->
-    <!--            </-->
-    <!--            #if> />-->
-    <!--            </legend>-->
-    <!--            <div class="layui-field-box">-->
-    <!--                <ul style="padding: 0 15px">-->
-    <!--                    <@bpTree children=menu.children />-->
-    <!--                </ul>-->
-    <!--            </div>-->
-    <!--        </fieldset>-->
-
-
-    <!--    <div class="layui-form-item">-->
-    <!--        <label class="layui-form-label">用户角色</label>-->
-    <!--        <div class="layui-input-block role-box">-->
-    <!--            <div class="jq-role-inline">-->
-    <!--                <input th:each="role,userStat : ${allRoles}" th:checked="${#lists.contains(user.sysRoles,role)}"-->
-    <!--                       class="layui-field-box" style="float: left"-->
-    <!--                       type="checkbox" name="roles" th:attr="title=${role.name}" th:value="${user.id}"-->
-    <!--                       lay-filter="role"/>-->
-    <!--            </div>-->
-    <!--        </div>-->
-    <!--    </div>-->
-
     <div class="layui-form-item">
-
-        <fieldset th:each="menu,index : ${menus}">
+        <fieldset style="float: left" th:each="menu,index : ${menus}">
             <legend>
                 <div class="layui-input-block role-box">
                     <input type="checkbox" th:value="${menu.id}" class="layui-field-box"
                            th:checked="${#lists.contains(sysRole.sysMenus,menu)}"
-                           th:attr="data-parentIds=${menu.parentIds},title=${menu.name},parentId=${menu.parentId}"
+                           th:attr="data-parentIds=${menu.parentIds},title=${menu.name},parentId=${menu.parentId},id=${menu.id}"
                            lay-filter="roleMenu"/>
                 </div>
             </legend>
             <div class="layui-field-box">
-                <ul style="padding: 0 15px">
-                    <fieldset th:include="admin/common/meuns::row(${menu.childSysMenus},1)"></fieldset>
-                </ul>
+                <fieldset th:replace="admin/common/meuns::row(${menu.childSysMenus},1)"></fieldset>
             </div>
-
         </fieldset>
-
     </div>
 
-
-    <!--        <div class="layui-form-item">-->
-    <!--            <fieldset th:each="menu,index : ${menus}">-->
-    <!--                <legend>-->
-    <!--                    <input type="checkbox" th:value="${menu.id}"-->
-    <!--                           th:checked="${#lists.contains(sysRole.sysMenus,menu)}"-->
-    <!--                           th:attr="data-parentIds=${menu.parentIds},title=${menu.name}"-->
-    <!--                           lay-filter="roleMenu"/>-->
-    <!--                </legend>-->
-    <!--                <div class="layui-field-box">-->
-    <!--                    <ul style="padding: 0 15px">-->
-    <!--                    <span th:each="child,index:${menu.childSysMenus}">-->
-    <!--                                 <input th:checked="${#lists.contains(sysRole.sysMenus,child)}" class="layui-field-box"-->
-    <!--                                        style="float: left"-->
-    <!--                                        type="checkbox" name="roles"-->
-    <!--                                        th:attr="title=${child.name}" th:value="${child.id}" lay-filter="role"/>-->
-    <!--                                 </span>-->
-    <!--                        </span>-->
-    <!--                    </ul>-->
-    <!--                </div>-->
-    <!--            </fieldset>-->
-    <!--        </div>-->
 
     <div class="layui-form-item" style="padding-left: 30%;">
         <div class="layui-input-block">
@@ -145,41 +84,35 @@
             $ = layui.jquery,
             layer = layui.layer;
 
-        form.on('checkbox(roleMenu)', function (data) {
-            // let children = $(data.elem).children();
-            // let parents = $(data.elem).parents('input[type="checkbox"]');
-            // console.log(parents.length);
-            if (data.elem.checked) {//勾选的时候的动作,父栏目层级全部勾选
-                findParent(data.elem);
-            } else { //取消选择的时候，子栏目层级全部取消选择
-                for (let child of children) {
-                    let checkboxs = child.find('input[type="checkbox"]');
-                    checkboxs.each(function (index, item) {
-                        item.checked = data.elem.checked;
-                    });
-                }
-            }
-
-            form.render('checkbox');
-        });
 
         function findParent(item) {
-            let id = $(item).getAttribute("parentId");
-            var doc = document.getElementById(id);
+            console.log("findParent");
+            let id = $(item).attr("parentId");
+            let doc = document.getElementById(id);
             if (doc != null) {
-                item.checked = true;
-                findParent(item);
+                doc.checked = true;
+                findParent(doc);
             }
         }
-        function findChild(item) {
-            let id = $(item).getAttribute("id");
 
-            let kids=$("input[parentId="+id+"]");
-            for (let kid of kids){
+        function findChild(item) {
+            console.log("findChild");
+            let id = $(item).attr("id");
+            let kids = $("input[parentId=" + id + "]");
+            for (let kid of kids) {
                 kid.checked = false;
                 findChild(kid)
             }
         }
+
+        form.on('checkbox(roleMenu)', function (data) {
+
+            //勾选的时候的动作,父栏目层级全部勾选
+            findParent(data.elem);
+            //取消选择的时候，子栏目层级全部取消选择
+            findChild(data.elem);
+            form.render('checkbox');
+        });
 
         form.on('submit(editRole)', function (data) {
             let sysMenus = [];

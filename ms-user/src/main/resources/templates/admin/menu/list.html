@@ -7,7 +7,6 @@
     <script src="../../../static/layui/layui.js" th:src="@{/static/layui/layui.js}"></script>
     <link rel="stylesheet" href="../../../static/layui/css/layui.css" th:href="@{/static/layui/css/layui.css}"
           media="all">
-
     <style>
         input {
             height: 33px;
@@ -18,35 +17,34 @@
             margin-bottom: -2px;
             outline: none;
         }
-
         input:focus {
             border-color: #009E94;
         }
 
-        /*!** 箭头未展开 *!*/
-        /*#auth-table + .treeTable .treeTable-icon .layui-icon-triangle-d:before {*/
-        /*    content: "\e602";*/
-        /*}*/
+        /** 箭头未展开 */
+        #auth-table + .treeTable .treeTable-icon .layui-icon-triangle-d:before {
+            content: "\e602";
+        }
 
-        /*!** 箭头展开 *!*/
-        /*#auth-table + .treeTable .treeTable-icon.open .layui-icon-triangle-d:before {*/
-        /*    content: "\e61a";*/
-        /*}*/
+        /** 箭头展开 */
+        #auth-table + .treeTable .treeTable-icon.open .layui-icon-triangle-d:before {
+            content: "\e61a";
+        }
 
-        /*!** 文件图标 *!*/
-        /*#auth-table + .treeTable .treeTable-icon .layui-icon-file:before {*/
-        /*    content: "\e60d";*/
-        /*}*/
+        /** 文件图标 */
+        #auth-table + .treeTable .treeTable-icon .layui-icon-file:before {
+            content: "\e60b";
+        }
 
-        /*!** 文件夹未展开 *!*/
-        /*#auth-table + .treeTable .treeTable-icon .layui-icon-layer:before {*/
-        /*    content: "\e637";*/
-        /*}*/
+        /** 文件夹未展开 */
+        #auth-table + .treeTable .treeTable-icon .layui-icon-layer:before {
+            content: "\e637";
+        }
 
-        /*!** 文件夹展开 *!*/
-        /*#auth-table + .treeTable .treeTable-icon.open .layui-icon-layer:before {*/
-        /*    content: "\e634";*/
-        /*}*/
+        /** 文件夹展开 */
+        #auth-table + .treeTable .treeTable-icon.open .layui-icon-layer:before {
+            content: "\e634";
+        }
 
     </style>
 </head>
@@ -203,7 +201,6 @@
                 });
             }
             if (layEvent === 'del') {
-                layer.msg('删除' + data.id);
                 $.ajax({
                     type: "POST",
                     url: "/admin/menu/delete/" + data.id,
@@ -211,8 +208,8 @@
                     contentType: "application/json",
                     success: function (res) {
                         if (res.success) {
-                            parent.layer.msg("删除成功!", {time: 500}, function () {
-                                parent.location.reload();
+                            layer.msg("删除成功!", {time: 500}, function () {
+                                location.reload();
                             });
                         } else {
                             layer.msg(res.message);

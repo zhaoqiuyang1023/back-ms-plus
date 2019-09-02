@@ -5,6 +5,7 @@ import com.zqy.ms.user.service.SysRoleService;
 import com.zqy.ms.user.service.SysUserService;
 import com.zqy.ms.user.util.Log;
 import com.zqy.ms.user.util.RestResponse;
+import io.swagger.annotations.ApiOperation;
 import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -31,7 +32,7 @@ public class UserController {
 
 
 
-
+    @ApiOperation(value = "修改")
     @PostMapping("/save")
     @ResponseBody
     public RestResponse save(SysUser sysUser) {
@@ -43,6 +44,7 @@ public class UserController {
     }
 
 
+    @ApiOperation(value = "跳转到页面编辑界面")
     @GetMapping("edit")
     public String edit(Model model) {
         SysUser sysUser =  (SysUser) SecurityUtils.getSubject().getPrincipal();

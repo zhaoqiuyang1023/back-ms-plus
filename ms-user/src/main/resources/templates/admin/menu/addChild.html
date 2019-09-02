@@ -44,9 +44,8 @@
     <div class="layui-form-item">
         <label class="layui-form-label">父菜单名称</label>
         <div class="layui-input-block">
-            <input th:value="${parentMenu.level}"  placeholder="父菜单等级" name="level" class="layui-input layui-hide"/>
             <input th:value="${parentMenu.id}"   placeholder="父菜单id"  name="parentId" class="layui-input layui-hide"/>
-            <input th:value="${parentMenu.name}"   placeholder="父菜单名称" th:disabled="disabled" name="parentName" class="layui-input layui-disabled" />
+            <input th:value="${parentMenu.name}"   placeholder="父菜单名称"  name="parentName" class="layui-input layui-disabled" />
         </div>
     </div>
 
@@ -137,7 +136,7 @@
             var loadIndex = layer.load(2, {
                 shade: [0.3, '#333']
             });
-            $.post("/admin/menu/save",data.field,function (res) {
+            $.post("/admin/menu/addChild",data.field,function (res) {
                 layer.close(loadIndex);
                 if(res.success){
                     parent.layer.msg("菜单添加成功!",{time:1500},function(){

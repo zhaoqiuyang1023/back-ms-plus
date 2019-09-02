@@ -80,8 +80,8 @@
         <ul class="layui-nav layui-layout-right">
             <li class="layui-nav-item">
                 <a href="javascript:;">
-                    <img th:src="${user.icon}" src="../static/images/bg1.jpg" class="layui-nav-img"><span
-                        th:text="${user.loginName}"> </span>
+                    <img alt="用户头像" id="userIcon" th:src="${user.icon}" src="../static/images/bg1.jpg" class="layui-nav-img">
+                    <span th:text="${user.loginName}"> </span>
                 </a>
                 <dl class="layui-nav-child">
                     <dd>
@@ -160,11 +160,11 @@
 </div>
 <script src="../static/layui/layui.all.js"></script>
 <script>
-    var $ = layui.jquery;
-    var layer = layui.layer;
-    var element = layui.element;
-    var util = layui.util;
-    var table = layui.table;
+    let $ = layui.jquery;
+    let layer = layui.layer;
+    let element = layui.element;
+    let util = layui.util;
+    let table = layui.table;
 </script>
 <script src="../static/js/layTabPlus.js"></script>
 <script>

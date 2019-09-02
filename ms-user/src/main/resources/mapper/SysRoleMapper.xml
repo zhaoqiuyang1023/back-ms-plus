@@ -29,11 +29,11 @@
 
     </select>
     <select id="findMenusByRoleIdAndParentId" resultType="com.zqy.ms.user.entity.SysMenu">
-         SELECT DISTINCT m.* FROM `sys_role_menu` rm,
-       `sys_menu` m
+         SELECT DISTINCT m.* FROM    `sys_menu` m  ,`sys_role_menu` rm
        <where>
-           m.parent_id=#{parentId} and m.id=rm.menu_id
+           m.parent_id=#{parentId}
            <if test="roleId!=null">
+                and m.id=rm.menu_id
                and  rm.role_id=#{roleId}
            </if>
        </where>

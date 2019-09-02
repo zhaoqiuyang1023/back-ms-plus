@@ -69,6 +69,7 @@ public class SysRoleController {
     @GetMapping("/edit/{id}")
     public String edit(@PathVariable("id") Long id, Model model) {
         model.addAttribute("menus", sysMenuService.findAllTreeMenus());
+        Log.i(sysMenuService.findAllTreeMenus());
         SysRole sysRole = sysRoleService.getById(id);
         List<SysMenu> sysMenus = sysMenuService.findAllMenusByRoleId(id);
         Log.i("角色菜单"+sysMenus);

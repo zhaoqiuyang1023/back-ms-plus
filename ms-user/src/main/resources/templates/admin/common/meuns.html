@@ -8,29 +8,16 @@
 <div>
     <th:block th:fragment="row(menus,lv)">
         <th:block th:each="child: ${menus}">
-
-            <legend th:unless="${#lists.isEmpty(child.childSysMenus)}">
-                //如果有字菜单
-                <input type="checkbox" th:value="${child.id}"  class="layui-field-box"
+            <div style="background: #E6E6E6;border-radius: 3px;border: 3px">
+                <input type="checkbox" th:value="${child.id}" class="layui-field-box"
                        th:checked="${#lists.contains(sysRole.sysMenus,child)}"
-                       th:attr="data-parentIds=${child.parentIds},title=${child.name},parentId=${child.parentId}"
+                       th:attr="data-parentIds=${child.parentIds},title=${child.name},parentId=${child.parentId},id=${child.id}"
                        lay-filter="roleMenu"/>
-            </legend>
 
-            <div class="layui-field-box" style="float: left;width: 20%"
-                  th:if="${#lists.isEmpty(child.childSysMenus)}">
-                    //如果没有子菜单
-                    <input type="checkbox" th:value="${child.id}"  class="layui-field-box"
-                           th:checked="${#lists.contains(sysRole.sysMenus,child)}"
-                           th:attr="data-parentIds=${child.parentIds},title=${child.name},parentId=${child.parentId}""
-                           lay-filter="roleMenu"/>
-
+                <div style="margin-bottom: 10px;" th:unless="${#lists.isEmpty(child.childSysMenus)}"
+                     th:include="this::row(${child.childSysMenus},1)">
+                </div>
             </div>
-
-            <fieldset  style="margin-bottom: 10px" th:unless="${#lists.isEmpty(child.childSysMenus)}"
-                      th:include="this::row(${child.childSysMenus},1)">
-            </fieldset>
-
         </th:block>
     </th:block>
 </div>
