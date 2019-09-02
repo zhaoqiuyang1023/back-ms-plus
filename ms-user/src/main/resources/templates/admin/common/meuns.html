@@ -13,7 +13,7 @@
                 //如果有字菜单
                 <input type="checkbox" th:value="${child.id}"  class="layui-field-box"
                        th:checked="${#lists.contains(sysRole.sysMenus,child)}"
-                       th:attr="data-parentIds=${child.parentIds},title=${child.name}"
+                       th:attr="data-parentIds=${child.parentIds},title=${child.name},parentId=${child.parentId}"
                        lay-filter="roleMenu"/>
             </legend>
 
@@ -22,7 +22,7 @@
                     //如果没有子菜单
                     <input type="checkbox" th:value="${child.id}"  class="layui-field-box"
                            th:checked="${#lists.contains(sysRole.sysMenus,child)}"
-                           th:attr="data-parentIds=${child.parentIds},title=${child.name}"
+                           th:attr="data-parentIds=${child.parentIds},title=${child.name},parentId=${child.parentId}""
                            lay-filter="roleMenu"/>
 
             </div>

@@ -1,6 +1,8 @@
 package com.zqy.ms.user.controller.file;
 
+import com.zqy.ms.user.service.SysRescourceService;
 import com.zqy.ms.user.util.R;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Controller;
@@ -29,6 +31,9 @@ public class FileController {
 
     @Value("${server.port}")
     private String port;
+
+    @Autowired
+    private SysRescourceService sysRescourceService;
 
     @PostMapping("upload")
     @ResponseBody
