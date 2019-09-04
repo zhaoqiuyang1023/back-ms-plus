@@ -29,11 +29,15 @@ public class SysRescource extends Model<SysRescource> {
     @TableId(type = IdType.UUID)
     @TableField(value = "id")
     @ApiModelProperty(value = "主键")
-    private Long id;
+    private String id;
 
     @TableField(value = "file_name")
     @ApiModelProperty(value = "文件名称")
     private String fileName;
+
+    @TableField(value = "original_filename")
+    @ApiModelProperty(value = "原始文件名称")
+    private String originalFilename;
 
 
     @TableField(value = "src")
@@ -49,8 +53,8 @@ public class SysRescource extends Model<SysRescource> {
     @ApiModelProperty(value = "文件类型")
     private String fileType;
 
-    @TableField(value = "相对路径")
-    @ApiModelProperty(value = "")
+    @TableField(value = "relative_path")
+    @ApiModelProperty(value = "相对路径")
     private String relativePath;
 
     @TableField(value = "create_date")
@@ -60,18 +64,6 @@ public class SysRescource extends Model<SysRescource> {
     @TableField(value = "create_by")
     @ApiModelProperty(value = "创建人")
     private Long createBy;
-
-    @TableField(value = "update_date")
-    @ApiModelProperty(value = "修改时间")
-    private Date updateDate;
-
-    @TableField(value = "update_by")
-    @ApiModelProperty(value = "修改人")
-    private Long updateBy;
-
-    @TableField(value = "remarks")
-    @ApiModelProperty(value = "备注")
-    private String remarks;
 
 
     /**

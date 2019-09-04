@@ -21,7 +21,6 @@ import java.util.Objects;
  * @date 2019-08-01 10:54:19
  */
 @Data
-@EqualsAndHashCode(callSuper = true)
 @TableName("sys_role")
 public class SysRole extends Model<SysRole> {
     private static final long serialVersionUID = 1L;

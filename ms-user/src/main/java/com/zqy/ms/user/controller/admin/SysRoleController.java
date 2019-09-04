@@ -15,6 +15,7 @@ import com.zqy.ms.user.service.SysUserRoleService;
 import com.zqy.ms.user.util.LayerData;
 import com.zqy.ms.user.util.Log;
 import com.zqy.ms.user.util.RestResponse;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +32,7 @@ import java.util.List;
  * @date 2019-08-01 10:54:19
  */
 @Controller
+@Slf4j
 @RequestMapping("/admin/role")
 public class SysRoleController {
     @Autowired
@@ -83,6 +85,7 @@ public class SysRoleController {
     @PostMapping("save")
     @ResponseBody
     public RestResponse add(@RequestBody SysRole role) {
+        log.info(""+role);
         if (StringUtils.isBlank(role.getName())) {
             return RestResponse.failure("角色名称不能为空");
         }

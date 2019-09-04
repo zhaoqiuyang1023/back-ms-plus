@@ -6,7 +6,7 @@ server:
 spring:
   #激活哪一个环境的配置文件
   profiles:
-    active: dev
+    active: master
   main:
     allow-bean-definition-overriding: true #当遇到同样名字的时候，是否允许覆盖注册
   #视图配置

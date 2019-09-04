@@ -59,8 +59,9 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
     }
 
     @Override
-    public Set<String> findPermissionUrlsByUserId(String userId) {
-        return null;
+    public List<SysMenu>  findPermissionUrlsByUserId(Long userId) {
+
+        return findSysMenusByUserId(userId);
     }
 
     @Override

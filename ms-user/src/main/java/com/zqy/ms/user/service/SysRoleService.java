@@ -16,10 +16,6 @@ import java.util.List;
 public interface SysRoleService extends IService<SysRole> {
     void saveRole(SysRole role);
 
-    List<SysMenu> findMenusByRoleId(Long id);
-
-    List<SysMenu> findParentMenusByRoleId(Long id);
-
     /**
      *
      * @param roleId

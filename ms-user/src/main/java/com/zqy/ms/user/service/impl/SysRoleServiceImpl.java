@@ -48,21 +48,12 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
             SysRoleMenu sysRoleMenu = new SysRoleMenu();
             sysRoleMenu.setMenuId(sysMenu.getId());
             sysRoleMenu.setRoleId(role.getId());
+            System.out.println(sysRoleMenu);
             sysRoleMenuMapper.insert(sysRoleMenu);
         }
-
-
     }
 
-    @Override
-    public List<SysMenu> findMenusByRoleId(Long id) {
-        return sysRoleMapper.findMenusByRoleId(id);
-    }
 
-    @Override
-    public List<SysMenu> findParentMenusByRoleId(Long id) {
-        return sysRoleMapper.findParentMenusByRoleId(id);
-    }
 
     @Override
     public List<SysMenu> findMenusByRoleIdAndParentId(Long roleId, Long parentId) {
