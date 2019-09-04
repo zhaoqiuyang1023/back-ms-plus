@@ -35,17 +35,11 @@ public class SysRescource extends Model<SysRescource> {
     @ApiModelProperty(value = "文件名称")
     private String fileName;
 
-    @TableField(value = "source")
-    @ApiModelProperty(value = "来源")
-    private String source;
 
-    @TableField(value = "web_url")
+    @TableField(value = "src")
     @ApiModelProperty(value = "资源网络地址")
-    private String webUrl;
+    private String src;
 
-    @TableField(value = "hash")
-    @ApiModelProperty(value = "文件标识")
-    private String hash;
 
     @TableField(value = "file_size")
     @ApiModelProperty(value = "文件大小")
@@ -55,9 +49,9 @@ public class SysRescource extends Model<SysRescource> {
     @ApiModelProperty(value = "文件类型")
     private String fileType;
 
-    @TableField(value = "original_net_url")
+    @TableField(value = "相对路径")
     @ApiModelProperty(value = "")
-    private String originalNetUrl;
+    private String relativePath;
 
     @TableField(value = "create_date")
     @ApiModelProperty(value = "创建时间")
@@ -79,9 +73,6 @@ public class SysRescource extends Model<SysRescource> {
     @ApiModelProperty(value = "备注")
     private String remarks;
 
-    @TableField(value = "del_flag")
-    @ApiModelProperty(value = "删除标记")
-    private Boolean delFlag;
 
     /**
      * primary key

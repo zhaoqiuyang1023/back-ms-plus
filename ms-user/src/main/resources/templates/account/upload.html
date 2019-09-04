@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <title></title>
+
+    <link rel="stylesheet" href="../../static/layui/css/layui.css"/>
+</head>
+
+<body>
+
+<form class="layui-form" action="" lay-filter="example">
+    <div class="layui-form-item">
+        <label class="layui-form-label">输入框</label>
+        <div class="layui-input-block">
+            <input name="username" class="layui-input" type="text" placeholder="请输入标题" autocomplete="off" lay-verify="title">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">密码框</label>
+        <div class="layui-input-block">
+            <input name="password" class="layui-input" type="password" placeholder="请输入密码" autocomplete="off">
+        </div>
+    </div>
+
+
+
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">开关</label>
+        <div class="layui-input-block">
+            <input name="close" type="checkbox" lay-skin="switch" lay-text="ON|OFF">
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">单选框</label>
+        <div class="layui-input-block">
+            <input name="sex" title="男" type="radio" checked="" value="男">
+            <input name="sex" title="女" type="radio" value="女">
+        </div>
+    </div>
+
+
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button class="layui-btn" lay-filter="tijiao" lay-submit="">立即提交</button>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button class="layui-btn" lay-filter="tuichu" lay-submit="">立即退出</button>
+        </div>
+    </div>
+</form>
+
+
+<!--<script>-->
+    <!--var login = localStorage.getItem('login');-->
+    <!--$('.loginout').click(function () {-->
+        <!--login = 0;-->
+        <!--localStorage.setItem('login', login);-->
+    <!--});-->
+    <!--$('.loginin').click(function () {-->
+        <!--login = 1;-->
+        <!--localStorage.setItem('login', login);-->
+    <!--});-->
+
+<!--</script>-->
+<!--<form enctype="multipart/form-data">-->
+
+
+    <!--<fieldset class="layui-elem-field layui-field-title" style="margin-top: 30px;">-->
+
+        <!--<legend>常规使用：普通图片上传</legend>-->
+
+    <!--</fieldset>-->
+
+
+    <!--<div class="layui-upload">-->
+
+        <!--<button type="button" name="files" class="layui-btn" id="choose">选择文件</button>-->
+
+        <!--<div class="layui-upload-list">-->
+
+            <!--&lt;!&ndash;预览图片&ndash;&gt;-->
+
+            <!--<img class="layui-upload-img" id="demo1">-->
+
+            <!--&lt;!&ndash;提示上传信息&ndash;&gt;-->
+
+            <!--<p id="demoText"></p>-->
+
+        <!--</div>-->
+
+        <!--<button type="button" class="layui-btn" id="load">上传</button>-->
+    <!--</div>-->
+
+<!--</form>-->
+
+<script type="text/javascript" src="../../static/layui/layui.js"></script>
+<script type="text/javascript" src="../../static/layui/upload_url.js"></script>
+
+<script>
+
+    layui.use(['upload', 'jquery','form','layer'], function () {
+
+        var $ = layui.jquery,
+            layer=layui.layer,
+            form=layui.form,
+            upload = layui.upload;
+
+
+        //普通图片上传
+
+        //监听提交
+        form.on('submit(tijiao)', function(data){
+            layer.alert(JSON.stringify(data.field), {
+                title: '最终的提交信息'
+            });
+            login = 0;
+
+            localStorage.setItem('login', login);
+            localStorage.setItem('key', login);
+            return false;
+        });
+        form.on('submit(tuichu)', function(data){
+            layer.alert(JSON.stringify(data.field), {
+                title: '最终的提交信息'
+            });
+            login = 0;
+            localStorage.clear();
+            localStorage.removeItem('login');
+            return false;
+        });
+
+        var uploadInst = upload.render({
+
+            elem: '#choose'//选择文件的DOM对象
+            , auto: false //选择文件后不自动上传
+            , multiple: true //支持多文件上传
+            , field: 'files' //MultipartFile file 对应，layui默认就是file,要改动则相应改动
+            , bindAction: '#load' //指向一个按钮触发上传
+            , url: uploadUrl
+
+            , choose: function (obj) {//选择文件的回调，obj为选中的文件
+                obj.preview(function (index, file, result) {
+
+                    $('#demo1').attr('src', result);
+
+                });
+            }
+
+            , before: function (obj) {//文件上传前的回调
+
+
+            }
+
+            , done: function (res) {
+
+                //如果上传失败
+                alert(JSON.stringify(res));
+                if (res.code > 0) {
+                    return layer.msg('上传失败');
+                }
+                console.log(res);
+
+
+                //上传成功
+
+            }
+
+            , error: function () {
+
+                alert("上传失败");
+
+            }
+
+        });
+
+    });
+
+</script>
+
+</body>
+
+</html>
+
+

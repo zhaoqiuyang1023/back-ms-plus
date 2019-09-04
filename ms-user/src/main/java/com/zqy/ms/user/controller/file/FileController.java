@@ -1,5 +1,6 @@
 package com.zqy.ms.user.controller.file;
 
+import com.zqy.ms.user.entity.vo.FileVO;
 import com.zqy.ms.user.service.SysRescourceService;
 import com.zqy.ms.user.util.R;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,7 +38,7 @@ public class FileController {
 
     @PostMapping("upload")
     @ResponseBody
-    public R localUpload(MultipartFile file, HttpServletRequest request)  {
+    public R<FileVO> localUpload(MultipartFile file, HttpServletRequest request)  {
         String ip = request.getServerName();
 
         System.out.println(ip);
@@ -52,15 +53,14 @@ public class FileController {
             String rename = md5DigestAsHex + file.getOriginalFilename();
             String filePath = localUploadPath + rename;
             file.transferTo(new File(filePath));
-            return new R<>("http://" + ip + ":" + port + "/file/" + rename);
+            String src="http://" + ip + ":" + port + "/file/" + rename;
+            FileVO fileVO=new FileVO(src, file.getName(), "/file/" + rename,file.getContentType(), ""+file.getSize());
+            return new R<>(fileVO);
         } catch (Exception e) {
             e.printStackTrace();
             return new R<>(e);
         }
-
     }
-
-
 
     @Async
     @RequestMapping("/{name}")
@@ -85,4 +85,7 @@ public class FileController {
         outputStream.flush();
         outputStream.close();
     }
+
+
+
 }

@@ -41,10 +41,8 @@ public class SysUserController {
     private SysRoleService sysRoleService;
 
 
-
     @Autowired
     private SysMenuService sysMenuService;
-
 
 
     @PostMapping("/save")
@@ -170,8 +168,6 @@ public class SysUserController {
         SysUser sysUser = (SysUser) s.getPrincipal();
         return sysMenuService.findAllTreeShowMenuByUserId(sysUser.getId());
     }
-
-
 
 
 }
