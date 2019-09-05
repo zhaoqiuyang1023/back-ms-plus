@@ -53,6 +53,7 @@ public class ShiroConfig {
         filterChainDefinitionMap.put("/static/**", "anon");
         filterChainDefinitionMap.put("/genCaptcha/**", "anon");
         filterChainDefinitionMap.put("/unauthorized/**", "anon");
+        filterChainDefinitionMap.put("/locked/**", "anon");
 
 
         UrlPathMatchingFilter urlPathMatchingFilter = new UrlPathMatchingFilter(sysMenuService);

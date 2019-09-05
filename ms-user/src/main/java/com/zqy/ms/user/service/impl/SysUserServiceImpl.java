@@ -63,7 +63,9 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     @Override
     public SysUser findUserById(Long id) {
         SysUser sysUser = getById(id);
-        sysUser.setSysRoles(findSysRolesByUserId(id));
+        if(sysUser!=null){
+            sysUser.setSysRoles(findSysRolesByUserId(id));
+        }
         return sysUser;
     }
 

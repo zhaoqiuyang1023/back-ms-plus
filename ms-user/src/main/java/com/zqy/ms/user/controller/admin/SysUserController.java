@@ -48,37 +48,66 @@ public class SysUserController {
     @PostMapping("/save")
     @ResponseBody
     public RestResponse save(@RequestBody SysUser user) {
+        Subject s = SecurityUtils.getSubject();
+
+        SysUser sysUser = (SysUser) s.getPrincipal();
         if (StringUtils.isBlank(user.getLoginName())) {
             return RestResponse.failure("登录名不能为空");
         }
         if (user.getSysRoles() == null || user.getSysRoles().size() == 0) {
             return RestResponse.failure("用户角色至少选择一个");
         }
-        SysUser oldUser = sysUserService.findUserById(user.getId());
-        if (StringUtils.isNotBlank(user.getEmail())) {
-            if (!user.getEmail().equals(oldUser.getEmail())) {
-                if (sysUserService.userCount(user.getEmail()) > 0) {
-                    return RestResponse.failure("该邮箱已被使用");
-                }
+
+        SysUser oldUser = sysUserService.getById(user.getId());
+
+        if (sysUserService.userCount(user.getEmail()) > 0) {
+            if (oldUser != null && !user.getEmail().equals(oldUser.getEmail())) {
+                return RestResponse.failure("该邮箱已被使用");
             }
         }
-        if (StringUtils.isNotBlank(user.getLoginName())) {
-            if (!user.getLoginName().equals(oldUser.getLoginName())) {
-                if (sysUserService.userCount(user.getLoginName()) > 0) {
-                    return RestResponse.failure("该登录名已存在");
-                }
+
+        if (sysUserService.userCount(user.getLoginName()) > 0) {
+            if (oldUser != null && !user.getLoginName().equals(oldUser.getLoginName())) {
+                return RestResponse.failure("该登录名已存在");
             }
         }
-        if (StringUtils.isNotBlank(user.getTel())) {
-            if (!user.getTel().equals(oldUser.getTel())) {
-                if (sysUserService.userCount(user.getTel()) > 0) {
-                    return RestResponse.failure("该手机号已经被绑定");
-                }
+        if (sysUserService.userCount(user.getTel()) > 0) {
+            if (oldUser != null && !user.getTel().equals(oldUser.getTel())) {
+                return RestResponse.failure("该手机号已经被绑定");
             }
         }
-        user.setIcon(oldUser.getIcon());
+        user.setUpdateBy(sysUser.getId());
         return sysUserService.saveSysUser(user) ? RestResponse.success("修改成功") : RestResponse.failure("验证码超时");
     }
+
+    @PostMapping("/add")
+    @ResponseBody
+    public RestResponse add(@RequestBody SysUser user) {
+        if (StringUtils.isBlank(user.getLoginName())) {
+            return RestResponse.failure("登录名不能为空");
+        }
+        if (user.getSysRoles() == null || user.getSysRoles().size() == 0) {
+            return RestResponse.failure("用户角色至少选择一个");
+        }
+        if (sysUserService.userCount(user.getEmail()) > 0) {
+            return RestResponse.failure("该邮箱已被使用");
+        }
+        if (sysUserService.userCount(user.getLoginName()) > 0) {
+            return RestResponse.failure("该登录名已存在");
+        }
+        if (sysUserService.userCount(user.getTel()) > 0) {
+            return RestResponse.failure("该手机号已经被绑定");
+        }
+        Subject s = SecurityUtils.getSubject();
+
+        SysUser sysUser = (SysUser) s.getPrincipal();
+        user.setPassword("123456");
+        user.setSalt("123123");
+        user.setLocked(false);
+        user.setCreateBy(sysUser.getId());
+        return sysUserService.saveSysUser(user) ? RestResponse.success("修改成功") : RestResponse.failure("验证码超时");
+    }
+
 
     @GetMapping("list")
     public String list() {

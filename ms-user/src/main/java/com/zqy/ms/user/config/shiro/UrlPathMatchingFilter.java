@@ -50,6 +50,11 @@ public class UrlPathMatchingFilter extends PathMatchingFilter {
             WebUtils.issueRedirect(request, response, "/login");
             return false;
         }
+        SysUser sysUser = (SysUser) subject.getPrincipal();
+        if(sysUser.getLocked()){
+            subject.logout();
+            WebUtils.issueRedirect(request, response, "/locked");
+        }
         // 看看这个路径权限里有没有维护，如果没有维护，一律放行
         boolean needInterceptor = sysMenuService.needInterceptor(requestUri);
 
@@ -58,7 +63,7 @@ public class UrlPathMatchingFilter extends PathMatchingFilter {
             return true;
         }
         //如果有权限
-        SysUser sysUser = (SysUser) subject.getPrincipal();
+
         List<SysMenu> latestPermissions = sysMenuService.findPermissionUrlsByUserId(sysUser.getId());
         for (SysMenu sysmenu : latestPermissions) {
             if (sysmenu.getHref().equals(requestUri)) {
