@@ -24,6 +24,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.ServletRequest;
+import java.util.Date;
 import java.util.List;
 
 
@@ -99,6 +100,7 @@ public class SysRoleController {
                 }
             }
         }
+        role.setUpdateDate(new Date());
         sysRoleService.saveRole(role);
         return RestResponse.success("操作成功");
     }

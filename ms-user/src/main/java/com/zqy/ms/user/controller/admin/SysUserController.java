@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.WebUtils;
 
 import javax.servlet.ServletRequest;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -101,10 +102,11 @@ public class SysUserController {
         Subject s = SecurityUtils.getSubject();
 
         SysUser sysUser = (SysUser) s.getPrincipal();
+        user.setCreateBy(sysUser.getId());
         user.setPassword("123456");
         user.setSalt("123123");
         user.setLocked(false);
-        user.setCreateBy(sysUser.getId());
+        user.setUpdateDate(new Date());
         return sysUserService.saveSysUser(user) ? RestResponse.success("修改成功") : RestResponse.failure("验证码超时");
     }
 
