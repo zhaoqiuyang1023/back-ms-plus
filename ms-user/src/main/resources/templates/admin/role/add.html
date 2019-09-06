@@ -8,7 +8,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <script src="../../../static/layui/layui.js" th:src="@{/static/layui/layui.js}"></script>
 
-    <link rel="stylesheet" th:href="@{/static/layui/css/layui.css}" href="../../../static/layui/css/layui.css" media="all"/>
+    <link rel="stylesheet" th:href="@{/static/layui/css/layui.css}" href="../../../static/layui/css/layui.css"
+          media="all"/>
     <!-- 注意：如果你直接复制所有代码到本地，上述css路径需要改成你本地的 -->
     <style type="text/css">
         .layui-form-item .layui-inline {
@@ -53,28 +54,36 @@
             <legend>请分配角色权限</legend>
         </fieldset>
     </div>
+
     <div class="layui-form-item">
-        <div class="layui-input-block" style="width: 80%">
-
-            <span th:each="menu,userStat : ${menus}">
-
-                <!--目前只有🎧-->
-                  <fieldset class="layui-elem-field">
-                   <legend><input type="checkbox" th:value="${menu.id}" th:attr="data-parentIds=${menu.parentIds},title=${menu.name}"
-                                  lay-filter="roleMenu"/>
-                   </legend>
-                  <div class="layui-field-box">
-                    <ul style="padding: 0 15px">
-                        <span th:each="child,index:${menu.childSysMenus}">
-                             <input class="layui-field-box" style="float: left" type="checkbox"
-                                    th:attr="title=${child.name}" th:value="${child.id}" lay-filter="role"/>
-                        </span>
-                    </ul>
-                 </div>
-               </fieldset>
-            </span>
-        </div>
+        <fieldset style="float: left" th:each="menu,index : ${menus}">
+            <legend>
+                <div class="layui-input-block role-box">
+                    <input type="checkbox" th:value="${menu.id}" class="layui-field-box"
+                           th:attr="data-parentIds=${menu.parentIds},title=${menu.name},parentId=${menu.parentId},id=${menu.id}"
+                           lay-filter="roleMenu"/>
+                </div>
+            </legend>
+            <div class="layui-field-box">
+                <fieldset th:replace="::row(${menu.childSysMenus},1)"></fieldset>
+            </div>
+        </fieldset>
     </div>
+
+    <th:block th:fragment="row(menus1,lv)">
+        <th:block th:each="child: ${menus1}">
+            <div style="background: #E6E6E6;border-radius: 3px;border: 3px">
+                <input type="checkbox" th:value="${child.id}" class="layui-field-box"
+                       th:attr="data-parentIds=${child.parentIds},title=${child.name},parentId=${child.parentId},id=${child.id}"
+                       lay-filter="roleMenu"/>
+
+                <div style="margin-bottom: 10px;" th:unless="${#lists.isEmpty(child.childSysMenus)}"
+                     th:include="this::row(${child.childSysMenus},1)">
+                </div>
+            </div>
+        </th:block>
+    </th:block>
+
     <div class="layui-form-item" style="padding-left: 30%;">
         <div class="layui-input-block">
             <button class="layui-btn" lay-submit="" lay-filter="addRole">立即提交</button>
@@ -89,35 +98,41 @@
         var form = layui.form,
             layer = layui.layer,
             $ = layui.jquery;
-        // form.on('checkbox(roleMenu)', function (data) {
-        //     var v = data.elem.getAttribute("data-parentIds"),
-        //         myarr = v.split(",");
-        //     var child = $(data.elem).parents('form').find('input[type="checkbox"]');
-        //     if (data.elem.checked) {//勾选的时候的动作,父栏目层级全部勾选
-        //         child.each(function (index, item) {
-        //             if (myarr.contains(item.value)) {
-        //                 item.checked = data.elem.checked;
-        //             }
-        //         });
-        //     } else { //取消选择的时候，子栏目层级全部取消选择
-        //         child.each(function (index, item) {
-        //             //获取每一个checkbox的 父栏目ID组
-        //             var r = item.getAttribute("data-parentIds"),
-        //                 noarr = r.split(",");
-        //             if (noarr.contains(data.value)) {
-        //                 item.checked = data.elem.checked;
-        //             }
-        //         });
-        //     }
-        //     form.render('checkbox');
-        // });
+
+        function findParent(item) {
+            console.log("findParent");
+            let id = $(item).attr("parentId");
+            let doc = document.getElementById(id);
+            if (doc != null) {
+                doc.checked = true;
+                findParent(doc);
+            }
+        }
+
+        function findChild(item) {
+            console.log("findChild");
+            let id = $(item).attr("id");
+            let kids = $("input[parentId=" + id + "]");
+            for (let kid of kids) {
+                kid.checked = false;
+                findChild(kid)
+            }
+        }
+
+        form.on('checkbox(roleMenu)', function (data) {
+            //勾选的时候的动作,父栏目层级全部勾选
+            findParent(data.elem);
+            //取消选择的时候，子栏目层级全部取消选择
+            findChild(data.elem);
+            form.render('checkbox');
+        });
         form.on('submit(addRole)', function (data) {
             let sysMenus = [];
 
             let c = $('form').find('input[type="checkbox"]');
             c.each(function (index, item) {
-                let sysMenu={
-                    "id":"",
+                let sysMenu = {
+                    "id": "",
                 };
                 if (item.checked) {
                     sysMenu.id = parseInt(item.value);
@@ -130,7 +145,7 @@
             });
             $.ajax({
                 type: "POST",
-                url: "/admin/role/add",
+                url: "/admin/role/save",
                 dataType: "json",
                 contentType: "application/json",
                 data: JSON.stringify(data.field),

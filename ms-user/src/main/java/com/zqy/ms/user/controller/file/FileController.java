@@ -1,8 +1,13 @@
 package com.zqy.ms.user.controller.file;
 
+import com.zqy.ms.user.entity.SysRescource;
+import com.zqy.ms.user.entity.SysUser;
 import com.zqy.ms.user.entity.vo.FileVO;
 import com.zqy.ms.user.service.SysRescourceService;
 import com.zqy.ms.user.util.R;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Async;
@@ -27,6 +32,7 @@ import java.util.UUID;
 
 @Controller
 @RequestMapping("file")
+@Slf4j
 public class FileController {
 
 
@@ -38,10 +44,9 @@ public class FileController {
 
     @PostMapping("upload")
     @ResponseBody
-    public R<FileVO> localUpload(MultipartFile file, HttpServletRequest request)  {
+    public R<FileVO> localUpload(MultipartFile file, HttpServletRequest request) {
         String ip = request.getServerName();
-
-        System.out.println(ip);
+        log.info(ip);
         //jar包的同目录的files文件夹下
         String localUploadPath = System.getProperty("user.dir") + "/files/";
         try {
@@ -52,9 +57,22 @@ public class FileController {
             String md5DigestAsHex = DigestUtils.md5DigestAsHex(UUID.randomUUID().toString().getBytes(StandardCharsets.UTF_8.name()));
             String rename = md5DigestAsHex + file.getOriginalFilename();
             String filePath = localUploadPath + rename;
+            Subject s = SecurityUtils.getSubject();
+            String src = "http://" + ip + ":" + port + "/file/" + rename;
+            log.info(src);
+            FileVO fileVO = new FileVO(src, file.getName(), "/file/" + rename, file.getContentType(), "" + file.getSize());
+            SysUser sysUser = (SysUser) s.getPrincipal();
+            SysRescource sysRescource = new SysRescource();
+            System.out.println("用户id"+sysUser.getId());
+            sysRescource.setCreateBy(sysUser.getId());
+            sysRescource.setFileName(rename);
+            sysRescource.setOriginalFilename(file.getOriginalFilename());
+            sysRescource.setFileType(file.getContentType());
+            sysRescource.setSrc(src);
+            sysRescource.setRelativePath("/file/" + rename);
+            sysRescource.setFileSize(""+file.getSize());
+            sysRescourceService.save(sysRescource);
             file.transferTo(new File(filePath));
-            String src="http://" + ip + ":" + port + "/file/" + rename;
-            FileVO fileVO=new FileVO(src, file.getName(), "/file/" + rename,file.getContentType(), ""+file.getSize());
             return new R<>(fileVO);
         } catch (Exception e) {
             e.printStackTrace();
@@ -85,7 +103,6 @@ public class FileController {
         outputStream.flush();
         outputStream.close();
     }
-
 
 
 }

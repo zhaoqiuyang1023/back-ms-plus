@@ -80,7 +80,8 @@
         <ul class="layui-nav layui-layout-right">
             <li class="layui-nav-item">
                 <a href="javascript:;">
-                    <img alt="用户头像" id="userIcon" th:src="${user.icon}" src="../static/images/bg1.jpg" class="layui-nav-img">
+                    <img alt="用户头像" id="userIcon" th:src="${user.icon}" src="../static/images/bg1.jpg"
+                         class="layui-nav-img">
                     <span th:text="${user.loginName}"> </span>
                 </a>
                 <dl class="layui-nav-child">
@@ -102,12 +103,15 @@
         <div class="layui-side-scroll">
             <ul class="layui-nav layui-nav-tree">
                 <li th:each="mean,userStat: ${user.getShowSysMenus()}" class="layui-nav-item layui-nav-itemed">
-                    <a href="javascript:;"><i class="layui-icon" th:text="${mean.icon}" >&#xe60c;</i> <th:block th:text="${mean.name}"></th:block></a>
+                    <a href="javascript:;"><i class="layui-icon" th:text="${mean.icon}">&#xe60c;</i>
+                        <th:block th:text="${mean.name}"></th:block>
+                    </a>
                     <dl class="layui-nav-child">
                         <dd th:each="chileMean,index:${mean.getChildren()}">
-                            <a  href="javascript:void(0);" class="layTabPlus"
+                            <a href="javascript:void(0);" class="layTabPlus"
                                th:attr="tab_url=@{${chileMean.href}}">
-                                <i style="margin-right: 5px;font-size: 15px;width: max-content" th:text="${chileMean.icon}" class="layui-icon">
+                                <i style="margin-right: 5px;font-size: 15px;width: max-content"
+                                   th:text="${chileMean.icon}" class="layui-icon">
                                 </i>
                                 <th:block th:style="magrin " th:text="${chileMean.name}"></th:block>
                             </a>
@@ -165,6 +169,14 @@
     let element = layui.element;
     let util = layui.util;
     let table = layui.table;
+</script>
+<script>
+    layui.use(['form', 'jquery', 'layer', 'upload'], function () {
+        let form = layui.form,
+            $ = layui.jquery,
+            upload = layui.upload,
+            layer = layui.layer;
+    });
 </script>
 <script src="../static/js/layTabPlus.js"></script>
 <script>

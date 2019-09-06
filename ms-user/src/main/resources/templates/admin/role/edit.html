@@ -39,6 +39,11 @@
                    lay-verify="required" placeholder="请想一个角色名称">
         </div>
     </div>
+
+
+
+
+
     <div class="layui-form-item layui-form-text">
         <div class="layui-input-block" style="width: 80%">
             <textarea placeholder="一些可有可无的备注罢了.." name="remarks" th:text="${sysRole.remarks}"
@@ -84,7 +89,6 @@
             $ = layui.jquery,
             layer = layui.layer;
 
-
         function findParent(item) {
             console.log("findParent");
             let id = $(item).attr("parentId");
@@ -106,7 +110,6 @@
         }
 
         form.on('checkbox(roleMenu)', function (data) {
-
             //勾选的时候的动作,父栏目层级全部勾选
             findParent(data.elem);
             //取消选择的时候，子栏目层级全部取消选择

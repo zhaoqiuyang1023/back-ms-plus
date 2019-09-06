@@ -40,6 +40,11 @@ public class UserController {
         if(sysUser==null){
            return RestResponse.failure("用户不能为空");
         }
+        SysUser oldSysUser =  (SysUser) SecurityUtils.getSubject().getPrincipal();
+        oldSysUser.setIcon(sysUser.getIcon());
+        oldSysUser.setNickName(sysUser.getNickName());
+        oldSysUser.setTel(sysUser.getTel());
+        oldSysUser.setEmail(sysUser.getEmail());
         return sysUserService.updateById(sysUser) ? RestResponse.success("修改成功") : RestResponse.failure("验证码超时");
     }
 

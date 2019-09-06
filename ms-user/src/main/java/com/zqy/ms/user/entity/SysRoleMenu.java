@@ -24,13 +24,12 @@ public class SysRoleMenu extends Model<SysRoleMenu> {
     private static final long serialVersionUID = 1L;
 
 
-    @TableId(type = IdType.UUID)
     @TableField(value = "role_id")
-    @ApiModelProperty(value = "")
+    @ApiModelProperty(value = "角色id")
     private Long roleId;
 
     @TableField(value = "menu_id")
-    @ApiModelProperty(value = "")
+    @ApiModelProperty(value = "菜单id")
     private Long menuId;
 
     /**

@@ -24,7 +24,7 @@ public interface SysMenuService extends IService<SysMenu> {
 
     boolean needInterceptor(String requestURI);
 
-    Set<String> findPermissionUrlsByUserId(String userName);
+    List<SysMenu>  findPermissionUrlsByUserId(Long id);
 
     List<SysMenu> findSysMenusByUserId(Long id);
 }

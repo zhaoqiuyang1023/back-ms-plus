@@ -63,6 +63,10 @@ public class LoginController {
     public String unauthorized(Model model) {
         return "unauthorized";
     }
+    @GetMapping("locked")
+    public String locked(Model model) {
+        return "locked";
+    }
 
 
     @GetMapping("login")

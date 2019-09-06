@@ -39,7 +39,7 @@
 
     <script type="text/html" id="userStatus">
         <!-- 这里的 checked 的状态只是演示 -->
-        {{#  if(d.delFlag == false){ }}
+        {{#  if(d.locked== false){ }}
         <span class="layui-badge layui-bg-green">正常</span>
         {{#  } else { }}
         <span class="layui-badge layui-bg-gray">停用</span>
@@ -89,6 +89,7 @@
                 var editIndex = layer.open({
                     title: "编辑用户",
                     type: 2,
+                    area: [],
                     content: "/admin/user/edit?id=" + data.id,
                     success: function (layero, index) {
                         setTimeout(function () {
@@ -130,7 +131,7 @@
         var active = {
             addUser: function () {
                 var addIndex = layer.open({
-                    title: "添加会员",
+                    title: "<p style='margin: 0 auto;'>添加用户</p>",
                     type: 2,
                     content: "/admin/user/add",
                     success: function (layero, addIndex) {

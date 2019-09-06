@@ -84,9 +84,6 @@ public class SysUser extends Model<SysUser> {
     @ApiModelProperty(value = "")
     private String remarks;
 
-    @TableField(value = "del_flag")
-    @ApiModelProperty(value = "")
-    private Boolean delFlag;
 
 
 

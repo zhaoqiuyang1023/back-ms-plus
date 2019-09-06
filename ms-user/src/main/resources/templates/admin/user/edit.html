@@ -86,8 +86,8 @@
     <div class="layui-form-item">
         <label class="layui-form-label">是否启用</label>
         <div class="layui-input-block">
-            <input type="checkbox" name="delFlag" lay-skin="switch" value="true" lay-text="启用|停用"
-                   th:checked="${user.delFlag}">
+            <input type="radio" name="locked" value="false" title="启动" th:checked="${user.locked==false}" >
+            <input type="radio" name="locked" value="true" title="停用" th:checked="${user.locked==true}" >
         </div>
     </div>
 
@@ -101,10 +101,9 @@
 <script>
     var index = parent.layer.getFrameIndex(window.name); //当前窗口索引
     layui.use(['form', 'jquery', 'layer'], function () {
-        var form = layui.form,
+        let form = layui.form,
             $ = layui.jquery,
             layer = layui.layer;
-
 
         form.on("submit(addUser)", function (data) {
             if (data.field.id == null) {
@@ -114,20 +113,11 @@
             //给角色赋值
             delete data.field["roles"];
             var selectRole = [];
-            let sysMenus = [];
-            let sysMenu = {
-                "id": "",
-            };
             $('input[name="roles"]:checked').each(function () {
                 selectRole.push({"id": $(this).val()});
             });
             data.field.sysRoles = selectRole;
-            //判断用户是否启用
-            if (undefined !== data.field.delFlag && null != data.field.delFlag) {
-                data.field.delFlag = false;
-            } else {
-                data.field.delFlag = true;
-            }
+
             var loadIndex = layer.load(2, {
                 shade: [0.3, '#333']
             });

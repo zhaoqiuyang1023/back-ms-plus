@@ -13,10 +13,10 @@
     <link rel="stylesheet" th:href="@{/static/layui/css/layui.css}">
     <link rel="stylesheet" href="../../../static/layui/css/layui.css" media="all"/>
     <style>
-         form{
-             width: 80%;
-             margin: 0 auto;
-         }
+        form {
+            width: 80%;
+            margin: 0 auto;
+        }
 
     </style>
 </head>
@@ -28,8 +28,10 @@
         <label class="layui-form-label">头像</label>
         <div class="layui-input-block">
             <div class="site-demo-upload">
-                <img class="layui-circle" style="width: 200px;height: 200px;margin: 0 auto" th:src="${userinfo.icon}" src="images/bg1.jpg" id="userFace"/>
-                <button type="button" class="layui-btn layui-btn-primary" id="test1"><i class="layui-icon"></i>选择图片</button>
+                <img class="layui-circle" style="width: 200px;height: 200px;margin: 0 auto" th:src="${userinfo.icon}"
+                     src="images/bg1.jpg" id="userFace"/>
+                <button type="button" class="layui-btn layui-btn-primary" id="test1"><i class="layui-icon"></i>选择图片
+                </button>
             </div>
         </div>
     </div>
@@ -50,7 +52,8 @@
         <label class="layui-form-label">用户角色</label>
         <div class="layui-input-block">
             <th:block th:each="role,userStat : ${userinfo.sysRoles}">
-                <input type="checkbox" th:attr="title=${role.name}" style="background: #5FB878" disabled="disabled" checked>
+                <input type="checkbox" th:attr="title=${role.name}" style="background: #5FB878" disabled="disabled"
+                       checked>
             </th:block>
         </div>
     </div>
@@ -77,9 +80,6 @@
     </div>
 
 
-
-
-
     <div class="layui-form-item" style="float: right ">
         <div class="layui-input-block">
             <button class="layui-btn" lay-submit="" lay-filter="changeUser">立即提交</button>
@@ -89,8 +89,8 @@
 </form>
 
 <script>
-    layui.use(['form', 'jquery', 'layer', 'upload', 'laydate'], function () {
-        var form = layui.form,
+    layui.use(['form', 'jquery', 'layer', 'upload'], function () {
+        let form = layui.form,
             $ = layui.jquery,
             upload = layui.upload,
             layer = layui.layer;
@@ -117,10 +117,11 @@
                     return layer.msg('上传失败');
                 } else {
                     layer.msg("上传成功", {time: 1000}, function () {
-                        $("input[name='icon']").val(res.data);
-                        console.log(parent.$('#userIcon').attr('src'));
-                        parent.$("#userIcon").attr('src',res.data);
-                        form.render();
+                        $("input[name='icon']").val(res.data.src);
+                        //    $("#userIcon").src('src',res.data.src);
+                        //       parent.$("#userIcon").attr("src", res.data.src);
+                        $('#userIcon').attr("src", res.data.src);
+
                     })
                 }
             }
@@ -139,7 +140,6 @@
                 if (res.success) {
                     parent.layer.msg("您的个人信息保存成功！", {time: 1500}, function () {
                         parent.location.reload();
-
                     });
                 } else {
                     layer.msg(res.message);
