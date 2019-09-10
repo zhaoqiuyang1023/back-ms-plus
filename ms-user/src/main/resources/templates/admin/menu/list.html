@@ -201,21 +201,25 @@
                 });
             }
             if (layEvent === 'del') {
-                $.ajax({
-                    type: "POST",
-                    url: "/admin/menu/delete/" + data.id,
-                    dataType: "json",
-                    contentType: "application/json",
-                    success: function (res) {
-                        if (res.success) {
-                            layer.msg("删除成功!", {time: 500}, function () {
-                                location.reload();
-                            });
-                        } else {
-                            layer.msg(res.message);
-                        }
+                layer.confirm("你确定要删除吗？", {btn: ['是的,我确定', '我再想想']},
+                    function () {
+                        $.ajax({
+                            type: "POST",
+                            url: "/admin/menu/delete/" + data.id,
+                            dataType: "json",
+                            contentType: "application/json",
+                            success: function (res) {
+                                if (res.success) {
+                                    layer.msg("删除成功!", {time: 500}, function () {
+                                        location.reload();
+                                    });
+                                } else {
+                                    layer.msg(res.message);
+                                }
+                            }
+                        });
                     }
-                });
+                )
             } else if (layEvent === 'edit') {
                 layer.open({
                     title: "菜单修改",

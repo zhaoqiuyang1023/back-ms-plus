@@ -12,10 +12,49 @@
 <div class="layui-layout layui-layout-admin">
     <div class="layui-header">
         <a href="">
-            <div class="layui-logo"><a style="color: #FFFFFF">zqy管理系统</a></div>
+            <div class="layui-logo"><a style="color: #FFFFFF">餐消管理系统</a></div>
         </a>
         <!-- 头部左面区域（可配合layui已有的水平导航） -->
         <ul class="layui-nav layui-layout-left">
+
+            <li class="layui-nav-item">
+                <a href="">商品管理</a>
+            </li>
+            <li class="layui-nav-item">
+                <a href="">用户</a>
+            </li>
+            <li class="layui-nav-item">
+                <a href="javascript:;">其它系统</a>
+                <dl class="layui-nav-child">
+                    <dd>
+                        <a href="">邮件管理</a>
+                    </dd>
+                    <dd>
+                        <a href="">消息管理</a>
+                    </dd>
+                    <dd>
+                        <a href="">授权管理</a>
+                    </dd>
+                </dl>
+            </li>
+        </ul>
+        <!-- 头部右面区域 -->
+        <ul class="layui-nav layui-layout-right">
+            <li class="layui-nav-item">
+                <a href="javascript:;">
+                    <img alt="用户头像" id="userIcon" th:src="${user.icon}" src="../static/images/bg1.jpg"
+                         class="layui-nav-img">
+                    <span th:text="${user.loginName}"></span>
+                </a>
+                <dl class="layui-nav-child">
+                    <dd>
+                        <a href="javascript:;" class="layTabPlus" th:attr="tab_url=@{/user/edit}">基本资料</a>
+                    </dd>
+                    <dd>
+                        <a href="/logout">退出</a>
+                    </dd>
+                </dl>
+            </li>
             <!-- 天气信息 -->
             <div class="weather" pc>
                 <div id="tp-weather-widget"></div>
@@ -55,47 +94,6 @@
                 });
                 tpwidget("show");</script>
             </div>
-            <li class="layui-nav-item">
-                <a href="">商品管理</a>
-            </li>
-            <li class="layui-nav-item">
-                <a href="">用户</a>
-            </li>
-            <li class="layui-nav-item">
-                <a href="javascript:;">其它系统</a>
-                <dl class="layui-nav-child">
-                    <dd>
-                        <a href="">邮件管理</a>
-                    </dd>
-                    <dd>
-                        <a href="">消息管理</a>
-                    </dd>
-                    <dd>
-                        <a href="">授权管理</a>
-                    </dd>
-                </dl>
-            </li>
-        </ul>
-        <!-- 头部右面区域 -->
-        <ul class="layui-nav layui-layout-right">
-            <li class="layui-nav-item">
-                <a href="javascript:;">
-                    <img alt="用户头像" id="userIcon" th:src="${user.icon}" src="../static/images/bg1.jpg"
-                         class="layui-nav-img">
-                    <span th:text="${user.loginName}"> </span>
-                </a>
-                <dl class="layui-nav-child">
-                    <dd>
-                        <a href="javascript:;" class="layTabPlus" th:attr="tab_url=@{/user/edit}">基本资料</a>
-                    </dd>
-                    <dd>
-                        <a href="/logout">退出</a>
-                    </dd>
-                </dl>
-            </li>
-            <li class="layui-nav-item">
-                <a></a>
-            </li>
         </ul>
     </div>
     <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
@@ -140,12 +138,12 @@
                                 <td class="version">V1.2</td>
                             </tr>
                             <tr>
-                                <td>开发作者</td>
-                                <td class="author">Alan</td>
+                                <td>网站首页</td>
+                                <td class="author">http://canxiao.iicp.net/</td>
                             </tr>
                             <tr>
-                                <td>项目首页</td>
-                                <td class="homePage"><a href="https://gitee.com/Leytton/layTabPlus">www.baidu.com</a>
+                                <td>功能简介</td>
+                                <td><a href="">餐消软件</a>
                                 </td>
                             </tr>
 

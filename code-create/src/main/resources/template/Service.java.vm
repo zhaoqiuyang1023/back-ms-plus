@@ -4,6 +4,7 @@ import java.util.Map;
 import com.baomidou.mybatisplus.extension.service.IService;
 import ${package}.entity.${className};
 import org.apache.ibatis.annotations.Param;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import java.util.List;
 /**
  * ${comments}
@@ -12,6 +13,6 @@ import java.util.List;
  */
 public interface ${className}Service extends IService<${className}> {
 
-    List<${className}> get${className}ListByPage(Pagination page, @Param("param")Map<String,Object> map);
+    List<${className}> get${className}ListByPage(Page page, @Param("param")Map<String,Object> map);
 }
 

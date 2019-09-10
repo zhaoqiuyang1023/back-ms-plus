@@ -4,7 +4,6 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/back-ms-plus.iml" filepath="$PROJECT_DIR$/back-ms-plus.iml" />
       <module fileurl="file://$PROJECT_DIR$/code-create/code-create.iml" filepath="$PROJECT_DIR$/code-create/code-create.iml" />
-      <module fileurl="file://$PROJECT_DIR$/ms-file/ms-file.iml" filepath="$PROJECT_DIR$/ms-file/ms-file.iml" />
       <module fileurl="file://$PROJECT_DIR$/ms-user/ms-user.iml" filepath="$PROJECT_DIR$/ms-user/ms-user.iml" />
     </modules>
   </component>

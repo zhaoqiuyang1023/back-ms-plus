@@ -1,7 +1,0 @@
-server:
-  port: 8056
-spring:
-  servlet:
-    multipart:
-      maxFileSize: "1000MB"
-      maxRequestSize: "10000MB"

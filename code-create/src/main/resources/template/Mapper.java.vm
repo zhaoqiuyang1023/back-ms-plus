@@ -4,6 +4,7 @@ import ${package}.entity.${className};
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import java.util.List;
 import java.util.Map;
 /**
@@ -15,5 +16,5 @@ import java.util.Map;
 @Mapper
 public interface ${className}Mapper extends BaseMapper<${className}> {
 
-    List<${className}> get${className}ListByPage(Pagination page, @Param("param")Map<String,Object> map);
+    List<${className}> get${className}ListByPage(Page page, @Param("param")Map<String,Object> map);
 }

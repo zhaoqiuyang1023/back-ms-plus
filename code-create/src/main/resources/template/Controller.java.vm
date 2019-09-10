@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.Arrays;
 import java.util.Map;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,14 +35,13 @@ public class ${className}Controller {
     * @return
     */
     @GetMapping("/page")
-    public Page page(@RequestParam Map<String, Object> params) {
+    public IPage page(@RequestParam Map<String, Object> params) {
         Page<${className}> page = new Page<>(Integer.parseInt(params.get("current").toString()), Integer.parseInt(params.get("size").toString()));
         QueryWrapper<${className}> queryWrapper=new QueryWrapper();
         queryWrapper.eq("name",params.get("name"));
-        queryWrapper.like("",params.get("name"));
-        queryWrapper.select("age","age");
-        page.setRecords(${classname}Service.page(page, queryWrapper));
-        return page;
+        queryWrapper.like("key",params.get("value"));
+        queryWrapper.select("age","sex");
+        return ${classname}Service.page(page, queryWrapper);
     }
 
 

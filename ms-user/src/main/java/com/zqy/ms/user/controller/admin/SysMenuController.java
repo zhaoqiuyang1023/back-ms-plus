@@ -120,6 +120,9 @@ public class SysMenuController {
     @ResponseBody
     @PostMapping("/delete/{id}")
     public RestResponse delete(@PathVariable("id") Long id) {
+        if(id==1){
+            return RestResponse.failure("系统管理菜单不能被删除");
+        }
         sysMenuService.removeById(id);
         return RestResponse.success("删除菜单成功");
     }
