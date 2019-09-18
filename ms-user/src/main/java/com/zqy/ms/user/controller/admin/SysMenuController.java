@@ -1,8 +1,11 @@
 package com.zqy.ms.user.controller.admin;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.zqy.ms.user.entity.SysMenu;
+import com.zqy.ms.user.entity.SysRoleMenu;
 import com.zqy.ms.user.entity.SysUser;
 import com.zqy.ms.user.service.SysMenuService;
+import com.zqy.ms.user.service.SysRoleMenuService;
 import com.zqy.ms.user.util.LayerData;
 import com.zqy.ms.user.util.Log;
 import com.zqy.ms.user.util.RestResponse;
@@ -28,6 +31,9 @@ import java.util.List;
 public class SysMenuController {
     @Autowired
     private SysMenuService sysMenuService;
+
+    @Autowired
+    private SysRoleMenuService sysRoleMenuService;
 
 
     @ApiOperation(value = "跳转到列表页")
@@ -120,7 +126,11 @@ public class SysMenuController {
     @ResponseBody
     @PostMapping("/delete/{id}")
     public RestResponse delete(@PathVariable("id") Long id) {
+        if(id==1){
+            return RestResponse.failure("菜单不能删除");
+        }
         sysMenuService.removeById(id);
+        sysRoleMenuService.remove(new QueryWrapper<SysRoleMenu>().eq("menu_id",id));
         return RestResponse.success("删除菜单成功");
     }
 

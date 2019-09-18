@@ -32,20 +32,20 @@
             content: "";/*\e61a*/
         }
 
-        /** 文件图标 */
-        #auth-table + .treeTable .treeTable-icon .layui-icon-file:before {
-            content: "";
-        }
+        /*!** 文件图标 *!*/
+        /*#auth-table + .treeTable .treeTable-icon .layui-icon-file:before {*/
+        /*    content: "";*/
+        /*}*/
 
-        /** 文件夹未展开 */
-        #auth-table + .treeTable .treeTable-icon .layui-icon-layer:before {
-            content: "";
-        }
+        /*!** 文件夹未展开 *!*/
+        /*#auth-table + .treeTable .treeTable-icon .layui-icon-layer:before {*/
+        /*    content: "";*/
+        /*}*/
 
-        /** 文件夹展开 */
-        #auth-table + .treeTable .treeTable-icon.open .layui-icon-layer:before {
-            content: "\e634";
-        }
+        /*!** 文件夹展开 *!*/
+        /*#auth-table + .treeTable .treeTable-icon.open .layui-icon-layer:before {*/
+        /*    content: "\e634";*/
+        /*}*/
 
     </style>
 </head>
@@ -74,11 +74,11 @@
 </div>
 <!-- 操作列 -->
 <script type="text/html" id="oper-col">
-    <button type="button" class="layui-btn layui-btn-primary layui-btn-sm" style="font-size: 12px" lay-event="add"><i class="layui-icon">&#xe654;</i>添加子菜单
+    <button type="button" class="layui-btn layui-btn-primary layui-btn-xs" style="font-size: 12px" lay-event="add"><i class="layui-icon">&#xe654;</i>添加子菜单
     </button>
-    <button type="button" class="layui-btn layui-btn-primary layui-btn-sm" style="font-size: 12px" lay-event="edit"><i class="layui-icon">&#xe642;</i>编辑菜单
+    <button type="button" class="layui-btn layui-btn-primary layui-btn-xs" style="font-size: 12px" lay-event="edit"><i class="layui-icon">&#xe642;</i>编辑菜单
     </button>
-    <button type="button" class="layui-btn layui-btn-danger  layui-btn-sm" style="font-size: 12px" lay-event="del">删除</button>
+    <button type="button" class="layui-btn layui-btn-danger  layui-btn-xs" style="font-size: 12px" lay-event="del">删除</button>
 </script>
 
 <script th:inline="none">
@@ -202,21 +202,29 @@
                 });
             }
             if (layEvent === 'del') {
-                $.ajax({
-                    type: "POST",
-                    url: "/admin/menu/delete/" + data.id,
-                    dataType: "json",
-                    contentType: "application/json",
-                    success: function (res) {
-                        if (res.success) {
-                            layer.msg("删除成功!", {time: 500}, function () {
-                                location.reload();
-                            });
-                        } else {
-                            layer.msg(res.message);
-                        }
+                if (data.id === 1) {
+                    layer.msg("不能删除该菜单");
+                    return false;
+                }
+                layer.confirm("你确定要删除该菜单吗？", {btn: ['是的,我确定', '我再想想']},
+                    function () {
+                        $.ajax({
+                            type: "POST",
+                            url: "/admin/menu/delete/" + data.id,
+                            dataType: "json",
+                            contentType: "application/json",
+                            success: function (res) {
+                                if (res.success) {
+                                    layer.msg("删除成功!", {time: 500}, function () {
+                                        location.reload();
+                                    });
+                                } else {
+                                    layer.msg(res.message);
+                                }
+                            }
+                        });
                     }
-                });
+                )
             } else if (layEvent === 'edit') {
                 layer.open({
                     title: "菜单修改",
