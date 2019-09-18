@@ -30,7 +30,7 @@ public class SysLog extends Model<SysLog> {
     @TableId(type = IdType.UUID)
     @TableField(value = "id")
     @ApiModelProperty(value = "编号")
-    private Long id;
+    private String id;
 
     @TableField(value = "type")
     @ApiModelProperty(value = "请求类型")

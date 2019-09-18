@@ -26,6 +26,9 @@ import javax.servlet.http.HttpSession;
 import java.lang.reflect.Method;
 import java.util.Map;
 
+/**
+ * @author Alan
+ */
 @Aspect
 @Order(5)
 @Component
@@ -35,10 +38,10 @@ public class WebLogAspect {
 
 
 
-    private SysLog sysLog = null;
 
     @Pointcut("execution(public * com.zqy.ms.user.controller..*.*(..))")
-    public void webLog(){}
+    public void webLog() {
+    }
 
     @Around("webLog()")
     public Object doBefore(ProceedingJoinPoint joinPoint) throws Throwable {
@@ -47,64 +50,63 @@ public class WebLogAspect {
         ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
         HttpServletRequest request = attributes.getRequest();
         HttpSession session = (HttpSession) attributes.resolveReference(RequestAttributes.REFERENCE_SESSION);
-        sysLog = new SysLog();
+        SysLog sysLog = new SysLog();
         sysLog.setClassMethod(joinPoint.getSignature().getDeclaringTypeName() + "." + joinPoint.getSignature().getName());
         sysLog.setHttpMethod(request.getMethod());
         //获取传入目标方法的参数
         Object[] args = joinPoint.getArgs();
         for (int i = 0; i < args.length; i++) {
             Object o = args[i];
-            if(o instanceof ServletRequest || (o instanceof ServletResponse) || o instanceof MultipartFile){
+            if (o instanceof ServletRequest || (o instanceof ServletResponse) || o instanceof MultipartFile) {
                 args[i] = o.toString();
             }
         }
         String str = JSONObject.toJSONString(args);
-        sysLog.setParams(str.length()>5000? JSONObject.toJSONString("请求参数数据过长不与显示"):str);
+        sysLog.setParams(str.length() > 5000 ? JSONObject.toJSONString("请求参数数据过长不与显示") : str);
         String ip = ToolUtil.getClientIp(request);
-        if("0.0.0.0".equals(ip) || "0:0:0:0:0:0:0:1".equals(ip) || "localhost".equals(ip) || "127.0.0.1".equals(ip)){
+        if ("0.0.0.0".equals(ip) || "0:0:0:0:0:0:0:1".equals(ip) || "localhost".equals(ip) || "127.0.0.1".equals(ip)) {
             ip = "127.0.0.1";
         }
         sysLog.setRemoteAddr(ip);
         sysLog.setRequestUri(request.getRequestURL().toString());
-        if(session != null){
+        if (session != null) {
             sysLog.setSessionId(session.getId());
         }
         MethodSignature signature = (MethodSignature) joinPoint.getSignature();
         Method method = signature.getMethod();
+        sysLog.setHttpMethod(method.getName());
 
 
-        Map<String,String> browserMap = ToolUtil.getOsAndBrowserInfo(request);
-        sysLog.setBrowser(browserMap.get("os")+"-"+browserMap.get("browser"));
+        Map<String, String> browserMap = ToolUtil.getOsAndBrowserInfo(request);
+        sysLog.setBrowser(browserMap.get("os") + "-" + browserMap.get("browser"));
 
         //todo ip
-        if(!"127.0.0.1".equals(ip)){
-            Map<String,String> map = (Map<String,String>)session.getAttribute("addressIp");
-            if(map == null){
+        if (!"127.0.0.1".equals(ip)) {
+            Map<String, String> map = (Map<String, String>) session.getAttribute("addressIp");
+            if (map == null) {
                 map = ToolUtil.getAddressByIP(ToolUtil.getClientIp(request));
-                session.setAttribute("addressIp",map);
+                session.setAttribute("addressIp", map);
             }
             sysLog.setArea(map.get("area"));
             sysLog.setProvince(map.get("province"));
             sysLog.setCity(map.get("city"));
             sysLog.setIsp(map.get("isp"));
         }
-        sysLog.setType(ToolUtil.isAjax(request)?"Ajax请求":"普通请求");
+        sysLog.setType(ToolUtil.isAjax(request) ? "Ajax请求" : "普通请求");
         Subject s = SecurityUtils.getSubject();
         SysUser sysUser = (SysUser) s.getPrincipal();
-        if(sysUser != null) {
-            String nickName=sysUser.getNickName();
+        if (sysUser != null) {
+            String nickName = sysUser.getNickName();
             sysLog.setUsername(StringUtils.isNotBlank(nickName) ? nickName : sysUser.getLoginName());
         }
-
-        try {
-            Object object = joinPoint.proceed();// 执行原方法
+        try {// 执行原方法
+            Object object = joinPoint.proceed();
             return object;
         } catch (Exception e) {
             e.printStackTrace();
             sysLog.setException(e.getMessage());
             throw e;
-        }
-        finally {
+        } finally {
             sysLog.setUseTime(System.currentTimeMillis() - startTime.get());
             sysLog.insert();
         }

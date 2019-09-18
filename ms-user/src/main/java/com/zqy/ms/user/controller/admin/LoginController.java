@@ -152,6 +152,7 @@ public class LoginController {
         if (StringUtils.isBlank(error)) {
             //登录成功，缓存权限数据
             String sessionId = SecurityUtils.getSubject().getSession().getId().toString();
+            SecurityUtils.getSubject().getSession().setTimeout(-1000L);
             return RestResponse.success("登录成功").setData(map);
         } else {
             return RestResponse.failure(error);
