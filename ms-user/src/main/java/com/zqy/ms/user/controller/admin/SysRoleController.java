@@ -69,18 +69,17 @@ public class SysRoleController {
         Log.i(sysMenuService.findAllTreeMenus());
         SysRole sysRole = sysRoleService.getById(id);
         List<SysMenu> sysMenus = sysMenuService.findAllMenusByRoleId(id);
-        Log.i("角色菜单"+sysMenus);
+        Log.i("角色菜单" + sysMenus);
         sysRole.setSysMenus(sysMenus);
         model.addAttribute("sysRole", sysRole);
         return "admin/role/edit";
     }
 
 
-
     @PostMapping("save")
     @ResponseBody
     public RestResponse add(@RequestBody SysRole role) {
-        log.info(""+role);
+        log.info("" + role);
         if (StringUtils.isBlank(role.getName())) {
             return RestResponse.failure("角色名称不能为空");
         }
@@ -92,14 +91,14 @@ public class SysRoleController {
                 if (!existRole.getId().equals(role.getId())) {
                     return RestResponse.failure("角色名称已存在");
                 }
+            } else {
+                return RestResponse.failure("角色名称已存在");
             }
         }
         role.setUpdateDate(new Date());
         sysRoleService.saveRole(role);
         return RestResponse.success("操作成功");
     }
-
-
 
 
     @PostMapping("delete")

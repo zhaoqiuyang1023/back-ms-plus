@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--
+
+ @author @Alan
+ @date 2019-09-20 20:49:27
+ -->
+<mapper namespace="com.zqy.ms.user.mapper.PermissionMapper">
+
+    <resultMap type="com.zqy.ms.user.entity.Permission" id="permissionMap">
+        <result property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="sort" column="sort"/>
+        <result property="remarks" column="remarks"/>
+    </resultMap>
+
+    <select id="getPermissionListByPage" resultType="com.zqy.ms.user.entity.Permission">
+
+        select * from permission
+
+        <where>
+            <if test="param.id != null and param.id != ''">
+                AND id=param.id
+            </if>
+            <if test="param.name != null and param.name != ''">
+                AND name=param.name
+            </if>
+            <if test="param.sort != null and param.sort != ''">
+                AND sort=param.sort
+            </if>
+            <if test="param.remarks != null and param.remarks != ''">
+                AND remarks=param.remarks
+            </if>
+
+
+            and a.is_del=0 and c.is_del=0
+
+            order by a.date_update desc
+        </where>
+
+
+    </select>
+
+</mapper>

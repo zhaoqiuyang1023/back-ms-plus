@@ -15,17 +15,17 @@
 </head>
 <body class="childrenBody">
 <fieldset class="layui-elem-field">
-    <legend>角色检索</legend>
+    <legend>功能检索</legend>
     <div class="layui-field-box">
     <form class="layui-form">
         <div class="layui-inline">
-            <input type="text" value="" name="name" placeholder="可以输入角色名" class="layui-input search_input">
+            <input type="text" value="" name="name" placeholder="可以输入功能名" class="layui-input search_input">
         </div>
         <div class="layui-input-inline">
             <a class="layui-btn" lay-submit="" lay-filter="searchForm">查询</a>
         </div>
         <div class="layui-inline">
-            <a class="layui-btn layui-btn-normal" data-type="addUser">添加角色</a>
+            <a class="layui-btn layui-btn-normal" data-type="addUser">添加功能</a>
         </div>
     </form>
     </div>
@@ -51,12 +51,12 @@
             var data = obj.data;
             if(obj.event === 'edit'){
                 var editIndex = layer.open({
-                    title : "编辑角色",
+                    title : "编辑功能",
                     type : 2,
-                    content : "/admin/role/edit/"+data.id,
+                    content : "/permission/edit/"+data.id,
                     success : function(layero, index){
                         setTimeout(function(){
-                            layer.tips('点击此处返回角色列表', '.layui-layer-setwin .layui-layer-close', {
+                            layer.tips('点击此处返回功能列表', '.layui-layer-setwin .layui-layer-close', {
                                 tips: 3
                             });
                         },500);
@@ -69,9 +69,9 @@
                 layer.full(editIndex);
             }
             if(obj.event === "del"){
-                layer.confirm("你确定要删除该角色么？",{btn:['是的,我确定','我再想想']},
+                layer.confirm("你确定要删除该功能么？",{btn:['是的,我确定','我再想想']},
                         function(){
-                            $.post("/admin/role/delete",{"id":data.id},function (res){
+                            $.post("/permission/delete",{"id":data.id},function (res){
                                 if(res.success){
                                     layer.msg("删除成功",{time: 500},function(){
                                         table.reload('test', t);
@@ -89,7 +89,7 @@
         t = {
             elem: '#test',
             even: true,
-            url:'/admin/role/list',
+            url:'/permission/list',
             method:'post',
             page: { //支持传入 laypage 组件的所有参数（某些参数除外，如：jump/elem） - 详见文档
                 layout: ['limit', 'count', 'prev', 'page', 'next', 'skip'], //自定义分页布局
@@ -102,9 +102,9 @@
             cols: [[
                 {type:'checkbox'},
                 {field:'id',          title: 'ID',      width:'13%'},
-                {field:'name',        title: '角色名称' ,width: '25%'  },
-                {field:'createDate',  title: '创建时间',    width:'14%'},
-                {field:'updateDate',  title: '修改时间',    width:'14%'},
+                {field:'name',        title: '功能名称' ,width: '25%'  },
+                {field:'sort',  title: '排序',    width:'14%'},
+                {field:'remarks',  title: '备注',    width:'14%'},
                 {title: '操作',fixed: 'right',  width:'15%',    align: 'center',toolbar: '#barDemo'}
             ]]
         };
@@ -113,12 +113,12 @@
         var active={
             addUser : function(){
                     addIndex = layer.open({
-                    title : "添加角色",
+                    title : "添加功能",
                     type : 2,
-                    content : "/admin/role/add",
+                    content : "/permission/add",
                     success : function(layero, addIndex){
                         setTimeout(function(){
-                            layer.tips('点击此处返回角色列表', '.layui-layer-setwin .layui-layer-close', {
+                            layer.tips('点击此处返回功能列表', '.layui-layer-setwin .layui-layer-close', {
                                 tips: 3
                             });
                         },500);

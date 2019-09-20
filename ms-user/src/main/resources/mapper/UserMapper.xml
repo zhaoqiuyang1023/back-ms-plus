@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+       <!--
+        
+        @author @Alan
+        @date 2019-09-20 22:46:12
+        -->
+<mapper namespace="com.zqy.ms.user.mapper.UserMapper">
+
+    <resultMap type="com.zqy.ms.user.entity.User" id="userMap">
+                    <result property="id" column="id"/>
+                    <result property="username" column="username"/>
+                    <result property="nickName" column="nick_name"/>
+                    <result property="salt" column="salt"/>
+                    <result property="password" column="password"/>
+                    <result property="tel" column="tel"/>
+                    <result property="headImg" column="head_img"/>
+                    <result property="points" column="points"/>
+                    <result property="createDate" column="create_date"/>
+                    <result property="device" column="device"/>
+                    <result property="organizationId" column="organization_id"/>
+                    <result property="admin" column="admin"/>
+            </resultMap>
+
+    <select id="getUserListByPage" resultType="com.zqy.ms.user.entity.User">
+
+        select * from user
+
+        <where>
+                            <if test="param.id != null and param.id != ''">
+                    AND id=param.id
+                </if>
+                            <if test="param.username != null and param.username != ''">
+                    AND username=param.username
+                </if>
+                            <if test="param.nickName != null and param.nickName != ''">
+                    AND nick_name=param.nickName
+                </if>
+                            <if test="param.salt != null and param.salt != ''">
+                    AND salt=param.salt
+                </if>
+                            <if test="param.password != null and param.password != ''">
+                    AND password=param.password
+                </if>
+                            <if test="param.tel != null and param.tel != ''">
+                    AND tel=param.tel
+                </if>
+                            <if test="param.headImg != null and param.headImg != ''">
+                    AND head_img=param.headImg
+                </if>
+                            <if test="param.points != null and param.points != ''">
+                    AND points=param.points
+                </if>
+                            <if test="param.createDate != null and param.createDate != ''">
+                    AND create_date=param.createDate
+                </if>
+                            <if test="param.device != null and param.device != ''">
+                    AND device=param.device
+                </if>
+                            <if test="param.organizationId != null and param.organizationId != ''">
+                    AND organization_id=param.organizationId
+                </if>
+                            <if test="param.admin != null and param.admin != ''">
+                    AND admin=param.admin
+                </if>
+            
+
+            and a.is_del=0 and c.is_del=0
+
+            order by a.date_update desc
+        </where>
+
+
+
+    </select>
+
+</mapper>

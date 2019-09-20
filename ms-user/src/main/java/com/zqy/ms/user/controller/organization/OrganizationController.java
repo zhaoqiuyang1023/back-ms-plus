@@ -1,0 +1,105 @@
+package com.zqy.ms.user.controller.organization;
+
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.zqy.ms.user.entity.Organization;
+import com.zqy.ms.user.entity.User;
+import com.zqy.ms.user.service.OrganizationService;
+import com.zqy.ms.user.service.UserService;
+import com.zqy.ms.user.util.LayerData;
+import com.zqy.ms.user.util.RestResponse;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.ServletRequest;
+import java.util.Date;
+
+
+/**
+ * @author @Alan
+ * @date 2019-09-20 21:56:51
+ */
+@Controller
+@RequestMapping("/organization")
+public class OrganizationController {
+    @Autowired
+    private OrganizationService organizationService;
+
+    @Autowired
+    private UserService userService;
+
+
+    @GetMapping("list")
+    public String list() {
+        return "organization/list";
+    }
+
+    @PostMapping("list")
+    @ResponseBody
+    public LayerData<Organization> list(@RequestParam(value = "page", defaultValue = "1") Integer page,
+                                        @RequestParam(value = "limit", defaultValue = "10") Integer limit,
+                                        ServletRequest request) {
+        LayerData<Organization> userLayerData = new LayerData<>();
+        String name = request.getParameter("name");
+        QueryWrapper<Organization> queryWrapper = new QueryWrapper<>();
+        if (StringUtils.isNotBlank(name)) {
+            queryWrapper.like("name", name);
+        }
+        queryWrapper.orderByDesc("update_date");
+        IPage<Organization> userPage = organizationService.page(new Page<>(page, limit), queryWrapper);
+        userLayerData.setCount(userPage.getTotal());
+        userLayerData.setData(userPage.getRecords());
+        return userLayerData;
+    }
+    @GetMapping("/edit/{id}")
+    public String edit(@PathVariable("id") String id, Model model) {
+
+        Organization organization = organizationService.getById(id);
+        User user = userService.getOne(new QueryWrapper<User>().eq("admin", true).eq("organization_id", organization.getId()));
+        model.addAttribute("organization", organization);
+        model.addAttribute("user", user);
+        return "organization/edit";
+    }
+
+
+    @PostMapping("save")
+    @ResponseBody
+    public RestResponse add(@RequestBody Organization organization) {
+        if (StringUtils.isBlank(organization.getName())) {
+            return RestResponse.failure("名称不能为空");
+        }
+        Organization existRole = organizationService.getOne(new QueryWrapper<Organization>().eq("name", organization.getName()));
+        if (existRole != null) {
+            //如是修改
+            if (StringUtils.isNotBlank(organization.getId())) {
+                //两条角色的id不一样
+                if (!existRole.getId().equals(organization.getId())) {
+                    return RestResponse.failure("名称已存在");
+                }
+            } else {
+                return RestResponse.failure("名称已存在");
+            }
+
+        }
+        organization.setUpdateDate(new Date());
+        organizationService.saveOrUpdate(organization);
+        return RestResponse.success("操作成功");
+    }
+
+
+    @PostMapping("delete")
+    @ResponseBody
+    public RestResponse delete(@RequestParam(value = "id", required = false) Long id) {
+        if (id == null || id == 0) {
+            return RestResponse.failure("功能id不能为空");
+        }
+        organizationService.removeById(id);
+
+        return RestResponse.success("操作成功");
+    }
+
+}

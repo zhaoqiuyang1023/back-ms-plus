@@ -163,6 +163,7 @@
                     parent.layer.msg("菜单修改成功!", {time: 1500}, function () {
                         //刷新父页面
                         parent.location.reload();
+                        parent.parent.location.reload();
                     });
                 } else {
                     layer.msg(res.message);
