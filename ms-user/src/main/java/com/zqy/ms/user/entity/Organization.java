@@ -40,6 +40,7 @@ public class Organization extends Model<Organization> {
     private String address;
 
     @TableField(value = "del")
+    @TableLogic
     @ApiModelProperty(value = "是否删除0是未删除1是已删除")
     private Boolean del;
 
@@ -57,6 +58,11 @@ public class Organization extends Model<Organization> {
     @TableField(value = "update_date")
     @ApiModelProperty(value = "创建时间")
     private Date  updateDate;
+
+
+    @TableField(value = "locked")
+    @ApiModelProperty(value = "1是不可用0是可用")
+    private Boolean locked;
     /**
      * primary key
      */

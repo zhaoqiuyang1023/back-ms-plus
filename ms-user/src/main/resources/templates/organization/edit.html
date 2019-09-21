@@ -67,6 +67,14 @@
             </div>
         </div>
 
+        <div class="layui-form-item">
+            <label class="layui-form-label">是否启用</label>
+            <div class="layui-input-block">
+                <input type="radio" name="locked" value="false" title="启动" th:checked="${organization.locked==false}" >
+                <input type="radio" name="locked" value="true" title="停用" th:checked="${organization.locked==true}" >
+            </div>
+        </div>
+
 
         <div class="layui-form-item" style="padding-left: 30%;">
             <div class="layui-input-block">

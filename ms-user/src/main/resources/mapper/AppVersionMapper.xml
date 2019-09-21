@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+       <!--
+        
+        @author @Alan
+        @date 2019-09-21 10:44:38
+        -->
+<mapper namespace="com.zqy.ms.user.mapper.AppVersionMapper">
+
+    <resultMap type="com.zqy.ms.user.entity.AppVersion" id="appVersionMap">
+                    <result property="appVersionNo" column="app_version_no"/>
+                    <result property="appVersionName" column="app_version_name"/>
+                    <result property="appDownloadUrl" column="app_download_url"/>
+                    <result property="organizationId" column="organization_id"/>
+                    <result property="forceUpdate" column="force_update"/>
+    </resultMap>
+
+    <select id="getAppVersionListByPage" resultType="com.zqy.ms.user.entity.AppVersion">
+
+        select * from app_version
+
+        <where>
+                            <if test="param.appVersionNo != null and param.appVersionNo != ''">
+                    AND app_version_no=param.appVersionNo
+                </if>
+                            <if test="param.appVersionName != null and param.appVersionName != ''">
+                    AND app_version_name=param.appVersionName
+                </if>
+                            <if test="param.appDownloadUrl != null and param.appDownloadUrl != ''">
+                    AND app_download_url=param.appDownloadUrl
+                </if>
+                            <if test="param.organization != null and param.organization != ''">
+                    AND organization=param.organization
+                </if>
+                            <if test="param.forceUpdate != null and param.forceUpdate != ''">
+                    AND force_update=param.forceUpdate
+                </if>
+            
+
+            and a.is_del=0 and c.is_del=0
+
+            order by a.date_update desc
+        </where>
+
+
+
+    </select>
+
+</mapper>

@@ -10,7 +10,9 @@ import com.zqy.ms.user.service.SysMenuService;
 import com.zqy.ms.user.service.SysRoleService;
 import com.zqy.ms.user.service.SysUserService;
 import com.zqy.ms.user.util.LayerData;
+import com.zqy.ms.user.util.Log;
 import com.zqy.ms.user.util.RestResponse;
+import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -198,6 +200,35 @@ public class SysUserController {
         Subject s = SecurityUtils.getSubject();
         SysUser sysUser = (SysUser) s.getPrincipal();
         return sysMenuService.findAllTreeShowMenuByUserId(sysUser.getId());
+    }
+
+
+
+    @ApiOperation(value = "修改")
+    @PostMapping("/updateInfo")
+    @ResponseBody
+    public RestResponse updateInfo(SysUser sysUser) {
+        Log.i(sysUser);
+        if(sysUser==null){
+            return RestResponse.failure("用户不能为空");
+        }
+        SysUser oldSysUser =  (SysUser) SecurityUtils.getSubject().getPrincipal();
+        oldSysUser.setIcon(sysUser.getIcon());
+        oldSysUser.setNickName(sysUser.getNickName());
+        oldSysUser.setTel(sysUser.getTel());
+        oldSysUser.setEmail(sysUser.getEmail());
+        return sysUserService.updateById(sysUser) ? RestResponse.success("修改成功") : RestResponse.failure("验证码超时");
+    }
+
+
+    @ApiOperation(value = "跳转到页面编辑界面")
+    @GetMapping("updateInfo")
+    public String edit(Model model) {
+        SysUser sysUser =  (SysUser) SecurityUtils.getSubject().getPrincipal();
+        SysUser user = sysUserService.findUserById(sysUser.getId());
+        Log.i(user.getSysMenus());
+        model.addAttribute("userinfo", user);
+        return "admin/user/userInfo";
     }
 
 

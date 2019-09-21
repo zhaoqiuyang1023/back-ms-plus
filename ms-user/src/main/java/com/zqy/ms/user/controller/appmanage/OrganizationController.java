@@ -1,4 +1,4 @@
-package com.zqy.ms.user.controller.organization;
+package com.zqy.ms.user.controller.appmanage;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -9,6 +9,8 @@ import com.zqy.ms.user.service.OrganizationService;
 import com.zqy.ms.user.service.UserService;
 import com.zqy.ms.user.util.LayerData;
 import com.zqy.ms.user.util.RestResponse;
+import io.swagger.annotations.Api;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.ServletRequest;
 import java.util.Date;
+import java.util.List;
 
 
 /**
@@ -24,6 +27,8 @@ import java.util.Date;
  * @date 2019-09-20 21:56:51
  */
 @Controller
+@Slf4j
+@Api(tags = "app公司管理")
 @RequestMapping("/organization")
 public class OrganizationController {
     @Autowired
@@ -51,17 +56,22 @@ public class OrganizationController {
         }
         queryWrapper.orderByDesc("update_date");
         IPage<Organization> userPage = organizationService.page(new Page<>(page, limit), queryWrapper);
+
         userLayerData.setCount(userPage.getTotal());
         userLayerData.setData(userPage.getRecords());
         return userLayerData;
     }
+
     @GetMapping("/edit/{id}")
     public String edit(@PathVariable("id") String id, Model model) {
-
+        log.info(id);
         Organization organization = organizationService.getById(id);
-        User user = userService.getOne(new QueryWrapper<User>().eq("admin", true).eq("organization_id", organization.getId()));
+        User user = userService.getOne(new QueryWrapper<User>().eq("admin", 1).eq("organization_id", id));
+        log.info(""+user);
         model.addAttribute("organization", organization);
-        model.addAttribute("user", user);
+        if(user!=null){
+            model.addAttribute("user", user);
+        }
         return "organization/edit";
     }
 
@@ -93,10 +103,8 @@ public class OrganizationController {
 
     @PostMapping("delete")
     @ResponseBody
-    public RestResponse delete(@RequestParam(value = "id", required = false) Long id) {
-        if (id == null || id == 0) {
-            return RestResponse.failure("功能id不能为空");
-        }
+    public RestResponse delete(@RequestParam(value = "id", required = false) String id) {
+
         organizationService.removeById(id);
 
         return RestResponse.success("操作成功");

@@ -25,6 +25,9 @@ public class RegisterAO {
     @ApiModelProperty(value = "公司地址")
     private String address;
 
+    @ApiModelProperty(value = "是否启用")
+    private Boolean locked;
+
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @TableField(value = "cut_off_date")
     @ApiModelProperty(value = "到期时间")

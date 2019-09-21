@@ -1,4 +1,4 @@
-package com.zqy.ms.user.controller;
+package com.zqy.ms.user.controller.appmanage;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -7,6 +7,7 @@ import com.zqy.ms.user.entity.Permission;
 import com.zqy.ms.user.service.PermissionService;
 import com.zqy.ms.user.util.LayerData;
 import com.zqy.ms.user.util.RestResponse;
+import io.swagger.annotations.Api;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -22,6 +23,7 @@ import javax.servlet.ServletRequest;
  */
 @Controller
 @RequestMapping("/permission")
+@Api(tags = "app功能管理")
 public class PermissionController {
     @Autowired
     private PermissionService permissionService;

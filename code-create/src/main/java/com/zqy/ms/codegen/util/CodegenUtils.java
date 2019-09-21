@@ -30,7 +30,9 @@ public class CodegenUtils {
     private static final String SERVICE_IMPL_JAVA_VM = "ServiceImpl.java.vm";
     private static final String CONTROLLER_JAVA_VM = "Controller.java.vm";
     private static final String MAPPER_XML_VM = "Mapper.xml.vm";
-
+    private static final String ADD_HTML_VM = "add.html";
+    private static final String EDIT_HTML_VM = "edit.html";
+    private static final String LIST_HTML_VM = "list.html";
 
     private static List<String> getTemplates() {
         List<String> templates = new ArrayList<>();
@@ -40,6 +42,10 @@ public class CodegenUtils {
         templates.add("template/Service.java.vm");
         templates.add("template/ServiceImpl.java.vm");
         templates.add("template/Controller.java.vm");
+
+        templates.add("template/add.html");
+        templates.add("template/edit.html");
+        templates.add("template/list.html");
         return templates;
     }
 
@@ -139,7 +145,7 @@ public class CodegenUtils {
             map.put("package", "");
             map.put("mainPath", "");
         }
-         VelocityContext context = new VelocityContext(map);
+        VelocityContext context = new VelocityContext(map);
 
         //get template info
         List<String> templates = getTemplates();
@@ -152,7 +158,7 @@ public class CodegenUtils {
             try {
                 //add to zip
                 zip.putNextEntry(new ZipEntry(Objects
-                        .requireNonNull(getFileName(template, tableEntity.getCaseClassName()
+                        .requireNonNull(getFileName(template, tableEntity.getCaseClassName(), tableEntity.getLowerClassName().toLowerCase()
                                 , map.get("package").toString()))));
                 IoUtil.write(zip, CharsetUtil.UTF_8, false, sw.toString());
                 IoUtil.close(sw);
@@ -192,7 +198,7 @@ public class CodegenUtils {
     /**
      * Get file name
      */
-    private static String getFileName(String template, String className, String packageName) {
+    private static String getFileName(String template, String className, String classname, String packageName) {
         String packagePath = "";
         if (StringUtils.isNotBlank(packageName)) {
             // packagePath += packageName.replace(".", File.separator) + File.separator + File.separator;
@@ -220,10 +226,19 @@ public class CodegenUtils {
         }
 
         if (template.contains(MAPPER_XML_VM)) {
-            return  "resources" + File.separator + "mapper" + File.separator + className + "Mapper.xml";
+            return "resources" + File.separator + "mapper" + File.separator + className + "Mapper.xml";
         }
-
+        if (template.contains(ADD_HTML_VM)) {
+            return "resources" + File.separator + "templates" + File.separator + classname + File.separator + "add.html";
+        }
+        if (template.contains(EDIT_HTML_VM)) {
+            return "resources" + File.separator + "templates" + File.separator + classname + File.separator + "edit.html";
+        }
+        if (template.contains(LIST_HTML_VM)) {
+            return "resources" + File.separator + "templates" + File.separator + classname + File.separator + "list.html";
+        }
         return null;
+
     }
 
 

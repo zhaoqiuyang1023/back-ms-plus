@@ -13,7 +13,7 @@ import java.util.Date;
 
 /**
  * @author @Alan
- * @date 2019-09-20 22:46:12
+ * @date 2019-09-21 13:00:03
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
@@ -60,11 +60,6 @@ public class User extends Model<User> {
     @ApiModelProperty(value = "创建时间")
     private Date createDate;
 
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    @TableField(value = "update_date")
-    @ApiModelProperty(value = "创建时间")
-    private Date updateDate;
-
     @TableField(value = "device")
     @ApiModelProperty(value = "设备标识")
     private String device;
@@ -73,14 +68,27 @@ public class User extends Model<User> {
     @ApiModelProperty(value = "公司编号")
     private String organizationId;
 
+    @ApiModelProperty(value = "公司名称")
+    @TableField(exist = false)
+    private String organizationName;
+
     @TableField(value = "admin")
     @ApiModelProperty(value = "是否是管理员")
     private Boolean admin;
 
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @TableField(value = "update_date")
+    @ApiModelProperty(value = "修改时间")
+    private Date updateDate;
+
     @TableField(value = "del")
     @TableLogic
-    @ApiModelProperty(value = "是否是管理员")
+    @ApiModelProperty(value = "是否删除")
     private Boolean del;
+
+    @TableField(value = "locked")
+    @ApiModelProperty(value = "1是不可用0是可用")
+    private Boolean locked;
 
     /**
      * primary key
