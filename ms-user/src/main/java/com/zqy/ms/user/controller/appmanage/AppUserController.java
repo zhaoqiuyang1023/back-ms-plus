@@ -9,6 +9,7 @@ import com.zqy.ms.user.entity.ao.RegisterAO;
 import com.zqy.ms.user.service.OrganizationService;
 import com.zqy.ms.user.service.UserService;
 import com.zqy.ms.user.util.LayerData;
+import com.zqy.ms.user.util.PasswordEncoderUtils;
 import com.zqy.ms.user.util.RestResponse;
 import io.swagger.annotations.Api;
 import org.apache.commons.lang3.StringUtils;
@@ -16,7 +17,6 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.ServletRequest;
@@ -61,7 +61,7 @@ public class AppUserController {
         List<User> users = userPage.getRecords();
         for (User user : users) {
             Organization organization = organizationService.getById(user.getOrganizationId());
-            if(organization!=null){
+            if (organization != null) {
                 user.setOrganizationName(organization.getName());
             }
         }
@@ -105,13 +105,11 @@ public class AppUserController {
         organization.insert();
 
         User user = new User();
-        String salt = "123456";
-        String passwork = "123456";
-        user.setSalt(salt);
-        String md5Password = DigestUtils.md5DigestAsHex((passwork + salt).getBytes());
+
+        String bCryptPassword = PasswordEncoderUtils.encode("123456");
         BeanUtils.copyProperties(registerAo, user);
         user.setUpdateDate(new Date());
-        user.setPassword(md5Password);
+        user.setPassword(bCryptPassword);
         user.setOrganizationId(organization.getId());
         userService.save(user);
         return RestResponse.success("操作成功");

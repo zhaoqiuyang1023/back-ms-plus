@@ -14,17 +14,9 @@ import org.springframework.util.StringUtils;
 public class PasswordEncoderUtils {
 
 
-    private String salt;
 
     private static BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
 
-    public PasswordEncoderUtils(String salt) {
-        this.salt = salt;
-    }
-
-    public PasswordEncoderUtils() {
-        this.salt = null;
-    }
 
 
     /**
@@ -33,7 +25,7 @@ public class PasswordEncoderUtils {
      * @param raw String 原始密码
      * @return String 加密后的密码
      */
-    public String encode(CharSequence raw) {
+    public static  String encode(CharSequence raw) {
         return bCryptPasswordEncoder.encode(raw);
     }
 
@@ -48,11 +40,6 @@ public class PasswordEncoderUtils {
         log.info("原始密码" + raw);
         log.info("数据库存入的密码" + encodePassword);
 
-        String md5Password = DigestUtils.md5DigestAsHex(raw.toString().getBytes());
-        log.info("mdf" + md5Password);
-        if (!StringUtils.isEmpty(salt)) {
-            md5Password = DigestUtils.md5DigestAsHex((raw.toString() + salt).getBytes());
-        }
-        return bCryptPasswordEncoder.matches(raw, encodePassword) || md5Password.equals(encodePassword);
+        return bCryptPasswordEncoder.matches(raw, encodePassword);
     }
 }
