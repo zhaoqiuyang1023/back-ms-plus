@@ -74,15 +74,16 @@ public class PermissionController {
         if (StringUtils.isBlank(permission.getName())) {
             return RestResponse.failure("角色名称不能为空");
         }
-        Permission existRole = permissionService.getOne(new QueryWrapper<Permission>().eq("name", permission.getName()));
-        if (existRole != null) {
+        Permission existPermission = permissionService.getOne(new QueryWrapper<Permission>().eq("name", permission.getName()));
+        if (existPermission != null) {
             //如是修改
             if (StringUtils.isNotBlank(permission.getId())) {
                 //两条角色的id不一样
-                if (!existRole.getId().equals(permission.getId())) {
+                if (!existPermission.getId().equals(permission.getId())) {
                     return RestResponse.failure("名称已存在");
                 }
-            } else {
+            }//是添加
+            else {
                 return RestResponse.failure("名称已存在");
             }
 
@@ -94,7 +95,7 @@ public class PermissionController {
 
     @PostMapping("delete")
     @ResponseBody
-    public RestResponse delete(@RequestParam(value = "id", required = false) String id) {
+    public RestResponse delete(@RequestParam(value = "id") String id) {
 
         permissionService.removeById(id);
 

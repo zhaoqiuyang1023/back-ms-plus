@@ -90,12 +90,15 @@ public class AppUserController {
     @PostMapping("register")
     @ResponseBody
     public RestResponse add(@RequestBody RegisterAO registerAo) {
+        if (StringUtils.isBlank(registerAo.getTel())) {
+            return RestResponse.failure("手机号不能为空");
+        }
         if (StringUtils.isBlank(registerAo.getUsername())) {
             return RestResponse.failure("名称不能为空");
         }
-        User existRole = userService.getOne(new QueryWrapper<User>().eq("username", registerAo.getUsername()));
+        User existRole = userService.getOne(new QueryWrapper<User>().eq("tel", registerAo.getUsername()));
         if (existRole != null) {
-            return RestResponse.failure("操作失败用户名已存在");
+            return RestResponse.failure("手机号已经存在");
         }
         Organization organization = new Organization();
         BeanUtils.copyProperties(registerAo, organization);
@@ -121,10 +124,10 @@ public class AppUserController {
         if (StringUtils.isBlank(registerAo.getUsername())) {
             return RestResponse.failure("名称不能为空");
         }
-        User existRole = userService.getOne(new QueryWrapper<User>().eq("username", registerAo.getUsername()));
+        User existRole = userService.getOne(new QueryWrapper<User>().eq("tel", registerAo.getTel()));
         if (existRole != null) {
             if (!existRole.getId().equals(registerAo.getId())) {
-                return RestResponse.failure("操作失败名称已存在");
+                return RestResponse.failure("操作失败手机号已存在");
             }
         }
         User user = userService.getById(registerAo.getId());

@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>用户总数--layui后台管理模板</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <script th:src="@{/static/layui/layui.js}"></script>
+    <link rel="stylesheet" th:href="@{/static/layui/css/layui.css}">
+    <link rel="stylesheet" href="../../../static/layui/css/layui.css" media="all"/>
+</head>
+<body class="childrenBody">
+<fieldset class="layui-elem-field">
+    <legend>信息检索</legend>
+    <div class="layui-field-box">
+
+        <form class="layui-form" id="searchForm">
+
+            <div class="layui-row">
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label">时间</label>
+                    <div class="layui-input-inline">
+                        <input class="layui-input datetime" name="dateStart" id="dateStart" type="text"
+                               placeholder="yyyy-MM-dd HH:mm:ss">
+                    </div>
+
+                    <label class="layui-form-label">账号</label>
+                    <div class="layui-input-inline">
+                        <input class="layui-input " name="username" id="username" type="text">
+                    </div>
+                    <div class="layui-input-inline">
+                        <button class="layui-btn" lay-submit lay-filter="searchForm">查询</button>
+                    </div>
+
+
+                </div>
+
+
+            </div>
+
+        </form>
+    </div>
+
+</fieldset>
+<div class="layui-form users_list">
+    <table class="layui-table" id="jpushTable" lay-filter="jpushTable"></table>
+
+    <script type="text/html" id="barOpt">
+
+        <a class="layui-btn layui-btn-danger layui-btn-xs layui-anim layui-anim-scaleSpring"
+           style="background-color: red" title="删除" lay-event="del">删除</a>
+
+
+    </script>
+</div>
+<script>
+    layui.use(['layer', 'laytpl', 'form', 'table', 'laydate', 'element'], function () {
+        let beginTime;
+        let endTime;
+        let layer = layui.layer,
+            $ = layui.jquery,
+            form = layui.form,
+            element = layui.element,
+            table = layui.table,
+            laydate = layui.laydate,
+            laytpl = layui.laytpl;
+
+        //日期时间选择器
+        laydate.render({
+            elem: '#dateStart'
+            , range: '~',
+            done: function (value, date) {
+                console.log(value);
+                let str = value.split('~');
+                beginTime = str[0];
+                endTime = str[1];
+                console.log(beginTime);
+                console.log(endTime)
+            }
+        });
+
+
+        var t = {
+            elem: '#jpushTable',
+            url: '/visitor/list',
+            method: 'POST',
+            where: {},
+            page: { //支持传入 laypage 组件的所有参数（某些参数除外，如：jump/elem） - 详见文档
+                layout: ['limit', 'count', 'prev', 'page', 'next', 'skip'], //自定义分页布局
+                //,curr: 5 //设定初始在第 5 页
+                groups: 7, //只显示 1 个连续页码
+                first: "首页", //显示首页
+                last: "尾页", //显示尾页
+                limits: [3, 10, 20, 30]
+            },
+            cellMinWidth: 80, //全局定义常规单元格的最小宽度，layui 2.2.1 新增
+            cols: [[
+                {field: 'dateCreate', title: '操作', width: '20%'},
+                {field: 'ip', title: 'ip地址', width: '20%'},
+                {field: 'username', title: '登录用户', width: '35%'},
+                {field: 'country', title: '国家地区', width: '30%'},
+            ]]
+        };
+
+        table.render(t);
+
+        form.on("submit(searchForm)", function (data) {
+            table.reload('jpushTable', {
+                where: {
+                    "beginTime": beginTime,
+                    "endTime": endTime,
+                    "username":$("#username").val(),
+                },
+                page: {
+                    curr: 1 //重新从第 1 页开始
+                }
+            });
+            return false;
+        });
+    });
+</script>
+
+
+</body>
+</html>

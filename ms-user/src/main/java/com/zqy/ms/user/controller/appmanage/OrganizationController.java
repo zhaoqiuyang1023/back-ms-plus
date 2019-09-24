@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.ServletRequest;
 import java.util.Date;
-import java.util.List;
 
 
 /**
@@ -103,7 +102,7 @@ public class OrganizationController {
 
     @PostMapping("delete")
     @ResponseBody
-    public RestResponse delete(@RequestParam(value = "id", required = false) String id) {
+    public RestResponse delete(@RequestParam(value = "id") String id) {
 
         organizationService.removeById(id);
 

@@ -4,7 +4,6 @@ import com.zqy.ms.user.entity.SysRescource;
 import com.zqy.ms.user.entity.SysUser;
 import com.zqy.ms.user.entity.vo.FileVO;
 import com.zqy.ms.user.service.SysRescourceService;
-import com.zqy.ms.user.util.R;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
