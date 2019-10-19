@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+       <!--
+        
+        @author Alan
+        @date 2019-10-17 22:18:32
+        -->
+<mapper namespace="com.zqy.ms.user.mapper.DeliveryOrderMapper">
+
+    <resultMap type="com.zqy.ms.user.entity.DeliveryOrder" id="deliveryOrderMap">
+                    <result property="id" column="id"/>
+                    <result property="no" column="no"/>
+                    <result property="shopId" column="shop_id"/>
+                    <result property="shopName" column="shop_name"/>
+                    <result property="driverOrderId" column="driver_order_id"/>
+                    <result property="money" column="money"/>
+                    <result property="operatorId" column="operator_id"/>
+                    <result property="operatorName" column="operator_name"/>
+                    <result property="remark" column="remark"/>
+                    <result property="createDate" column="create_date"/>
+                    <result property="signatureImage" column="signature_image"/>
+                    <result property="routeId" column="route_id"/>
+                    <result property="routeName" column="route_name"/>
+                    <result property="locked" column="locked"/>
+                    <result property="goodsNum" column="goods_num"/>
+                    <result property="boxNum" column="box_num"/>
+                    <result property="backGoodsNum" column="back_goods_num"/>
+                    <result property="backBoxNum" column="back_box_num"/>
+                    <result property="organizationId" column="organization_id"/>
+                    <result property="numberOfWreck" column="number_of_wreck"/>
+                    <result property="paid" column="paid"/>
+                    <result property="payDate" column="pay_date"/>
+                    <result property="payUser" column="pay_user"/>
+                    <result property="outStorageId" column="out_storage_id"/>
+                    <result property="inStorageId" column="in_storage_id"/>
+                    <result property="driverId" column="driver_id"/>
+                    <result property="driverName" column="driver_name"/>
+                    <result property="price" column="price"/>
+            </resultMap>
+
+    <select id="getDeliveryOrderListByPage" resultType="com.zqy.ms.user.entity.DeliveryOrder">
+
+        select * from delivery_order
+
+        <where>
+                            <if test="param.id != null and param.id != ''">
+                    AND id=param.id
+                </if>
+                            <if test="param.no != null and param.no != ''">
+                    AND no=param.no
+                </if>
+                            <if test="param.shopId != null and param.shopId != ''">
+                    AND shop_id=param.shopId
+                </if>
+                            <if test="param.shopName != null and param.shopName != ''">
+                    AND shop_name=param.shopName
+                </if>
+                            <if test="param.driverOrderId != null and param.driverOrderId != ''">
+                    AND driver_order_id=param.driverOrderId
+                </if>
+                            <if test="param.money != null and param.money != ''">
+                    AND money=param.money
+                </if>
+                            <if test="param.operatorId != null and param.operatorId != ''">
+                    AND operator_id=param.operatorId
+                </if>
+                            <if test="param.operatorName != null and param.operatorName != ''">
+                    AND operator_name=param.operatorName
+                </if>
+                            <if test="param.remark != null and param.remark != ''">
+                    AND remark=param.remark
+                </if>
+                            <if test="param.createDate != null and param.createDate != ''">
+                    AND create_date=param.createDate
+                </if>
+                            <if test="param.signatureImage != null and param.signatureImage != ''">
+                    AND signature_image=param.signatureImage
+                </if>
+                            <if test="param.routeId != null and param.routeId != ''">
+                    AND route_id=param.routeId
+                </if>
+                            <if test="param.routeName != null and param.routeName != ''">
+                    AND route_name=param.routeName
+                </if>
+                            <if test="param.locked != null and param.locked != ''">
+                    AND locked=param.locked
+                </if>
+                            <if test="param.goodsNum != null and param.goodsNum != ''">
+                    AND goods_num=param.goodsNum
+                </if>
+                            <if test="param.boxNum != null and param.boxNum != ''">
+                    AND box_num=param.boxNum
+                </if>
+                            <if test="param.backGoodsNum != null and param.backGoodsNum != ''">
+                    AND back_goods_num=param.backGoodsNum
+                </if>
+                            <if test="param.backBoxNum != null and param.backBoxNum != ''">
+                    AND back_box_num=param.backBoxNum
+                </if>
+                            <if test="param.organizationId != null and param.organizationId != ''">
+                    AND organization_id=param.organizationId
+                </if>
+                            <if test="param.numberOfWreck != null and param.numberOfWreck != ''">
+                    AND number_of_wreck=param.numberOfWreck
+                </if>
+                            <if test="param.paid != null and param.paid != ''">
+                    AND paid=param.paid
+                </if>
+                            <if test="param.payDate != null and param.payDate != ''">
+                    AND pay_date=param.payDate
+                </if>
+                            <if test="param.payUser != null and param.payUser != ''">
+                    AND pay_user=param.payUser
+                </if>
+                            <if test="param.outStorageId != null and param.outStorageId != ''">
+                    AND out_storage_id=param.outStorageId
+                </if>
+                            <if test="param.inStorageId != null and param.inStorageId != ''">
+                    AND in_storage_id=param.inStorageId
+                </if>
+                            <if test="param.driverId != null and param.driverId != ''">
+                    AND driver_id=param.driverId
+                </if>
+                            <if test="param.driverName != null and param.driverName != ''">
+                    AND driver_name=param.driverName
+                </if>
+                            <if test="param.price != null and param.price != ''">
+                    AND price=param.price
+                </if>
+            
+
+            and a.is_del=0 and c.is_del=0
+
+            order by a.date_update desc
+        </where>
+
+
+
+    </select>
+
+</mapper>

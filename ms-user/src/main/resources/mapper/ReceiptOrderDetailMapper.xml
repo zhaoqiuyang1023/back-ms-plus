@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--
+
+ @author Alan
+ @date 2019-10-17 22:18:32
+ -->
+<mapper namespace="com.zqy.ms.user.mapper.ReceiptOrderDetailMapper">
+
+    <resultMap type="com.zqy.ms.user.entity.ReceiptOrderDetail" id="receiptOrderDetailMap">
+        <result property="id" column="id"/>
+        <result property="receiptOrderId" column="receipt_order_id"/>
+        <result property="deliveryOrderId" column="delivery_order_id"/>
+        <result property="money" column="money"/>
+    </resultMap>
+
+    <select id="getReceiptOrderDetailListByPage" resultType="com.zqy.ms.user.entity.ReceiptOrderDetail">
+
+        select * from receipt_order_detail
+
+        <where>
+            <if test="param.id != null and param.id != ''">
+                AND id=param.id
+            </if>
+            <if test="param.receiptOrderId != null and param.receiptOrderId != ''">
+                AND receipt_order_id=param.receiptOrderId
+            </if>
+            <if test="param.deliveryOrderId != null and param.deliveryOrderId != ''">
+                AND delivery_order_id=param.deliveryOrderId
+            </if>
+            <if test="param.money != null and param.money != ''">
+                AND money=param.money
+            </if>
+
+
+            and a.is_del=0 and c.is_del=0
+
+            order by a.date_update desc
+        </where>
+
+
+    </select>
+
+</mapper>

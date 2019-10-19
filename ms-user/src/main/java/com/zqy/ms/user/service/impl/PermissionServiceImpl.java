@@ -21,11 +21,5 @@ import java.util.List;
 @Service("permissionService")
 public class PermissionServiceImpl extends ServiceImpl<PermissionMapper, Permission> implements PermissionService {
 
-    @Autowired
-    private PermissionMapper permissionMapper;
 
-    @Override
-    public List<Permission> getPermissionListByPage(Page page, @Param("param") Map<String, Object> map) {
-        return permissionMapper.getPermissionListByPage(page, map);
-    }
 }

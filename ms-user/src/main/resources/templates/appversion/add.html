@@ -32,7 +32,6 @@
         <legend>AppVersion信息</legend>
     </fieldset>
 
-    
 
     <div class="layui-form-item">
         <label class="layui-form-label">app版本号</label>
@@ -42,8 +41,7 @@
         </div>
     </div>
 
-        
-    
+
     <div class="layui-form-item">
         <label class="layui-form-label">app版本名称</label>
         <div class="layui-input-block">
@@ -52,8 +50,15 @@
         </div>
     </div>
 
-        
-    
+    <div class="layui-form-item">
+        <label class="layui-form-label">升级说明</label>
+        <div class="layui-input-block">
+            <input type="text" name='content'
+                   autocomplete="off" placeholder="升级说明" class="layui-input">
+        </div>
+    </div>
+
+
     <div class="layui-form-item">
         <label class="layui-form-label">下载地址</label>
         <div class="layui-input-block">
@@ -62,54 +67,16 @@
         </div>
     </div>
 
-        
-    
+
+
     <div class="layui-form-item">
-        <label class="layui-form-label">需要更新的公司如果all是1这个就忽略</label>
+        <label class="layui-form-label">强制更新</label>
         <div class="layui-input-block">
-            <input type="text" name='organizationId'
-                   autocomplete="off" placeholder="需要更新的公司如果all是1这个就忽略" class="layui-input">
+            <input type="radio" name="forceUpdate" value="1" title="是" checked >
+            <input type="radio" name="forceUpdate" value="0" title="否"  >
         </div>
     </div>
 
-
-    
-    <div class="layui-form-item">
-        <label class="layui-form-label">强制更新1是强制更新</label>
-
-        <div class="layui-input-block">
-            <input type="radio" name="forceUpdate" value="true" checked="checked" title="强制更新">
-            <input type="radio" name="forceUpdate" value="false" title="选择更新">
-        </div>
-    </div>
-
-        
-    
-    <div class="layui-form-item">
-        <label class="layui-form-label">全部更新</label>
-        <div class="layui-input-block">
-            <input type="radio" name="allUpdate" value="true" checked="checked" title="全部更新">
-            <input type="radio" name="allUpdate" value="false" title="选择更新">
-        </div>
-    </div>
-
-        
-        <div class="layui-form-item">
-        <label class="layui-form-label">创建时间</label>
-        <div class="layui-inline">
-            <input type="text" name='createDate' class="layui-input"
-                   id="test1" placeholder="yyyy-MM-dd">
-        </div>
-    </div>
-        
-        <div class="layui-form-item">
-        <label class="layui-form-label">开始时间</label>
-        <div class="layui-inline">
-            <input type="text" name='startTime' class="layui-input"
-                   id="startTime" placeholder="yyyy-MM-dd">
-        </div>
-    </div>
-        
 
     <div class="layui-form-item" style="padding-left: 30%;">
         <div class="layui-input-block">
@@ -139,7 +106,7 @@
             console.log(JSON.stringify(data.field));
             $.ajax({
                 type: "POST",
-                url: "/appversion/add",
+                url: "/appversion/save",
                 dataType: "json",
                 contentType: "application/json",
                 data: JSON.stringify(data.field),

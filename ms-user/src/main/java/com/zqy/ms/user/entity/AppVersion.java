@@ -35,31 +35,28 @@ public class AppVersion extends Model<AppVersion> {
     @ApiModelProperty(value = "")
     private String appVersionName;
 
+
+    @TableField(value = "content")
+    @ApiModelProperty(value = "")
+    private String content;
+
     @TableField(value = "app_download_url")
     @ApiModelProperty(value = "")
     private String appDownloadUrl;
 
-    @TableField(value = "organization_id")
-    @ApiModelProperty(value = "")
-    private String organizationId;
+
 
     @TableField(value = "force_update")
     @ApiModelProperty(value = "")
-    private String forceUpdate;
+    private Integer forceUpdate;
 
-    @TableField(value = "all_update")
-    @ApiModelProperty(value = "")
-    private Boolean allUpdate;
+
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @TableField(value = "create_date")
     @ApiModelProperty(value = "")
     private Date createDate;
 
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    @TableField(value = "start_time")
-    @ApiModelProperty(value = "开始时间")
-    private Date startTime;
 
     /**
      * primary key

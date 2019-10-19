@@ -28,22 +28,23 @@ import java.util.List;
 @Slf4j
 public class JpushClientUtil {
 
-    @Value("${jpush.APP_KEY}")
-    private  String APPKER;
+//    @Value("${jpush.APP_KEY}")
+    private  String APPKER="05e7785e99c1ddfb07802f46";
 
-    @Value("${jpush.masterSecret}")
-    private  String MASTERSECRET ;
+//    @Value("${jpush.masterSecret}")
+    private  String MASTERSECRET="2f432d10dc7e5883cd1f413d" ;
 
-    @Value("${jpush.isMaster}")
+//    @Value("${jpush.isMaster}")
     private  boolean isMaster ;
 
 
 
     @Bean
     public JPushClient jPushClient(){
+       //return new JPushClient(MASTERSECRET, APPKER);
        return new JPushClient(MASTERSECRET, APPKER);
     }
-    
+//
 
     /**
      * 推送给设备标识参数的用户

@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+       <!--
+        
+        @author Alan
+        @date 2019-10-17 22:27:56
+        -->
+<mapper namespace="com.zqy.ms.user.mapper.DeliveryOrderDetailMapper">
+
+    <resultMap type="com.zqy.ms.user.entity.DeliveryOrderDetail" id="deliveryOrderDetailMap">
+                    <result property="id" column="id"/>
+                    <result property="deliveryOrderId" column="delivery_order_id"/>
+                    <result property="no" column="no"/>
+                    <result property="goodsId" column="goods_id"/>
+                    <result property="goodsName" column="goods_name"/>
+                    <result property="goodsNum" column="goods_num"/>
+                    <result property="backGoodsNum" column="back_goods_num"/>
+                    <result property="boxNum" column="box_num"/>
+                    <result property="backBoxNum" column="back_box_num"/>
+                    <result property="spec" column="spec"/>
+                    <result property="price" column="price"/>
+                    <result property="goodsMoney" column="goods_money"/>
+                    <result property="goodsPoints" column="goods_points"/>
+                    <result property="createDate" column="create_date"/>
+                    <result property="packageUnit" column="package_unit"/>
+                    <result property="unit" column="unit"/>
+            </resultMap>
+
+    <select id="getDeliveryOrderDetailListByPage" resultType="com.zqy.ms.user.entity.DeliveryOrderDetail">
+
+        select * from delivery_order_detail
+
+        <where>
+                            <if test="param.id != null and param.id != ''">
+                    AND id=param.id
+                </if>
+                            <if test="param.deliveryOrderId != null and param.deliveryOrderId != ''">
+                    AND delivery_order_id=param.deliveryOrderId
+                </if>
+                            <if test="param.no != null and param.no != ''">
+                    AND no=param.no
+                </if>
+                            <if test="param.goodsId != null and param.goodsId != ''">
+                    AND goods_id=param.goodsId
+                </if>
+                            <if test="param.goodsName != null and param.goodsName != ''">
+                    AND goods_name=param.goodsName
+                </if>
+                            <if test="param.goodsNum != null and param.goodsNum != ''">
+                    AND goods_num=param.goodsNum
+                </if>
+                            <if test="param.backGoodsNum != null and param.backGoodsNum != ''">
+                    AND back_goods_num=param.backGoodsNum
+                </if>
+                            <if test="param.boxNum != null and param.boxNum != ''">
+                    AND box_num=param.boxNum
+                </if>
+                            <if test="param.backBoxNum != null and param.backBoxNum != ''">
+                    AND back_box_num=param.backBoxNum
+                </if>
+                            <if test="param.spec != null and param.spec != ''">
+                    AND spec=param.spec
+                </if>
+                            <if test="param.price != null and param.price != ''">
+                    AND price=param.price
+                </if>
+                            <if test="param.goodsMoney != null and param.goodsMoney != ''">
+                    AND goods_money=param.goodsMoney
+                </if>
+                            <if test="param.goodsPoints != null and param.goodsPoints != ''">
+                    AND goods_points=param.goodsPoints
+                </if>
+                            <if test="param.createDate != null and param.createDate != ''">
+                    AND create_date=param.createDate
+                </if>
+                            <if test="param.packageUnit != null and param.packageUnit != ''">
+                    AND package_unit=param.packageUnit
+                </if>
+                            <if test="param.unit != null and param.unit != ''">
+                    AND unit=param.unit
+                </if>
+            
+
+            and a.is_del=0 and c.is_del=0
+
+            order by a.date_update desc
+        </where>
+
+
+
+    </select>
+
+</mapper>

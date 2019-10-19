@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--
+ 汽车
+ @author Alan
+ @date 2019-10-18 23:08:59
+ -->
+<mapper namespace="com.zqy.ms.user.mapper.CarMapper">
+
+    <resultMap type="com.zqy.ms.user.entity.Car" id="carMap">
+        <result property="id" column="id"/>
+        <result property="carNo" column="car_no"/>
+        <result property="remark" column="remark"/>
+        <result property="locked" column="locked"/>
+        <result property="organizationId" column="organization_id"/>
+        <result property="userId" column="user_id"/>
+    </resultMap>
+
+    <select id="getCarListByPage" resultType="com.zqy.ms.user.entity.Car">
+
+        select * from car
+
+        <where>
+            <if test="param.id != null and param.id != ''">
+                AND id=param.id
+            </if>
+            <if test="param.carNo != null and param.carNo != ''">
+                AND car_no=param.carNo
+            </if>
+            <if test="param.remark != null and param.remark != ''">
+                AND remark=param.remark
+            </if>
+            <if test="param.locked != null and param.locked != ''">
+                AND locked=param.locked
+            </if>
+            <if test="param.organizationId != null and param.organizationId != ''">
+                AND organization_id=param.organizationId
+            </if>
+            <if test="param.userId != null and param.userId != ''">
+                AND user_id=param.userId
+            </if>
+
+
+            and a.is_del=0 and c.is_del=0
+
+            order by a.date_update desc
+        </where>
+
+
+    </select>
+
+</mapper>

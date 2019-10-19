@@ -19,7 +19,7 @@
     <div class="layui-field-box">
         <form class="layui-form">
             <div class="layui-inline">
-                <input type="text" value="" name="name" placeholder="可以输入功能名" class="layui-input search_input">
+                <input type="text" value="" name="name" placeholder="可以输入版本号" class="layui-input search_input">
             </div>
             <div class="layui-input-inline">
                 <a class="layui-btn" lay-submit="" lay-filter="searchForm">查询</a>
@@ -31,6 +31,13 @@
     </div>
 </fieldset>
 <div class="layui-form users_list">
+    <script type="text/html" id="orgStatus">
+        {{#  if(d.appVersion.forceUpdate==1){ }}
+        <span class="layui-badge layui-bg-green">是</span>
+        {{#  } else { }}
+        <span class="layui-badge layui-bg-red">否</span>
+        {{#  } }}
+    </script>
     <table class="layui-table" id="test" lay-filter="demo"></table>
 
     <script type="text/html" id="barDemo">
@@ -72,7 +79,7 @@
             if (obj.event === "del") {
                 layer.confirm("你确定要删除该功能么？", {btn: ['是的,我确定', '我再想想']},
                     function () {
-                        $.post("/appVersion/delete", {"id": data.id}, function (res) {
+                        $.post("/appversion/delete", {"id": data.id}, function (res) {
                             if (res.success) {
                                 layer.msg("删除成功", {time: 500}, function () {
                                     table.reload('test', t);
@@ -101,14 +108,12 @@
                 limits: [3, 10, 20, 30]
             },
             cols: [[
-                {field: 'appVersionNo', title: '版本号', width: '5%'},
-                {field: 'appVersionName', title: '版本名称', width: '8%'},
-                {field: 'appDownloadUrl', title: '下载地址', width: '15%'},
-                {field: 'forceUpdate', title: '强制更新', width: '2%'},
-                {field: 'allUpdate', title: '1是所有都更新', width: '1%'},
-                {field: 'createDate', title: '创建时间', width: '10%'},
-                {field: 'startTime', title: '开始时间', width: '10%'},
-                {field: 'remarks', title: '备注', width: '10%'},
+                {field: 'appVersionNo', title: '版本号', width: '10%'},
+                {field: 'appVersionName', title: '版本名称', width: '10%'},
+                {field: 'content', title: '跟新说明', width: '10%'},
+                {field: 'appDownloadUrl', title: '下载地址', width: '25%'},
+                {field: 'forceUpdate', title: '强制更新', width: '10%'},
+                {field: 'createDate', title: '创建时间', width: '15%'},
                 {title: '操作', fixed: 'right', width: '10%', align: 'center', toolbar: '#barDemo'}
             ]]
         };

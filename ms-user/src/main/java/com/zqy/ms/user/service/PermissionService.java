@@ -13,6 +13,5 @@ import java.util.List;
  */
 public interface PermissionService extends IService<Permission> {
 
-    List<Permission> getPermissionListByPage(Page page, @Param("param") Map<String, Object> map);
 }
 

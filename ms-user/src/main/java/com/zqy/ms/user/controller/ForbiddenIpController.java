@@ -8,7 +8,6 @@ import com.zqy.ms.user.entity.ForbiddenIp;
 import com.zqy.ms.user.entity.IpMessage;
 import com.zqy.ms.user.entity.ao.ForbiddenAO;
 import com.zqy.ms.user.service.ForbiddenIpService;
-import com.zqy.ms.user.service.ThirdApiService;
 import com.zqy.ms.user.util.LayerData;
 import com.zqy.ms.user.util.RestResponse;
 import org.apache.commons.lang3.StringUtils;
@@ -31,8 +30,7 @@ public class ForbiddenIpController {
     @Autowired
     private ForbiddenIpService forbiddenIpService;
 
-    @Autowired
-    private ThirdApiService thirdApiService;
+
 
 
 
@@ -90,11 +88,9 @@ public class ForbiddenIpController {
         if(forbiddenIps.size()>0){
           return   RestResponse.failure("操作失败!账号存在，请勿重复添加");
         }
-      //  stringRedisTemplate.opsForValue().set(BLACKLIST_IP_KEY + COLON + forbiddenIp.getIp(), forbiddenIp.getIp());
-        IpMessage ipMessage = thirdApiService.ipMessage(forbiddenIp.getIp());
+
         forbiddenIp.setDateCreate(new Date());
         forbiddenIp.setDateUpdate(new Date());
-        forbiddenIp.setCountry(ipMessage.getCountry());
         forbiddenIp.setIpStatus("0");
         return forbiddenIpService.saveOrUpdate(forbiddenIp) ? RestResponse.success() : RestResponse.failure("操作失败!");
     }

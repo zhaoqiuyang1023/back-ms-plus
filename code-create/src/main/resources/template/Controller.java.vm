@@ -48,7 +48,7 @@ public class ${className}Controller {
         LayerData<${className}> layerData = new LayerData<>();
         QueryWrapper<${className}> queryWrapper = new QueryWrapper<>();
 
-        queryWrapper.orderByDesc("update_date");
+        queryWrapper.orderByDesc("create_date");
         IPage<${className}> userPage = ${classname}Service.page(new Page<>(page, limit), queryWrapper);
         layerData.setCount(userPage.getTotal());
         layerData.setData(userPage.getRecords());
@@ -71,11 +71,11 @@ public class ${className}Controller {
     @PostMapping("save")
     @ResponseBody
     public RestResponse add(@RequestBody ${className} ${classname}) {
-        log.info("" + role);
+        log.info("" + ${classname});
         if (StringUtils.isBlank(${classname}.getName())) {
             return RestResponse.failure("名称不能为空");
         }
-        ${className} exist${className} = ${classname}Service.getOne(new QueryWrapper<${className}>().eq("name", role.getName()));
+        ${className} exist${className} = ${classname}Service.getOne(new QueryWrapper<${className}>().eq("name", ${classname}.getName()));
         if (exist${className} != null) {
             //如是修改
             if (StringUtils.isNotBlank(exist${className}.getId())) {

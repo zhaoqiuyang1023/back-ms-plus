@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+       <!--
+        商品
+        @author Alan
+        @date 2019-10-18 23:18:18
+        -->
+<mapper namespace="com.zqy.ms.user.mapper.GoodsMapper">
+
+    <resultMap type="com.zqy.ms.user.entity.Goods" id="goodsMap">
+                    <result property="id" column="id"/>
+                    <result property="name" column="name"/>
+                    <result property="unit" column="unit"/>
+                    <result property="packageUnit" column="package_unit"/>
+                    <result property="spec" column="spec"/>
+                    <result property="createDate" column="create_date"/>
+                    <result property="minStore" column="min_store"/>
+                    <result property="updateDate" column="update_date"/>
+                    <result property="store" column="store"/>
+                    <result property="organizationId" column="organization_id"/>
+                    <result property="storeBox" column="store_box"/>
+            </resultMap>
+
+    <select id="getGoodsListByPage" resultType="com.zqy.ms.user.entity.Goods">
+
+        select * from goods
+
+        <where>
+                            <if test="param.id != null and param.id != ''">
+                    AND id=param.id
+                </if>
+                            <if test="param.name != null and param.name != ''">
+                    AND name=param.name
+                </if>
+                            <if test="param.unit != null and param.unit != ''">
+                    AND unit=param.unit
+                </if>
+                            <if test="param.packageUnit != null and param.packageUnit != ''">
+                    AND package_unit=param.packageUnit
+                </if>
+                            <if test="param.spec != null and param.spec != ''">
+                    AND spec=param.spec
+                </if>
+                            <if test="param.createDate != null and param.createDate != ''">
+                    AND create_date=param.createDate
+                </if>
+                            <if test="param.minStore != null and param.minStore != ''">
+                    AND min_store=param.minStore
+                </if>
+                            <if test="param.updateDate != null and param.updateDate != ''">
+                    AND update_date=param.updateDate
+                </if>
+                            <if test="param.store != null and param.store != ''">
+                    AND store=param.store
+                </if>
+                            <if test="param.organizationId != null and param.organizationId != ''">
+                    AND organization_id=param.organizationId
+                </if>
+                            <if test="param.storeBox != null and param.storeBox != ''">
+                    AND store_box=param.storeBox
+                </if>
+            
+
+            and a.is_del=0 and c.is_del=0
+
+            order by a.date_update desc
+        </where>
+
+
+
+    </select>
+
+</mapper>

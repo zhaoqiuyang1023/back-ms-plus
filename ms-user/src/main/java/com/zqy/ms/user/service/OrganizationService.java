@@ -13,6 +13,9 @@ import java.util.List;
  */
 public interface OrganizationService extends IService<Organization> {
 
-    List<Organization> getOrganizationListByPage(Page page, @Param("param") Map<String, Object> map);
+
+    void cleanOrderByOrgId(String id);
+
+    void cleanBaseMessageByOrgId(String id);
 }
 

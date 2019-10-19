@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+       <!--
+        
+        @author Alan
+        @date 2019-10-18 21:06:50
+        -->
+<mapper namespace="com.zqy.ms.user.mapper.AdviceLogMapper">
+
+    <resultMap type="com.zqy.ms.user.entity.AdviceLog" id="adviceLogMap">
+                    <result property="id" column="id"/>
+                    <result property="tel" column="tel"/>
+                    <result property="username" column="username"/>
+                    <result property="content" column="content"/>
+                    <result property="createDate" column="create_date"/>
+                    <result property="organizationName" column="organization_name"/>
+            </resultMap>
+
+    <select id="getAdviceLogListByPage" resultType="com.zqy.ms.user.entity.AdviceLog">
+
+        select * from advice_log
+
+        <where>
+                            <if test="param.id != null and param.id != ''">
+                    AND id=param.id
+                </if>
+                            <if test="param.tel != null and param.tel != ''">
+                    AND tel=param.tel
+                </if>
+                            <if test="param.username != null and param.username != ''">
+                    AND username=param.username
+                </if>
+                            <if test="param.content != null and param.content != ''">
+                    AND content=param.content
+                </if>
+                            <if test="param.createDate != null and param.createDate != ''">
+                    AND create_date=param.createDate
+                </if>
+                            <if test="param.organizationName != null and param.organizationName != ''">
+                    AND organization_name=param.organizationName
+                </if>
+            
+
+            and a.is_del=0 and c.is_del=0
+
+            order by a.date_update desc
+        </where>
+
+
+
+    </select>
+
+</mapper>

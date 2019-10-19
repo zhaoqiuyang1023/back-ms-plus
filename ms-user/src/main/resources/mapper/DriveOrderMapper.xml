@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+       <!--
+        
+        @author Alan
+        @date 2019-10-17 22:18:31
+        -->
+<mapper namespace="com.zqy.ms.user.mapper.DriveOrderMapper">
+
+    <resultMap type="com.zqy.ms.user.entity.DriveOrder" id="driveOrderMap">
+                    <result property="id" column="id"/>
+                    <result property="no" column="no"/>
+                    <result property="createDate" column="create_date"/>
+                    <result property="operatorId" column="operator_id"/>
+                    <result property="operatorName" column="operator_name"/>
+                    <result property="carNo" column="car_no"/>
+                    <result property="locked" column="locked"/>
+                    <result property="audit" column="audit"/>
+                    <result property="auditBy" column="audit_by"/>
+                    <result property="boxNum" column="box_num"/>
+                    <result property="goodsNum" column="goods_num"/>
+                    <result property="driveBackState" column="drive_back_state"/>
+                    <result property="routeId" column="route_id"/>
+                    <result property="routeName" column="route_name"/>
+                    <result property="driverId" column="driver_id"/>
+                    <result property="driverName" column="driver_name"/>
+                    <result property="organizationId" column="organization_id"/>
+                    <result property="state" column="state"/>
+                    <result property="remark" column="remark"/>
+                    <result property="leftBoxNum" column="left_box_num"/>
+                    <result property="leftGoodsNum" column="left_goods_num"/>
+                    <result property="backGoodsNum" column="back_goods_num"/>
+                    <result property="backBoxNum" column="back_box_num"/>
+            </resultMap>
+
+    <select id="getDriveOrderListByPage" resultType="com.zqy.ms.user.entity.DriveOrder">
+
+        select * from drive_order
+
+        <where>
+                            <if test="param.id != null and param.id != ''">
+                    AND id=param.id
+                </if>
+                            <if test="param.no != null and param.no != ''">
+                    AND no=param.no
+                </if>
+                            <if test="param.createDate != null and param.createDate != ''">
+                    AND create_date=param.createDate
+                </if>
+                            <if test="param.operatorId != null and param.operatorId != ''">
+                    AND operator_id=param.operatorId
+                </if>
+                            <if test="param.operatorName != null and param.operatorName != ''">
+                    AND operator_name=param.operatorName
+                </if>
+                            <if test="param.carNo != null and param.carNo != ''">
+                    AND car_no=param.carNo
+                </if>
+                            <if test="param.locked != null and param.locked != ''">
+                    AND locked=param.locked
+                </if>
+                            <if test="param.audit != null and param.audit != ''">
+                    AND audit=param.audit
+                </if>
+                            <if test="param.auditBy != null and param.auditBy != ''">
+                    AND audit_by=param.auditBy
+                </if>
+                            <if test="param.boxNum != null and param.boxNum != ''">
+                    AND box_num=param.boxNum
+                </if>
+                            <if test="param.goodsNum != null and param.goodsNum != ''">
+                    AND goods_num=param.goodsNum
+                </if>
+                            <if test="param.driveBackState != null and param.driveBackState != ''">
+                    AND drive_back_state=param.driveBackState
+                </if>
+                            <if test="param.routeId != null and param.routeId != ''">
+                    AND route_id=param.routeId
+                </if>
+                            <if test="param.routeName != null and param.routeName != ''">
+                    AND route_name=param.routeName
+                </if>
+                            <if test="param.driverId != null and param.driverId != ''">
+                    AND driver_id=param.driverId
+                </if>
+                            <if test="param.driverName != null and param.driverName != ''">
+                    AND driver_name=param.driverName
+                </if>
+                            <if test="param.organizationId != null and param.organizationId != ''">
+                    AND organization_id=param.organizationId
+                </if>
+                            <if test="param.state != null and param.state != ''">
+                    AND state=param.state
+                </if>
+                            <if test="param.remark != null and param.remark != ''">
+                    AND remark=param.remark
+                </if>
+                            <if test="param.leftBoxNum != null and param.leftBoxNum != ''">
+                    AND left_box_num=param.leftBoxNum
+                </if>
+                            <if test="param.leftGoodsNum != null and param.leftGoodsNum != ''">
+                    AND left_goods_num=param.leftGoodsNum
+                </if>
+                            <if test="param.backGoodsNum != null and param.backGoodsNum != ''">
+                    AND back_goods_num=param.backGoodsNum
+                </if>
+                            <if test="param.backBoxNum != null and param.backBoxNum != ''">
+                    AND back_box_num=param.backBoxNum
+                </if>
+            
+
+            and a.is_del=0 and c.is_del=0
+
+            order by a.date_update desc
+        </where>
+
+
+
+    </select>
+
+</mapper>

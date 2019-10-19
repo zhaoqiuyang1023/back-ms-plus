@@ -35,9 +35,6 @@ public class Organization extends Model<Organization> {
     @ApiModelProperty(value = "公司电话")
     private String tel;
 
-    @TableField(value = "address")
-    @ApiModelProperty(value = "公司地址")
-    private String address;
 
     @TableField(value = "del")
     @TableLogic

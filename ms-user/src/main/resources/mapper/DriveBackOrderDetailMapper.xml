@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+       <!--
+        
+        @author Alan
+        @date 2019-10-17 22:27:56
+        -->
+<mapper namespace="com.zqy.ms.user.mapper.DriveBackOrderDetailMapper">
+
+    <resultMap type="com.zqy.ms.user.entity.DriveBackOrderDetail" id="driveBackOrderDetailMap">
+                    <result property="id" column="id"/>
+                    <result property="driveBackOrderId" column="drive_back_order_id"/>
+                    <result property="goodsId" column="goods_id"/>
+                    <result property="goodsName" column="goods_name"/>
+                    <result property="boxNum" column="box_num"/>
+                    <result property="spec" column="spec"/>
+                    <result property="goodsNum" column="goods_num"/>
+            </resultMap>
+
+    <select id="getDriveBackOrderDetailListByPage" resultType="com.zqy.ms.user.entity.DriveBackOrderDetail">
+
+        select * from drive_back_order_detail
+
+        <where>
+                            <if test="param.id != null and param.id != ''">
+                    AND id=param.id
+                </if>
+                            <if test="param.driveBackOrderId != null and param.driveBackOrderId != ''">
+                    AND drive_back_order_id=param.driveBackOrderId
+                </if>
+                            <if test="param.goodsId != null and param.goodsId != ''">
+                    AND goods_id=param.goodsId
+                </if>
+                            <if test="param.goodsName != null and param.goodsName != ''">
+                    AND goods_name=param.goodsName
+                </if>
+                            <if test="param.boxNum != null and param.boxNum != ''">
+                    AND box_num=param.boxNum
+                </if>
+                            <if test="param.spec != null and param.spec != ''">
+                    AND spec=param.spec
+                </if>
+                            <if test="param.goodsNum != null and param.goodsNum != ''">
+                    AND goods_num=param.goodsNum
+                </if>
+            
+
+            and a.is_del=0 and c.is_del=0
+
+            order by a.date_update desc
+        </where>
+
+
+
+    </select>
+
+</mapper>

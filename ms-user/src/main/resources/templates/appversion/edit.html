@@ -23,86 +23,50 @@
         </fieldset>
     </div>
 
-    
-    
-        
-    
+
     <div class="layui-form-item">
         <label class="layui-form-label">app版本号</label>
         <div class="layui-input-block">
-            <input type="text" name='appVersionNo' th:value="appVersion.appVersionNo"
+            <input type="text" name='appVersionNo' th:value="${appVersion.appVersionNo}"
                    autocomplete="off" placeholder="app版本号" class="layui-input">
         </div>
     </div>
 
-        
-    
+
     <div class="layui-form-item">
         <label class="layui-form-label">app版本名称</label>
         <div class="layui-input-block">
-            <input type="text" name='appVersionName' th:value="appVersion.appVersionName"
+            <input type="text" name='appVersionName' th:value="${appVersion.appVersionName}"
                    autocomplete="off" placeholder="app版本名称" class="layui-input">
         </div>
     </div>
 
-        
-    
+    <div class="layui-form-item">
+        <label class="layui-form-label">升级说明</label>
+        <div class="layui-input-block">
+            <input type="text" name='content'
+                   autocomplete="off" placeholder="升级说明"  class="layui-input" th:value="${appVersion.content}">
+        </div>
+    </div>
+
+
     <div class="layui-form-item">
         <label class="layui-form-label">下载地址</label>
         <div class="layui-input-block">
-            <input type="text" name='appDownloadUrl' th:value="appVersion.appDownloadUrl"
+            <input type="text" name='appDownloadUrl' th:value="${appVersion.appDownloadUrl}"
                    autocomplete="off" placeholder="下载地址" class="layui-input">
         </div>
     </div>
 
-        
-    
+
+
     <div class="layui-form-item">
-        <label class="layui-form-label">需要更新的公司如果all是1这个就忽略</label>
+        <label class="layui-form-label">强制更新</label>
         <div class="layui-input-block">
-            <input type="text" name='organizationId' th:value="appVersion.organizationId"
-                   autocomplete="off" placeholder="需要更新的公司如果all是1这个就忽略" class="layui-input">
+            <input type="radio" name="forceUpdate" value="1" title="是" th:checked="${appVersion.forceUpdate==1}" >
+            <input type="radio" name="forceUpdate" value="0" title="否" th:checked="${appVersion.forceUpdate==0}" >
         </div>
     </div>
-
-        
-    
-    <div class="layui-form-item">
-        <label class="layui-form-label">强制更新1是强制更新</label>
-        <div class="layui-input-block">
-            <input type="text" name='forceUpdate' th:value="appVersion.forceUpdate"
-                   autocomplete="off" placeholder="强制更新1是强制更新" class="layui-input">
-        </div>
-    </div>
-
-        
-    
-    <div class="layui-form-item">
-        <label class="layui-form-label">1是所有都更新</label>
-        <div class="layui-input-block">
-            <input type="text" name='allUpdate' th:value="appVersion.allUpdate"
-                   autocomplete="off" placeholder="1是所有都更新" class="layui-input">
-        </div>
-    </div>
-
-        
-        <div class="layui-form-item">
-        <label class="layui-form-label">到期时间</label>
-        <div class="layui-inline">
-            <input type="text" name='createDate' class="layui-input"
-                   id="test1" placeholder="yyyy-MM-dd">
-        </div>
-    </div>
-        
-        <div class="layui-form-item">
-        <label class="layui-form-label">到期时间</label>
-        <div class="layui-inline">
-            <input type="text" name='startTime' class="layui-input"
-                   id="test1" placeholder="yyyy-MM-dd">
-        </div>
-    </div>
-        
-
 
 
     <div class="layui-form-item" style="padding-left: 30%;">
@@ -119,9 +83,9 @@
             $ = layui.jquery,
             layer = layui.layer;
 
-        
+
         form.on('submit(editRole)', function (data) {
-         
+
             let loadIndex = layer.load(2, {
                 shade: [0.3, '#333']
             });

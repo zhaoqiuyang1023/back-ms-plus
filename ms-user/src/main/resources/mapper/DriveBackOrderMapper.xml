@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+       <!--
+        
+        @author Alan
+        @date 2019-10-17 22:18:32
+        -->
+<mapper namespace="com.zqy.ms.user.mapper.DriveBackOrderMapper">
+
+    <resultMap type="com.zqy.ms.user.entity.DriveBackOrder" id="driveBackOrderMap">
+                    <result property="id" column="id"/>
+                    <result property="no" column="no"/>
+                    <result property="createDate" column="create_date"/>
+                    <result property="driverOrderId" column="driver_order_id"/>
+                    <result property="operatorId" column="operator_id"/>
+                    <result property="operatorName" column="operator_name"/>
+                    <result property="boxNum" column="box_num"/>
+                    <result property="goodsNum" column="goods_num"/>
+            </resultMap>
+
+    <select id="getDriveBackOrderListByPage" resultType="com.zqy.ms.user.entity.DriveBackOrder">
+
+        select * from drive_back_order
+
+        <where>
+                            <if test="param.id != null and param.id != ''">
+                    AND id=param.id
+                </if>
+                            <if test="param.no != null and param.no != ''">
+                    AND no=param.no
+                </if>
+                            <if test="param.createDate != null and param.createDate != ''">
+                    AND create_date=param.createDate
+                </if>
+                            <if test="param.driverOrderId != null and param.driverOrderId != ''">
+                    AND driver_order_id=param.driverOrderId
+                </if>
+                            <if test="param.operatorId != null and param.operatorId != ''">
+                    AND operator_id=param.operatorId
+                </if>
+                            <if test="param.operatorName != null and param.operatorName != ''">
+                    AND operator_name=param.operatorName
+                </if>
+                            <if test="param.boxNum != null and param.boxNum != ''">
+                    AND box_num=param.boxNum
+                </if>
+                            <if test="param.goodsNum != null and param.goodsNum != ''">
+                    AND goods_num=param.goodsNum
+                </if>
+            
+
+            and a.is_del=0 and c.is_del=0
+
+            order by a.date_update desc
+        </where>
+
+
+
+    </select>
+
+</mapper>

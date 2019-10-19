@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+       <!--
+        
+        @author Alan
+        @date 2019-10-18 23:08:59
+        -->
+<mapper namespace="com.zqy.ms.user.mapper.RouteShopPkMapper">
+
+    <resultMap type="com.zqy.ms.user.entity.RouteShopPk" id="routeShopPkMap">
+                    <result property="id" column="id"/>
+                    <result property="routeId" column="route_id"/>
+                    <result property="routeName" column="route_name"/>
+                    <result property="shopId" column="shop_id"/>
+                    <result property="shopName" column="shop_name"/>
+            </resultMap>
+
+    <select id="getRouteShopPkListByPage" resultType="com.zqy.ms.user.entity.RouteShopPk">
+
+        select * from route_shop_pk
+
+        <where>
+                            <if test="param.id != null and param.id != ''">
+                    AND id=param.id
+                </if>
+                            <if test="param.routeId != null and param.routeId != ''">
+                    AND route_id=param.routeId
+                </if>
+                            <if test="param.routeName != null and param.routeName != ''">
+                    AND route_name=param.routeName
+                </if>
+                            <if test="param.shopId != null and param.shopId != ''">
+                    AND shop_id=param.shopId
+                </if>
+                            <if test="param.shopName != null and param.shopName != ''">
+                    AND shop_name=param.shopName
+                </if>
+            
+
+            and a.is_del=0 and c.is_del=0
+
+            order by a.date_update desc
+        </where>
+
+
+
+    </select>
+
+</mapper>

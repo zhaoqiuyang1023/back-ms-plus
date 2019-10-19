@@ -1,5 +1,6 @@
 package com.zqy.ms.user.controller.file;
 
+import com.baomidou.mybatisplus.extension.api.R;
 import com.zqy.ms.user.entity.SysRescource;
 import com.zqy.ms.user.entity.SysUser;
 import com.zqy.ms.user.entity.vo.FileVO;
@@ -43,7 +44,7 @@ public class FileController {
 
     @PostMapping("upload")
     @ResponseBody
-    public R<FileVO> localUpload(MultipartFile file, HttpServletRequest request) {
+    public FileVO localUpload(MultipartFile file, HttpServletRequest request) {
         String ip = request.getServerName();
         log.info(ip);
         //jar包的同目录的files文件夹下
@@ -62,20 +63,20 @@ public class FileController {
             FileVO fileVO = new FileVO(src, file.getName(), "/file/" + rename, file.getContentType(), "" + file.getSize());
             SysUser sysUser = (SysUser) s.getPrincipal();
             SysRescource sysRescource = new SysRescource();
-            System.out.println("用户id"+sysUser.getId());
+            System.out.println("用户id" + sysUser.getId());
             sysRescource.setCreateBy(sysUser.getId());
             sysRescource.setFileName(rename);
             sysRescource.setOriginalFilename(file.getOriginalFilename());
             sysRescource.setFileType(file.getContentType());
             sysRescource.setSrc(src);
             sysRescource.setRelativePath("/file/" + rename);
-            sysRescource.setFileSize(""+file.getSize());
+            sysRescource.setFileSize("" + file.getSize());
             sysRescourceService.save(sysRescource);
             file.transferTo(new File(filePath));
-            return new R<>(fileVO);
+            return fileVO;
         } catch (Exception e) {
             e.printStackTrace();
-            return new R<>(e);
+            return null;
         }
     }
 

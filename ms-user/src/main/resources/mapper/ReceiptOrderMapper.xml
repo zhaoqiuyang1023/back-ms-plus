@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+       <!--
+        
+        @author Alan
+        @date 2019-10-17 22:18:32
+        -->
+<mapper namespace="com.zqy.ms.user.mapper.ReceiptOrderMapper">
+
+    <resultMap type="com.zqy.ms.user.entity.ReceiptOrder" id="receiptOrderMap">
+                    <result property="id" column="id"/>
+                    <result property="no" column="no"/>
+                    <result property="shopId" column="shop_id"/>
+                    <result property="shopName" column="shop_name"/>
+                    <result property="money" column="money"/>
+                    <result property="operatorId" column="operator_id"/>
+                    <result property="operatorName" column="operator_name"/>
+                    <result property="remark" column="remark"/>
+                    <result property="createDate" column="create_date"/>
+                    <result property="signatureImage" column="signature_image"/>
+                    <result property="locked" column="locked"/>
+                    <result property="organizationId" column="organization_id"/>
+            </resultMap>
+
+    <select id="getReceiptOrderListByPage" resultType="com.zqy.ms.user.entity.ReceiptOrder">
+
+        select * from receipt_order
+
+        <where>
+                            <if test="param.id != null and param.id != ''">
+                    AND id=param.id
+                </if>
+                            <if test="param.no != null and param.no != ''">
+                    AND no=param.no
+                </if>
+                            <if test="param.shopId != null and param.shopId != ''">
+                    AND shop_id=param.shopId
+                </if>
+                            <if test="param.shopName != null and param.shopName != ''">
+                    AND shop_name=param.shopName
+                </if>
+                            <if test="param.money != null and param.money != ''">
+                    AND money=param.money
+                </if>
+                            <if test="param.operatorId != null and param.operatorId != ''">
+                    AND operator_id=param.operatorId
+                </if>
+                            <if test="param.operatorName != null and param.operatorName != ''">
+                    AND operator_name=param.operatorName
+                </if>
+                            <if test="param.remark != null and param.remark != ''">
+                    AND remark=param.remark
+                </if>
+                            <if test="param.createDate != null and param.createDate != ''">
+                    AND create_date=param.createDate
+                </if>
+                            <if test="param.signatureImage != null and param.signatureImage != ''">
+                    AND signature_image=param.signatureImage
+                </if>
+                            <if test="param.locked != null and param.locked != ''">
+                    AND locked=param.locked
+                </if>
+                            <if test="param.organizationId != null and param.organizationId != ''">
+                    AND organization_id=param.organizationId
+                </if>
+            
+
+            and a.is_del=0 and c.is_del=0
+
+            order by a.date_update desc
+        </where>
+
+
+
+    </select>
+
+</mapper>

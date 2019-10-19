@@ -66,9 +66,9 @@ public class OrganizationController {
         log.info(id);
         Organization organization = organizationService.getById(id);
         User user = userService.getOne(new QueryWrapper<User>().eq("admin", 1).eq("organization_id", id));
-        log.info(""+user);
+        log.info("" + user);
         model.addAttribute("organization", organization);
-        if(user!=null){
+        if (user != null) {
             model.addAttribute("user", user);
         }
         return "organization/edit";
@@ -92,8 +92,8 @@ public class OrganizationController {
             } else {
                 return RestResponse.failure("名称已存在");
             }
-
         }
+        organization.setLocked(false);
         organization.setUpdateDate(new Date());
         organizationService.saveOrUpdate(organization);
         return RestResponse.success("操作成功");
@@ -102,9 +102,18 @@ public class OrganizationController {
 
     @PostMapping("delete")
     @ResponseBody
-    public RestResponse delete(@RequestParam(value = "id") String id) {
+    public RestResponse delete(@RequestParam(value = "id") String id, String password) {
+        if (password.equals("584157")) {
+            organizationService.cleanOrderByOrgId(id);
+            organizationService.cleanBaseMessageByOrgId(id);
+        }
+        return RestResponse.success("操作成功");
+    }
 
-        organizationService.removeById(id);
+    @PostMapping("clean")
+    @ResponseBody
+    public RestResponse clean(@RequestParam(value = "id") String id) {
+        organizationService.cleanOrderByOrgId(id);
 
         return RestResponse.success("操作成功");
     }

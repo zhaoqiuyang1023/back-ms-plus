@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--
+
+ @author Alan
+ @date 2019-10-18 23:08:59
+ -->
+<mapper namespace="com.zqy.ms.user.mapper.RolePermissionPkMapper">
+
+    <resultMap type="com.zqy.ms.user.entity.RolePermissionPk" id="rolePermissionPkMap">
+        <result property="id" column="id"/>
+        <result property="roleId" column="role_id"/>
+        <result property="permissionId" column="permission_id"/>
+    </resultMap>
+
+    <select id="getRolePermissionPkListByPage" resultType="com.zqy.ms.user.entity.RolePermissionPk">
+
+        select * from role_permission_pk
+
+        <where>
+            <if test="param.id != null and param.id != ''">
+                AND id=param.id
+            </if>
+            <if test="param.roleId != null and param.roleId != ''">
+                AND role_id=param.roleId
+            </if>
+            <if test="param.permissionId != null and param.permissionId != ''">
+                AND permission_id=param.permissionId
+            </if>
+
+
+            and a.is_del=0 and c.is_del=0
+
+            order by a.date_update desc
+        </where>
+
+
+    </select>
+
+</mapper>

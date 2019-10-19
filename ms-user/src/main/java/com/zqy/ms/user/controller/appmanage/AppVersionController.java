@@ -14,6 +14,9 @@ import com.zqy.ms.user.entity.AppVersion;
 import com.zqy.ms.user.service.AppVersionService;
 
 import javax.servlet.ServletRequest;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 
 /**
@@ -34,11 +37,16 @@ public class AppVersionController {
 
     @PostMapping("list")
     @ResponseBody
-    public LayerData<AppVersion> list(@RequestParam(value = "page", defaultValue = "1") Integer page, @RequestParam(value = "limit", defaultValue = "10") Integer limit, ServletRequest request) {
+    public LayerData<AppVersion> list(@RequestParam(value = "page", defaultValue = "1") Integer page, @RequestParam(value = "limit", defaultValue = "10") Integer limit, Map<String,String> map) {
         LayerData<AppVersion> layerData = new LayerData<>();
+        System.out.println(map);
         QueryWrapper<AppVersion> queryWrapper = new QueryWrapper<>();
 
         queryWrapper.orderByDesc("create_date");
+        String name=map.get("name");
+        if(StringUtils.isNotBlank(name)){
+            queryWrapper.like("app_version_no",name);
+        }
         IPage<AppVersion> userPage = appVersionService.page(new Page<>(page, limit), queryWrapper);
         layerData.setCount(userPage.getTotal());
         layerData.setData(userPage.getRecords());
@@ -61,25 +69,9 @@ public class AppVersionController {
     @PostMapping("save")
     @ResponseBody
     public RestResponse add(@RequestBody AppVersion appVersion) {
-
-        if (StringUtils.isBlank(appVersion.getAppVersionName())) {
-            return RestResponse.failure("名称不能为空");
-        }
-        AppVersion existAppVersion = appVersionService.getOne(new QueryWrapper<AppVersion>().eq("name", appVersion.getAppVersionName()));
-        if (existAppVersion != null) {
-            //如是修改
-            if (StringUtils.isNotBlank(existAppVersion.getId())) {
-                //两条的id不一样
-                if (!existAppVersion.getId().equals(appVersion.getId())) {
-                    return RestResponse.failure("名称已存在");
-                }
-            }
-            //如果是添加
-            else {
-                return RestResponse.failure("名称已存在");
-            }
-        }
+        appVersion.setCreateDate(new Date());
         appVersionService.saveOrUpdate(appVersion);
+
         return RestResponse.success("操作成功");
     }
 

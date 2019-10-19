@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--
+
+ @author Alan
+ @date 2019-10-18 23:08:59
+ -->
+<mapper namespace="com.zqy.ms.user.mapper.RoleMapper">
+
+    <resultMap type="com.zqy.ms.user.entity.Role" id="roleMap">
+        <result property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="createDate" column="create_date"/>
+        <result property="createBy" column="create_by"/>
+        <result property="updateDate" column="update_date"/>
+        <result property="updateBy" column="update_by"/>
+        <result property="remarks" column="remarks"/>
+        <result property="organizationId" column="organization_id"/>
+    </resultMap>
+
+    <select id="getRoleListByPage" resultType="com.zqy.ms.user.entity.Role">
+
+        select * from role
+
+        <where>
+            <if test="param.id != null and param.id != ''">
+                AND id=param.id
+            </if>
+            <if test="param.name != null and param.name != ''">
+                AND name=param.name
+            </if>
+            <if test="param.createDate != null and param.createDate != ''">
+                AND create_date=param.createDate
+            </if>
+            <if test="param.createBy != null and param.createBy != ''">
+                AND create_by=param.createBy
+            </if>
+            <if test="param.updateDate != null and param.updateDate != ''">
+                AND update_date=param.updateDate
+            </if>
+            <if test="param.updateBy != null and param.updateBy != ''">
+                AND update_by=param.updateBy
+            </if>
+            <if test="param.remarks != null and param.remarks != ''">
+                AND remarks=param.remarks
+            </if>
+            <if test="param.organizationId != null and param.organizationId != ''">
+                AND organization_id=param.organizationId
+            </if>
+
+
+            and a.is_del=0 and c.is_del=0
+
+            order by a.date_update desc
+        </where>
+
+
+    </select>
+
+</mapper>
