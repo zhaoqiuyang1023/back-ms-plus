@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html manifest="haorooms.appcache" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>后台管理</title>
     <base th:href="${#request.getContextPath()}+'/'">
     <link rel="stylesheet" th:href="@{/static/layui/css/layui.css}" href="../static/layui/css/layui.css">
-    <script th:src="@{/static/layui/layui.js}" src="../static/layui/layui.js"></script>
+
     <style>
         html, body {
             width: 100%;
@@ -28,35 +28,36 @@
         .background {
             animation: myfirst 30s infinite alternate;
             -webkit-animation: myfirst 30s infinite alternate; /*Safari and Chrome*/
-            -moz-animation:myfirst 30s infinite alternate; /* Firefox */
-            -o-animation:myfirst 30s infinite alternate; /* Opera */
+            -moz-animation: myfirst 30s infinite alternate; /* Firefox */
+            -o-animation: myfirst 30s infinite alternate; /* Opera */
         }
-        @keyframes myfirst {
-            from {
-                background-image: url(../static/images/bg1.jpg),url(../static/images/bg3.jpg),url(../static/images/bg4.jpg) ;
-                width: 100%;
-                height: 100%;
-                background-size:100% 100%;
-                background-repeat: no-repeat;
-            }
-            to {
-                background-image: url(../static/images/bg2.jpg);
-                width: 100%;
-                height: 100%;
-                background-size:100% 100%;
-                background-repeat: no-repeat;
-            }
-        }
+
+        /*@keyframes myfirst {*/
+        /*    from {*/
+        /*        background-image: url(../static/images/bg2.jpg),url(../static/images/bg3.jpg),url(../static/images/bg4.jpg) ;*/
+        /*        width: 100%;*/
+        /*        height: 100%;*/
+        /*        background-size:100% 100%;*/
+        /*        background-repeat: no-repeat;*/
+        /*    }*/
+        /*    to {*/
+        /*        background-image: url(../static/images/bg2.jpg);*/
+        /*        width: 100%;*/
+        /*        height: 100%;*/
+        /*        background-size:100% 100%;*/
+        /*        background-repeat: no-repeat;*/
+        /*    }*/
+        /*}*/
         @-moz-keyframes myfirst {
             from {
-                background:url(../static/images/bg1.jpg) no-repeat;
+                background:url(../static/images/bg3.jpg) no-repeat;
                 width: 100%;
                 height: 100%;
                 background-size:100% 100%;
 
             }
             to {
-                background:url(../static/images/bg2.jpg) no-repeat;
+                background:url(../static/images/bg4.jpg) no-repeat;
                 width: 100%;
                 height: 100%;
                 background-size:100% 100%;
@@ -94,8 +95,7 @@
     </style>
 </head>
 
-<script type="text/javascript" src="../static/js/jquery.min.js"></script>
-
+<script th:src="@{/static/layui/layui.js}" src="../static/layui/layui.js"></script>
 <body>
 <div id="background" class="background" style="width: 100%; height: 100%;position: absolute;z-index: 99">
 
@@ -154,51 +154,57 @@
         </div>
     </div>
 </div>
-
-
 <script>
-    layui.use(['layer', 'form'], function () {
-        let layer = layui.layer,
-            $ = layui.jquery,
-            form = layui.form;
-        /**
-         * 获取二维码
-         */
-        $(function () {
-            var t = Math.random();
-            $("#mycode")[0].src = "/genCaptcha?t= " + t;
-        });
+    layui.use(['layer', 'form', 'layer'], function () {
+            let layer = layui.layer,
+                $ = layui.jquery,
+                form = layui.form;
 
-        $("#mycode").on('click', function () {
-            var t = Math.random();
-
-            $("#mycode")[0].src = "/genCaptcha?t= " + t;
-        });
-
-        /**
-         * 表单登录
-         */
-        form.on('submit(login)', function (data) {
-            var loadIndex = layer.load(2, {
-                shade: [0.3, '#333']
-            });
-            if ($('form').find('input[type="checkbox"]')[0].checked) {
-                data.field.rememberMe = true;
-            } else {
-                data.field.rememberMe = false;
+            window.onload = function () {
+                //加载层
+                var index = layer.load(0, {shade: false}); //0代表加载的风格，支持0-2
             }
-            $.post(data.form.action, data.field, function (res) {
-                layer.close(loadIndex);
-                if (res.success) {
-                    location.href = res.data.url;
-                } else {
-                    layer.msg(res.message);
-                    $("#mycode").click();
-                }
+
+
+            /**
+             * 获取二维码
+             */
+            $(function () {
+                var t = Math.random();
+                $("#mycode")[0].src = "/genCaptcha?t= " + t;
             });
-            return false;
-        });
-    });
+
+            $("#mycode").on('click', function () {
+                var t = Math.random();
+
+                $("#mycode")[0].src = "/genCaptcha?t= " + t;
+            });
+
+            /**
+             * 表单登录
+             */
+            form.on('submit(login)', function (data) {
+                var loadIndex = layer.load(2, {
+                    shade: [0.3, '#333']
+                });
+                if ($('form').find('input[type="checkbox"]')[0].checked) {
+                    data.field.rememberMe = true;
+                } else {
+                    data.field.rememberMe = false;
+                }
+                $.post(data.form.action, data.field, function (res) {
+                    layer.close(loadIndex);
+                    if (res.success) {
+                        location.href = res.data.url;
+                    } else {
+                        layer.msg(res.message);
+                        $("#mycode").click();
+                    }
+                });
+                return false;
+            });
+        }
+    );
 </script>
 
 </body>

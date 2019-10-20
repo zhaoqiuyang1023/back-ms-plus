@@ -49,9 +49,14 @@ public class OrganizationController {
                                         ServletRequest request) {
         LayerData<Organization> userLayerData = new LayerData<>();
         String name = request.getParameter("name");
+        String beginDate = request.getParameter("beginDate");
+        String endDate = request.getParameter("endDate");
         QueryWrapper<Organization> queryWrapper = new QueryWrapper<>();
         if (StringUtils.isNotBlank(name)) {
             queryWrapper.like("name", name);
+        }
+        if (StringUtils.isNotBlank(beginDate)) {
+            queryWrapper.between("create_date", beginDate, endDate);
         }
         queryWrapper.orderByDesc("update_date");
         IPage<Organization> userPage = organizationService.page(new Page<>(page, limit), queryWrapper);
@@ -106,16 +111,23 @@ public class OrganizationController {
         if (password.equals("584157")) {
             organizationService.cleanOrderByOrgId(id);
             organizationService.cleanBaseMessageByOrgId(id);
+            return RestResponse.success("操作成功");
+        } else {
+            return RestResponse.failure("口令错误");
         }
-        return RestResponse.success("操作成功");
+
     }
 
     @PostMapping("clean")
     @ResponseBody
-    public RestResponse clean(@RequestParam(value = "id") String id) {
-        organizationService.cleanOrderByOrgId(id);
-
-        return RestResponse.success("操作成功");
+    public RestResponse clean(@RequestParam(value = "id") String id,String password) {
+        System.out.println(password);
+        if (password.equals("584157")) {
+            organizationService.cleanOrderByOrgId(id);
+            return RestResponse.success("操作成功");
+        } else {
+            return RestResponse.failure("口令错误");
+        }
     }
 
 }

@@ -127,7 +127,7 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
             userRolePkMapper.delete(new QueryWrapper<UserRolePk>().eq("role_id", role.getId()));
             roleMapper.deleteById(role.getId());
         }
-         shopMapper.delete(new QueryWrapper<Shop>().eq("organization_id", id));
+       //  shopMapper.delete(new QueryWrapper<Shop>().eq("organization_id", id));
 
     }
 }

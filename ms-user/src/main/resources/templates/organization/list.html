@@ -19,7 +19,16 @@
     <div class="layui-field-box">
         <form class="layui-form">
             <div class="layui-inline">
-                <input type="text" value="" name="name" placeholder="可以输入功能名" class="layui-input search_input">
+                <label class="layui-form-label">公司名称</label>
+                <div class="layui-input-inline">
+                    <input type="text" value="" name="name" placeholder="可以输入公司名" class="layui-input search_input">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">日期范围</label>
+                <div class="layui-input-inline">
+                    <input type="text" class="layui-input" id="test10">
+                </div>
             </div>
             <div class="layui-input-inline">
                 <a class="layui-btn" lay-submit="" lay-filter="searchForm">查询</a>
@@ -27,17 +36,6 @@
         </form>
     </div>
 
-    <div id="password" class="layui-form-item">
-        <label class="layui-form-label">请输入密码</label>
-        <div class="layui-input-block">
-            <input type="text"  name="password" lay-verify="title" autocomplete="off"
-                   placeholder="请输入密码" class="layui-input">
-        </div>
-
-        <div class="layui-input-block">
-            <button class="layui-btn" id="button">确定</button>
-        </div>
-    </div>
 </fieldset>
 <div class="layui-form">
     <table class="layui-table" id="test" lay-filter="demo"></table>
@@ -57,18 +55,27 @@
 </div>
 <div id="page"></div>
 <script th:inline="none">
-    layui.use(['layer', 'form', 'table'], function () {
+    layui.use(['layer', 'form', 'table', 'laydate'], function () {
         var layer = layui.layer,
             $ = layui.jquery,
             form = layui.form,
             table = layui.table,
+            laydate = layui.laydate,
             t;              //表格变量
+        let beginDate = '';
+        let endDate = '';
 
 
-        $("#button").on('click', function () {
-
-
-
+        //日期时间范围
+        laydate.render({
+            elem: '#test10'
+            , range: '到'
+            , done: function (value, date) {
+                console.log(value);
+                beginDate = value.split('到')[0];
+                endDate = value.split('到')[1];
+                console.log(value.split('到')[0]);
+            }
         });
 
         //监听工具条
@@ -94,41 +101,43 @@
                 layer.full(editIndex);
             }
             if (obj.event === "del") {
-
-                // layer.confirm("你确定要删除该公司信息吗，删除将不能恢复？", {btn: ['是的,我确定', '我再想想']},
-                //
-                // )
-                layer.prompt({title: '输入口令，并确认', formType: 1}, function(pass, index){
-
-                    $.post("/organization/delete", {"id": data.id,"password": pass}, function (res) {
-                        if (res.success) {
-                            layer.msg("删除成功", {time: 500}, function () {
-                                table.reload('test', t);
+                layer.prompt({title: '输入口令，并确认', formType: 1}, function (pass, index) {
+                    layer.confirm("你确定要删除吗？", {btn: ['是的,我确定', '我再想想']},
+                        function () {
+                            $.post("/organization/delete", {"id": data.id, "password": pass}, function (res) {
+                                if (res.success) {
+                                    layer.msg("删除成功", {time: 500}, function () {
+                                        table.reload('test', t);
+                                    });
+                                } else {
+                                    layer.msg(res.message);
+                                }
                             });
-                        } else {
-                            layer.msg(res.message);
+                            layer.close(index);
                         }
-                    });
-                    layer.close(index);
+                    )
                 });
             }
             if (obj.event === "clean") {
-                layer.confirm("你确定要清除单据信息吗？", {btn: ['是的,我确定', '我再想想']},
-                    function () {
-                        $.post("/organization/clean", {"id": data.id}, function (res) {
-                            if (res.success) {
-                                layer.msg("删除成功", {time: 500}, function () {
-                                    table.reload('test', t);
-                                });
-                            } else {
-                                layer.msg(res.message);
-                            }
-
-                        });
-                    }
-                )
+                layer.prompt({title: '输入口令，并确认', formType: 1}, function (pass, index) {
+                    layer.confirm("你确定要清除单据信息吗？", {btn: ['是的,我确定', '我再想想']},
+                        function () {
+                            $.post("/organization/clean", {"id": data.id, "password": pass}, function (res) {
+                                if (res.success) {
+                                    layer.msg("删除成功", {time: 500}, function () {
+                                        table.reload('test', t);
+                                    });
+                                } else {
+                                    layer.msg(res.message);
+                                }
+                            });
+                            layer.close(index);
+                        }
+                    )
+                });
             }
-        });
+        })
+        ;
 
         t = {
             elem: '#test',
@@ -184,12 +193,15 @@
 
         //搜索
         form.on("submit(searchForm)", function (data) {
+            data.field.beginDate = beginDate;
+            data.field.endDate = endDate;
             t.where = data.field;
             table.reload('test', t);
             return false;
         });
 
-    });
+    })
+    ;
 </script>
 </body>
 </html>

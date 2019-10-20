@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+       <!--
+        
+        @author Alan
+        @date 2019-10-20 09:29:19
+        -->
+<mapper namespace="com.zqy.ms.user.mapper.JpushLogMapper">
+
+    <resultMap type="com.zqy.ms.user.entity.JpushLog" id="jpushLogMap">
+                    <result property="id" column="id"/>
+                    <result property="title" column="title"/>
+                    <result property="msg" column="msg"/>
+                    <result property="dateCreate" column="date_create"/>
+                    <result property="operator" column="operator"/>
+            </resultMap>
+
+    <select id="getJpushLogListByPage" resultType="com.zqy.ms.user.entity.JpushLog">
+
+        select * from jpush_log
+
+        <where>
+                            <if test="param.id != null and param.id != ''">
+                    AND id=param.id
+                </if>
+                            <if test="param.title != null and param.title != ''">
+                    AND title=param.title
+                </if>
+                            <if test="param.msg != null and param.msg != ''">
+                    AND msg=param.msg
+                </if>
+                            <if test="param.dateCreate != null and param.dateCreate != ''">
+                    AND date_create=param.dateCreate
+                </if>
+                            <if test="param.operator != null and param.operator != ''">
+                    AND operator=param.operator
+                </if>
+            
+
+            and a.is_del=0 and c.is_del=0
+
+            order by a.date_update desc
+        </where>
+
+
+
+    </select>
+
+</mapper>

@@ -5,6 +5,7 @@ import com.zqy.ms.user.entity.SysRescource;
 import com.zqy.ms.user.entity.SysUser;
 import com.zqy.ms.user.entity.vo.FileVO;
 import com.zqy.ms.user.service.SysRescourceService;
+import com.zqy.ms.user.util.RestResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
@@ -42,10 +43,17 @@ public class FileController {
     @Autowired
     private SysRescourceService sysRescourceService;
 
+    private final String getFilePath="http://cxiao.wicp.vip/";
+
     @PostMapping("upload")
     @ResponseBody
-    public FileVO localUpload(MultipartFile file, HttpServletRequest request) {
+    public RestResponse localUpload(MultipartFile file, HttpServletRequest request) {
+        RestResponse restResponse=new RestResponse();
+
         String ip = request.getServerName();
+        String getContextPath = request.getContextPath();
+        String basePath = request.getScheme()+"://"+request.getRemoteHost()+":"+request.getServerPort()+getContextPath+"/";
+        log.info(basePath);
         log.info(ip);
         //jar包的同目录的files文件夹下
         String localUploadPath = System.getProperty("user.dir") + "/files/";
@@ -57,30 +65,20 @@ public class FileController {
             String md5DigestAsHex = DigestUtils.md5DigestAsHex(UUID.randomUUID().toString().getBytes(StandardCharsets.UTF_8.name()));
             String rename = md5DigestAsHex + file.getOriginalFilename();
             String filePath = localUploadPath + rename;
-            Subject s = SecurityUtils.getSubject();
-            String src = "http://" + ip + ":" + port + "/file/" + rename;
+
+            String src = getFilePath+ "/file/" + rename;
             log.info(src);
             FileVO fileVO = new FileVO(src, file.getName(), "/file/" + rename, file.getContentType(), "" + file.getSize());
-            SysUser sysUser = (SysUser) s.getPrincipal();
-            SysRescource sysRescource = new SysRescource();
-            System.out.println("用户id" + sysUser.getId());
-            sysRescource.setCreateBy(sysUser.getId());
-            sysRescource.setFileName(rename);
-            sysRescource.setOriginalFilename(file.getOriginalFilename());
-            sysRescource.setFileType(file.getContentType());
-            sysRescource.setSrc(src);
-            sysRescource.setRelativePath("/file/" + rename);
-            sysRescource.setFileSize("" + file.getSize());
-            sysRescourceService.save(sysRescource);
+
             file.transferTo(new File(filePath));
-            return fileVO;
+            restResponse.setData(fileVO);
+            return restResponse;
         } catch (Exception e) {
             e.printStackTrace();
-            return null;
         }
+        return null;
     }
 
-    @Async
     @RequestMapping("/{name}")
     public void download(@PathVariable("name") String name, HttpServletResponse response) throws IOException {
         String localUploadPath = System.getProperty("user.dir") + "/files/" + name;
@@ -103,6 +101,7 @@ public class FileController {
         outputStream.flush();
         outputStream.close();
     }
+
 
 
 }

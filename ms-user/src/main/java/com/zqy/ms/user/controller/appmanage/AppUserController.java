@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.zqy.ms.user.entity.Organization;
 import com.zqy.ms.user.entity.User;
+import com.zqy.ms.user.entity.ao.BasePageAO;
 import com.zqy.ms.user.entity.ao.RegisterAO;
 import com.zqy.ms.user.service.OrganizationService;
 import com.zqy.ms.user.service.UserService;
@@ -46,17 +47,19 @@ public class AppUserController {
 
     @PostMapping("list")
     @ResponseBody
-    public LayerData<User> list(@RequestParam(value = "page", defaultValue = "1") Integer page,
-                                @RequestParam(value = "limit", defaultValue = "10") Integer limit,
-                                ServletRequest request) {
+    public LayerData<User> list(BasePageAO basePageAo) {
         LayerData<User> userLayerData = new LayerData<>();
-        String name = request.getParameter("name");
+        String beginDate = basePageAo.getBeginDate();
+        String endDate = basePageAo.getEndDate();
         QueryWrapper<User> queryWrapper = new QueryWrapper<>();
-        if (StringUtils.isNotBlank(name)) {
-            queryWrapper.like("name", name);
+        if (StringUtils.isNotBlank(basePageAo.getName())) {
+            queryWrapper.like("name", basePageAo.getName());
+        }
+        if(StringUtils.isNotBlank(beginDate)){
+            queryWrapper.between("create_date", beginDate,endDate);
         }
         queryWrapper.orderByDesc("update_date");
-        IPage<User> userPage = userService.page(new Page<>(page, limit), queryWrapper);
+        IPage<User> userPage = userService.page(new Page<>(basePageAo.getPage(), basePageAo.getLimit()), queryWrapper);
         List<User> users = userPage.getRecords();
         for (User user : users) {
             Organization organization = organizationService.getById(user.getOrganizationId());

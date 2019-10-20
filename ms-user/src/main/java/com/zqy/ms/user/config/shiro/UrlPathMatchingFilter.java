@@ -20,6 +20,7 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import java.io.OutputStream;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -45,13 +46,23 @@ public class UrlPathMatchingFilter extends PathMatchingFilter {
 
         Log.i("requestURI:" + requestUri);
         Subject subject = SecurityUtils.getSubject();
+        List<String> res = new ArrayList<>();
+        res.add("/index");
+        res.add("/");
+        res.add("/login");
+        res.add("/unLogin");
+        res.add("/static");
+        res.add("/js");
         // 如果没有登录，就跳转到登录页面
+        if (res.indexOf(requestUri)>0) {
+            return Boolean.TRUE;
+        }
         if (!subject.isAuthenticated()) {
-            WebUtils.issueRedirect(request, response, "/login");
+            WebUtils.issueRedirect(request, response, "/unLogin");
             return false;
         }
         SysUser sysUser = (SysUser) subject.getPrincipal();
-        if(sysUser.getLocked()){
+        if (sysUser.getLocked()) {
             subject.logout();
             WebUtils.issueRedirect(request, response, "/locked");
         }

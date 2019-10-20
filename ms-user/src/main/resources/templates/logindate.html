@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8"/>
+    <title>后台管理</title>
+</head>
+<body style="margin: 0 auto;width: 100%">
+<div style="text-align: center;align-content: center;height: 500px">
+    <h1>登录过期</h1>
+    <script>
+        window.onload = function(){
+            if(top != self){
+                parent.location.reload();
+            }else {
+               location.href = "login"; //也可设置为你自己的URL
+            }
+        }
+    </script>
+</div>
+</body>
+</html>
