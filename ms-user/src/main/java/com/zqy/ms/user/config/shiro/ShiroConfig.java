@@ -11,6 +11,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.core.annotation.Order;
+import org.springframework.data.redis.core.StringRedisTemplate;
 
 import javax.servlet.Filter;
 import java.util.HashMap;
@@ -29,6 +30,9 @@ public class ShiroConfig {
 
     @Autowired
     private SysMenuService sysMenuService;
+
+    @Autowired
+    private StringRedisTemplate redisTemplate;
 
     @Bean
     public static LifecycleBeanPostProcessor getLifecycleBeanPostProcessor() {
@@ -58,7 +62,7 @@ public class ShiroConfig {
         filterChainDefinitionMap.put("/locked/**", "anon");
 
 
-        UrlPathMatchingFilter urlPathMatchingFilter = new UrlPathMatchingFilter(sysMenuService);
+        UrlPathMatchingFilter urlPathMatchingFilter = new UrlPathMatchingFilter(sysMenuService,redisTemplate);
 
         HashMap<String, Filter> map = new HashMap<>(2);
         System.out.println(urlPathMatchingFilter);

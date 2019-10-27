@@ -14,6 +14,8 @@ import org.apache.shiro.subject.Subject;
 import org.apache.shiro.web.filter.PathMatchingFilter;
 import org.apache.shiro.web.util.WebUtils;
 import org.json.JSONTokener;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.StringRedisTemplate;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
@@ -34,8 +36,13 @@ public class UrlPathMatchingFilter extends PathMatchingFilter {
 
     private SysMenuService sysMenuService;
 
-    public UrlPathMatchingFilter(SysMenuService sysMenuService) {
+
+    private StringRedisTemplate redisTemplate;
+
+
+    public UrlPathMatchingFilter(SysMenuService sysMenuService, StringRedisTemplate redisTemplate) {
         this.sysMenuService = sysMenuService;
+        this.redisTemplate = redisTemplate;
     }
 
 
@@ -54,7 +61,7 @@ public class UrlPathMatchingFilter extends PathMatchingFilter {
         res.add("/static");
         res.add("/js");
         // 如果没有登录，就跳转到登录页面
-        if (res.indexOf(requestUri)>0) {
+        if (res.indexOf(requestUri) > 0) {
             return Boolean.TRUE;
         }
         if (!subject.isAuthenticated()) {
@@ -73,9 +80,15 @@ public class UrlPathMatchingFilter extends PathMatchingFilter {
         if (!needInterceptor) {
             return true;
         }
+        if (redisTemplate.opsForValue().get("permission:" + sysUser.getId()) == null) {
+            List<SysMenu> latestPermissions = sysMenuService.findPermissionUrlsByUserId(sysUser.getId());
+            redisTemplate.opsForValue().set("permission:" + sysUser.getId(), JSON.toJSONString(latestPermissions));
+        }
+        String str = redisTemplate.opsForValue().get("permission:" + sysUser.getId());
+        List<SysMenu> latestPermissions = JSON.parseArray(str, SysMenu.class);
         //如果有权限
 
-        List<SysMenu> latestPermissions = sysMenuService.findPermissionUrlsByUserId(sysUser.getId());
+
         for (SysMenu sysmenu : latestPermissions) {
             if (sysmenu.getHref().equals(requestUri)) {
                 Log.i("有此权限");
