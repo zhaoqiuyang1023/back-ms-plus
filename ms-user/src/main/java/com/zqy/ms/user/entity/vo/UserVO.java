@@ -1,13 +1,17 @@
-package com.zqy.ms.user.entity;
+package com.zqy.ms.user.entity.vo;
 
-import com.baomidou.mybatisplus.annotation.*;
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import io.swagger.annotations.ApiModelProperty;
 
 import java.io.Serializable;
+import java.security.SecureRandom;
 import java.util.Date;
 
 
@@ -18,7 +22,7 @@ import java.util.Date;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @TableName("user")
-public class User extends Model<User> {
+public class UserVO extends Model<UserVO> {
     private static final long serialVersionUID = 1L;
 
 

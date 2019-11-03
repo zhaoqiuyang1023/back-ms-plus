@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+       <!--
+        
+        @author Alan
+        @date 2019-11-01 20:35:15
+        -->
+<mapper namespace="com.zqy.ms.user.mapper.PayPolicyMapper">
+
+    <resultMap type="com.zqy.ms.user.entity.PayPolicy" id="payPolicyMap">
+                    <result property="id" column="id"/>
+                    <result property="duration" column="duration"/>
+                    <result property="money" column="money"/>
+                    <result property="moneyOfMonth" column="money_of_month"/>
+            </resultMap>
+
+    <select id="getPayPolicyListByPage" resultType="com.zqy.ms.user.entity.PayPolicy">
+
+        select * from pay_policy
+
+        <where>
+                            <if test="param.id != null and param.id != ''">
+                    AND id=param.id
+                </if>
+                            <if test="param.duration != null and param.duration != ''">
+                    AND duration=param.duration
+                </if>
+                            <if test="param.money != null and param.money != ''">
+                    AND money=param.money
+                </if>
+                            <if test="param.moneyOfMonth != null and param.moneyOfMonth != ''">
+                    AND money_of_month=param.moneyOfMonth
+                </if>
+            
+
+            and a.is_del=0 and c.is_del=0
+
+            order by a.date_update desc
+        </where>
+
+
+
+    </select>
+
+</mapper>

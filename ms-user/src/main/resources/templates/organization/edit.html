@@ -23,9 +23,9 @@
     </fieldset>
 
     <div class="layui-form-item">
-        <label class="layui-form-label">管理员称呼</label>
+        <label class="layui-form-label">管理员登录名</label>
         <div class="layui-input-block">
-            <input type="text" disabled th:value="${user.nickName}" lay-verify="title"
+            <input type="text" disabled th:value="${user.username}" lay-verify="title"
                    autocomplete="off" placeholder="请输入标题" class="layui-input">
         </div>
     </div>
@@ -61,7 +61,7 @@
 <!--        </div>-->
 
         <div class="layui-form-item">
-            <label class="layui-form-label">到期时间</label>
+            <label class="layui-form-label">试用期到期时间</label>
             <div class="layui-inline">
                 <input type="text" name="cutOffDate" th:value="${organization.cutOffDate}"  class="layui-input" id="test1" placeholder="yyyy-MM-dd">
             </div>

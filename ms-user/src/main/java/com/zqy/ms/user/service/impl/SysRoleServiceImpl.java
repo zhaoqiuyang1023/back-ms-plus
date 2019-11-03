@@ -1,5 +1,6 @@
 package com.zqy.ms.user.service.impl;
 
+import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.zqy.ms.user.entity.SysMenu;
@@ -11,7 +12,9 @@ import com.zqy.ms.user.mapper.SysRoleMenuMapper;
 import com.zqy.ms.user.service.SysRoleMenuService;
 import com.zqy.ms.user.service.SysRoleService;
 import com.zqy.ms.user.service.SysUserRoleService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,6 +24,7 @@ import java.util.List;
  * @author Alan
  * @date 2019-08-01 10:54:19
  */
+@Slf4j
 @Service("sysRoleService")
 public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> implements SysRoleService {
 
@@ -38,34 +42,43 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
     @Autowired
     private SysRoleMenuService sysRoleMenuService;
 
+    @Autowired
+    private StringRedisTemplate redisTemplate;
+
 
     @Transactional
     @Override
     public void saveRole(SysRole role) {
         saveOrUpdate(role);
         sysRoleMenuMapper.delete(new QueryWrapper<SysRoleMenu>().eq("role_id", role.getId()));
+
+        List<SysUserRole> sysUserRoles = sysUserRoleService.list(new QueryWrapper<SysUserRole>().eq("role_id", role.getId()));
+        for (SysUserRole sysUserRole : sysUserRoles) {
+            redisTemplate.delete("permission:" + sysUserRole.getUserId());
+        }
         for (SysMenu sysMenu : role.getSysMenus()) {
             SysRoleMenu sysRoleMenu = new SysRoleMenu();
             sysRoleMenu.setMenuId(sysMenu.getId());
             sysRoleMenu.setRoleId(role.getId());
             System.out.println(sysRoleMenu);
+
+
             sysRoleMenuMapper.insert(sysRoleMenu);
         }
     }
 
 
-
     @Override
     public List<SysMenu> findMenusByRoleIdAndParentId(Long roleId, Long parentId) {
 
-        return  sysRoleMapper.findMenusByRoleIdAndParentId(roleId, parentId);
+        return sysRoleMapper.findMenusByRoleIdAndParentId(roleId, parentId);
     }
 
     @Override
     @Transactional
     public void deleteRoleByRoleId(Long id) {
         removeById(id);
-        sysUserRoleService.remove(new QueryWrapper<SysUserRole>().eq("role_id",id));
-        sysRoleMenuService.remove(new QueryWrapper<SysRoleMenu>().eq("role_id",id));
+        sysUserRoleService.remove(new QueryWrapper<SysUserRole>().eq("role_id", id));
+        sysRoleMenuService.remove(new QueryWrapper<SysRoleMenu>().eq("role_id", id));
     }
 }

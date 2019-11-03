@@ -22,7 +22,7 @@ import java.util.Objects;
  */
 @Data
 @TableName("sys_role")
-public class SysRole extends Model<SysRole> {
+public class SysRole{
     private static final long serialVersionUID = 1L;
 
 
@@ -76,11 +76,4 @@ public class SysRole extends Model<SysRole> {
         return Objects.hash(id);
     }
 
-    /**
-     * primary key
-     */
-    @Override
-    protected Serializable pkVal() {
-        return this.id;
-    }
 }

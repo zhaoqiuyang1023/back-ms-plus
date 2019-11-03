@@ -7,10 +7,12 @@ import com.zqy.ms.user.entity.SysMenu;
 import com.zqy.ms.user.entity.SysRole;
 import com.zqy.ms.user.service.SysMenuService;
 import com.zqy.ms.user.service.SysRoleService;
+import com.zqy.ms.user.service.SysUserService;
 import com.zqy.ms.user.util.LayerData;
 import com.zqy.ms.user.util.Log;
 import com.zqy.ms.user.util.RestResponse;
 import lombok.extern.slf4j.Slf4j;
+import net.bytebuddy.asm.Advice;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -35,6 +37,9 @@ public class SysRoleController {
 
     @Autowired
     private SysMenuService sysMenuService;
+
+    @Autowired
+    private SysUserService sysUserService;
 
 
     @GetMapping("list")

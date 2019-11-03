@@ -40,46 +40,39 @@
     <div class="layui-form-item">
         <label class="layui-form-label">手机号</label>
         <div class="layui-input-block">
-            <input type="text" name="tel"  th:value="${user.tel}" lay-verify="title"
+            <input type="text" name="tel" th:value="${user.tel}" lay-verify="title"
                    autocomplete="off" placeholder="请输入标题" class="layui-input">
         </div>
     </div>
     <div class="layui-form-item">
         <label class="layui-form-label">管理员</label>
         <div class="layui-input-block">
-            <input type="radio" disabled name="admin" value="false" title="是" th:checked="${user.admin==true}" >
-            <input type="radio" disabled name="admin" value="true" title="否" th:checked="${user.admin==false}" >
+            <input type="radio" disabled name="admin" value="false" title="是" th:checked="${user.admin==true}">
+            <input type="radio" disabled name="admin" value="true" title="否" th:checked="${user.admin==false}">
         </div>
     </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">到期时间</label>
+        <div class="layui-inline">
+            <input type="text" name="cutOffDate"  th:value="${user.cutOffDate}" class="layui-input" id="test1"
+                   placeholder="yyyy-MM-dd">
+        </div>
+    </div>
+
 
     <form class="layui-form" action="" lay-filter="example">
         <div class="layui-form-item">
             <label class="layui-form-label">公司名称</label>
             <div class="layui-input-block">
-                <input type="text"  disabled  th:value="${organization.name}" lay-verify="title" autocomplete="off"
+                <input type="text" disabled th:value="${organization.name}" lay-verify="title" autocomplete="off"
                        placeholder="请输入标题" class="layui-input">
             </div>
         </div>
         <div class="layui-form-item">
             <label class="layui-form-label">公司手机号</label>
             <div class="layui-input-block">
-                <input type="text"  disabled  th:value="${organization.tel}" lay-verify="title" autocomplete="off"
+                <input type="text" disabled th:value="${organization.tel}" lay-verify="title" autocomplete="off"
                        placeholder="请输入标题" class="layui-input">
-            </div>
-        </div>
-<!--        <div class="layui-form-item">-->
-<!--            <label class="layui-form-label">公司地址</label>-->
-<!--            <div class="layui-input-block">-->
-<!--                <input type="text"  disabled  th:value="${organization.address}" lay-verify="title"-->
-<!--                       autocomplete="off" placeholder="请输入标题" class="layui-input">-->
-<!--            </div>-->
-<!--        </div>-->
-
-        <div class="layui-form-item">
-            <label class="layui-form-label">到期时间</label>
-            <div class="layui-inline">
-                <input type="text"  disabled  th:value="${organization.cutOffDate}" class="layui-input"
-                       id="test1" placeholder="yyyy-MM-dd">
             </div>
         </div>
 
@@ -87,8 +80,8 @@
         <div class="layui-form-item">
             <label class="layui-form-label">是否启用</label>
             <div class="layui-input-block">
-                <input type="radio" name="locked" value="false" title="启动" th:checked="${user.locked==false}" >
-                <input type="radio" name="locked" value="true" title="停用" th:checked="${user.locked==true}" >
+                <input type="radio" name="locked" value="false" title="启动" th:checked="${user.locked==false}">
+                <input type="radio" name="locked" value="true" title="停用" th:checked="${user.locked==true}">
             </div>
         </div>
 
@@ -101,7 +94,6 @@
     </form>
     <script>
 
-
         layui.use(['form', 'jquery', 'laydate', 'layer'], function () {
             let form = layui.form,
                 $ = layui.jquery,
@@ -109,7 +101,7 @@
                 layer = layui.layer;
             laydate.render({
                 elem: '#test1' //指定元素
-                ,type: 'datetime'
+                , type: 'datetime'
             });
 
             form.on('submit(editUser)', function (data) {

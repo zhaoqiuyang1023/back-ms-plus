@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>后台管理</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <script th:src="@{/static/layui/layui.js}"></script>
+    <link rel="stylesheet" href="../../../static/layui/css/layui.css" th:href="@{/static/layui/css/layui.css}">
+
+    <!-- 注意：如果你直接复制所有代码到本地，上述css路径需要改成你本地的 -->
+    <style type="text/css">
+        .layui-form-item .layui-inline {
+            min-width: 15%;
+            float: left;
+            margin-right: 0;
+        }
+
+        .layui-form-item {
+            position: relative;
+        }
+
+    </style>
+</head>
+<body class="childrenBody">
+
+<form class="layui-form">
+
+
+    <fieldset class="layui-elem-field layui-field-title" style="margin-top: 50px;">
+        <legend>PayLog信息</legend>
+    </fieldset>
+
+    
+    
+        
+    
+    <div class="layui-form-item">
+        <label class="layui-form-label"></label>
+        <div class="layui-input-block">
+            <input type="text" name='type'
+                   autocomplete="off" placeholder="" class="layui-input">
+        </div>
+    </div>
+
+        
+    
+    <div class="layui-form-item">
+        <label class="layui-form-label">公司id</label>
+        <div class="layui-input-block">
+            <input type="text" name='organizationId'
+                   autocomplete="off" placeholder="公司id" class="layui-input">
+        </div>
+    </div>
+
+        
+    
+    <div class="layui-form-item">
+        <label class="layui-form-label">公司名称</label>
+        <div class="layui-input-block">
+            <input type="text" name='organizationName'
+                   autocomplete="off" placeholder="公司名称" class="layui-input">
+        </div>
+    </div>
+
+        
+    
+    <div class="layui-form-item">
+        <label class="layui-form-label">用户id</label>
+        <div class="layui-input-block">
+            <input type="text" name='userId'
+                   autocomplete="off" placeholder="用户id" class="layui-input">
+        </div>
+    </div>
+
+        
+    
+    <div class="layui-form-item">
+        <label class="layui-form-label">用户名称</label>
+        <div class="layui-input-block">
+            <input type="text" name='userName'
+                   autocomplete="off" placeholder="用户名称" class="layui-input">
+        </div>
+    </div>
+
+        
+        <div class="layui-form-item">
+        <label class="layui-form-label">创建时间</label>
+        <div class="layui-inline">
+            <input type="text" name='createDate' class="layui-input"
+                   id="test1" placeholder="yyyy-MM-dd">
+        </div>
+    </div>
+        
+    
+    <div class="layui-form-item">
+        <label class="layui-form-label">几个月</label>
+        <div class="layui-input-block">
+            <input type="text" name='numOfMonth'
+                   autocomplete="off" placeholder="几个月" class="layui-input">
+        </div>
+    </div>
+
+        
+    
+    <div class="layui-form-item">
+        <label class="layui-form-label">管理员id</label>
+        <div class="layui-input-block">
+            <input type="text" name='adminId'
+                   autocomplete="off" placeholder="管理员id" class="layui-input">
+        </div>
+    </div>
+
+        
+    
+    <div class="layui-form-item">
+        <label class="layui-form-label">管理员名称</label>
+        <div class="layui-input-block">
+            <input type="text" name='adminName'
+                   autocomplete="off" placeholder="管理员名称" class="layui-input">
+        </div>
+    </div>
+
+        
+        <div class="layui-form-item">
+        <label class="layui-form-label">充值之前到期时间</label>
+        <div class="layui-inline">
+            <input type="text" name='beforeCutOffDate' class="layui-input"
+                   id="test1" placeholder="yyyy-MM-dd">
+        </div>
+    </div>
+        
+    
+    <div class="layui-form-item">
+        <label class="layui-form-label">多少钱</label>
+        <div class="layui-input-block">
+            <input type="text" name='money'
+                   autocomplete="off" placeholder="多少钱" class="layui-input">
+        </div>
+    </div>
+
+        
+        <div class="layui-form-item">
+        <label class="layui-form-label">充值之后到期时间</label>
+        <div class="layui-inline">
+            <input type="text" name='endCutOffDate' class="layui-input"
+                   id="test1" placeholder="yyyy-MM-dd">
+        </div>
+    </div>
+        
+    
+    <div class="layui-form-item">
+        <label class="layui-form-label">策略id</label>
+        <div class="layui-input-block">
+            <input type="text" name='payPolicyId'
+                   autocomplete="off" placeholder="策略id" class="layui-input">
+        </div>
+    </div>
+
+        
+
+    <div class="layui-form-item" style="padding-left: 30%;">
+        <div class="layui-input-block">
+            <button class="layui-btn" lay-submit="" lay-filter="appUser">立即提交</button>
+            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+        </div>
+    </div>
+</form>
+
+<script>
+
+    layui.use(['form', 'layer', 'laydate', 'jquery'], function () {
+        var form = layui.form,
+            layer = layui.layer,
+            laydate = layui.laydate,
+            $ = layui.jquery;
+        laydate.render({
+            elem: '#test1' //指定元素
+            , type: 'datetime'
+        });
+
+        form.on('submit(appUser)', function (data) {
+            console.log(JSON.stringify(data.field));
+            $.ajax({
+                type: "POST",
+                url: "/paylog/add",
+                dataType: "json",
+                contentType: "application/json",
+                data: JSON.stringify(data.field),
+                success: function (res) {
+                    if (res.success) {
+                        parent.layer.msg("添加成功！", {time: 500}, function () {
+                            //刷新父页面
+                            parent.location.reload();
+                        });
+                    } else {
+                        layer.msg(res.message);
+                    }
+                },
+                error: function (error) {
+                    layer.msg(error.toLocaleString());
+                }
+            });
+            return false;
+        });
+    });
+</script>
+</body>
+</html>

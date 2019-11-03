@@ -7,6 +7,7 @@ import com.zqy.ms.user.entity.Organization;
 import com.zqy.ms.user.entity.User;
 import com.zqy.ms.user.entity.ao.BasePageAO;
 import com.zqy.ms.user.entity.ao.RegisterAO;
+import com.zqy.ms.user.entity.vo.UserVO;
 import com.zqy.ms.user.service.OrganizationService;
 import com.zqy.ms.user.service.UserService;
 import com.zqy.ms.user.util.LayerData;
@@ -19,7 +20,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import javax.servlet.ServletRequest;
 import java.util.Date;
 import java.util.List;
 
@@ -53,7 +53,7 @@ public class AppUserController {
         String endDate = basePageAo.getEndDate();
         QueryWrapper<User> queryWrapper = new QueryWrapper<>();
         if (StringUtils.isNotBlank(basePageAo.getName())) {
-            queryWrapper.like("name", basePageAo.getName());
+            queryWrapper.like("username", basePageAo.getName()).or().like("tel", basePageAo.getName());
         }
         if(StringUtils.isNotBlank(beginDate)){
             queryWrapper.between("create_date", beginDate,endDate);
@@ -82,6 +82,8 @@ public class AppUserController {
     public String edit(@PathVariable("id") String id, Model model) {
 
         User user = userService.getById(id);
+
+
         Organization organization = organizationService.getById(user.getOrganizationId());
         model.addAttribute("user", user);
         model.addAttribute("organization", organization);

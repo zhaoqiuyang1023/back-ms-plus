@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+       <!--
+        
+        @author Alan
+        @date 2019-11-03 13:16:48
+        -->
+<mapper namespace="com.zqy.ms.user.mapper.PayLogMapper">
+
+    <resultMap type="com.zqy.ms.user.entity.PayLog" id="payLogMap">
+                    <result property="id" column="id"/>
+                    <result property="type" column="type"/>
+                    <result property="organizationId" column="organization_id"/>
+                    <result property="organizationName" column="organization_name"/>
+                    <result property="userId" column="user_id"/>
+                    <result property="userName" column="user_name"/>
+                    <result property="createDate" column="create_date"/>
+                    <result property="numOfMonth" column="num_of_month"/>
+                    <result property="adminId" column="admin_id"/>
+                    <result property="adminName" column="admin_name"/>
+                    <result property="beforeCutOffDate" column="before_cut_off_date"/>
+                    <result property="money" column="money"/>
+                    <result property="endCutOffDate" column="end_cut_off_date"/>
+                    <result property="payPolicyId" column="pay_policy_id"/>
+            </resultMap>
+
+    <select id="getPayLogListByPage" resultType="com.zqy.ms.user.entity.PayLog">
+
+        select * from pay_log
+
+        <where>
+                            <if test="param.id != null and param.id != ''">
+                    AND id=param.id
+                </if>
+                            <if test="param.type != null and param.type != ''">
+                    AND type=param.type
+                </if>
+                            <if test="param.organizationId != null and param.organizationId != ''">
+                    AND organization_id=param.organizationId
+                </if>
+                            <if test="param.organizationName != null and param.organizationName != ''">
+                    AND organization_name=param.organizationName
+                </if>
+                            <if test="param.userId != null and param.userId != ''">
+                    AND user_id=param.userId
+                </if>
+                            <if test="param.userName != null and param.userName != ''">
+                    AND user_name=param.userName
+                </if>
+                            <if test="param.createDate != null and param.createDate != ''">
+                    AND create_date=param.createDate
+                </if>
+                            <if test="param.numOfMonth != null and param.numOfMonth != ''">
+                    AND num_of_month=param.numOfMonth
+                </if>
+                            <if test="param.adminId != null and param.adminId != ''">
+                    AND admin_id=param.adminId
+                </if>
+                            <if test="param.adminName != null and param.adminName != ''">
+                    AND admin_name=param.adminName
+                </if>
+                            <if test="param.beforeCutOffDate != null and param.beforeCutOffDate != ''">
+                    AND before_cut_off_date=param.beforeCutOffDate
+                </if>
+                            <if test="param.money != null and param.money != ''">
+                    AND money=param.money
+                </if>
+                            <if test="param.endCutOffDate != null and param.endCutOffDate != ''">
+                    AND end_cut_off_date=param.endCutOffDate
+                </if>
+                            <if test="param.payPolicyId != null and param.payPolicyId != ''">
+                    AND pay_policy_id=param.payPolicyId
+                </if>
+            
+
+            and a.is_del=0 and c.is_del=0
+
+            order by a.date_update desc
+        </where>
+
+
+
+    </select>
+
+</mapper>
