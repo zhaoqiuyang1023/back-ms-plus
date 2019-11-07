@@ -22,7 +22,7 @@ import java.util.Objects;
  */
 @Data
 @TableName("sys_menu")
-public class SysMenu extends Model<SysMenu> {
+public class SysMenu{
     private static final long serialVersionUID = 1L;
 
 
@@ -118,11 +118,4 @@ public class SysMenu extends Model<SysMenu> {
         return Objects.hash(id);
     }
 
-    /**
-     * primary key
-     */
-    @Override
-    protected Serializable pkVal() {
-        return this.id;
-    }
 }
