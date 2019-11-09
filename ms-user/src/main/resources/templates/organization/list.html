@@ -70,6 +70,7 @@
         laydate.render({
             elem: '#test10'
             , range: '到'
+            , trigger:'click'
             , done: function (value, date) {
                 console.log(value);
                 beginDate = value.split('到')[0];

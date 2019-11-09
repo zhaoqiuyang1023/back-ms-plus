@@ -73,8 +73,9 @@
         //日期时间选择器
         laydate.render({
             elem: '#dateStart'
-            , range: '~',
-            done: function (value, date) {
+            , range: '~'
+            , trigger:'click'
+            ,done: function (value, date) {
                 console.log(value);
                 let str = value.split('~');
                 beginTime = str[0];

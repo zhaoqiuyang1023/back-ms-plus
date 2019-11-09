@@ -34,7 +34,7 @@
         <label class="layui-form-label">到期时间</label>
         <div class="layui-inline">
             <input type="text" name='$column.lowerAttrName' class="layui-input"
-                   id="test1" placeholder="yyyy-MM-dd">
+                   id="date" placeholder="yyyy-MM-dd">
         </div>
     </div>
     #else
@@ -67,6 +67,22 @@
             $ = layui.jquery,
             layer = layui.layer;
 
+        let beginDate = '';
+        let endDate = '';
+
+
+        //日期时间范围
+        laydate.render({
+            elem: '#date'
+            , range: '到'
+            , trigger:'click'
+            , done: function (value, date) {
+                console.log(value);
+                beginDate = value.split('到')[0];
+                endDate = value.split('到')[1];
+                console.log(value.split('到')[0]);
+            }
+        });
         
         form.on('submit(editRole)', function (data) {
          

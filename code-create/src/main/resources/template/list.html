@@ -25,6 +25,12 @@
             <a class="layui-btn" lay-submit="" lay-filter="searchForm">查询</a>
         </div>
         <div class="layui-inline">
+            <label class="layui-form-label">日期范围</label>
+            <div class="layui-input-inline">
+                <input type="text" class="layui-input" id="date">
+            </div>
+        </div>
+        <div class="layui-inline">
             <a class="layui-btn layui-btn-normal" data-type="addUser">添加</a>
         </div>
     </form>
@@ -46,7 +52,23 @@
                 form = layui.form,
                 laydate = layui.laydate,
                 table = layui.table,
-                t;              //表格变量
+                t;
+
+        let beginDate = '';
+        let endDate = '';
+
+        //日期时间范围
+        laydate.render({
+            elem: '#date'
+            , range: '到'
+            , trigger:'click'
+            , done: function (value, date) {
+                console.log(value);
+                beginDate = value.split('到')[0];
+                endDate = value.split('到')[1];
+                console.log(value.split('到')[0]);
+            }
+        });
         //监听工具条
         table.on('tool(demo)', function(obj){
             let data = obj.data;
