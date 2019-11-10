@@ -37,7 +37,7 @@
 <div class="layui-form users_list">
     <table class="layui-table" id="test" lay-filter="demo"></table>
     <script type="text/html" id="barDemo">
-        <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+
     </script>
 </div>
 <div id="page"></div>
@@ -120,17 +120,16 @@
             },
 
             cols: [[
-                {field: 'type', title: '类型', width: '5%'},
-                {field: 'tradeNo', title: '流水号', width: '15%',sort: true},
-                {field: 'organizationName', title: '公司名称', width: '9%'},
+                {field: 'type', title: '类型', width: '6%'},
+                {field: 'tradeNo', title: '流水号', width: '18%',sort: true},
+                {field: 'organizationName', title: '公司名称', width: '10%'},
                 {field: 'userName', title: '被充值用户', width: '7%'},
-                {field: 'numOfMonth', title: '充值月数', width: '8%'},
+                {field: 'numOfMonth', title: '充值月数', width: '5%'},
                 {field: 'money', title: '充值金额', width: '7%', sort: true, totalRow: true},
                 {field: 'adminName', title: '管理员名称', width: '7%'},
-                {field: 'createDate', title: '创建时间', width: '10%'},
-                {field: 'beforeCutOffDate', title: '充值之前到期时间', width: '10%'},
-                {field: 'endCutOffDate', title: '充值之后到期时间', width: '10%'},
-                {title: '操作', fixed: 'right', width: '7%', align: 'center', toolbar: '#barDemo'}
+                {field: 'createDate', title: '创建时间', width: '13%'},
+                {field: 'beforeCutOffDate', title: '充值之前到期时间', width: '13%'},
+                {field: 'endCutOffDate', title: '充值之后到期时间', width: '13%'}
             ]]
         };
         table.render(t);
