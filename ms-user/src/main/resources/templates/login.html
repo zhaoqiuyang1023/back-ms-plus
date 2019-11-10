@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html manifest="haorooms.appcache" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html  xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>后台管理</title>
@@ -112,12 +112,12 @@
 
                     <div class="layui-form-item loginInput">
                         <input type="tel" name="username" lay-verify="required" autocomplete="off" placeholder="用户名"
-                               value="test"
+
                                class="layui-input">
                     </div>
                     <div class="layui-form-item loginInput" style="margin-top: 5%">
                         <input type="text" name="password" lay-verify="password" autocomplete="off" placeholder="密码"
-                               value="test"
+
                                class="layui-input">
                     </div>
 
@@ -125,7 +125,7 @@
 
                         <div class="layui-input-inline" style="height: 38px;width: 100%">
                             <input type="text" name="code" style="width: 40%;float: left" lay-verify="required"
-                                   autocomplete="off" placeholder="验证码" value="1111"
+                                   autocomplete="off" placeholder="验证码"
                                    class="layui-input">
                             <img style="height: 80%;float: left;margin-left: 10px" type="checkbox" id="mycode"
                                  lay-skin="primary" checked>
@@ -134,11 +134,11 @@
                     </div>
 
 
-                    <div class="layui-form-item " style="margin-left: 10%;">
+<!--                    <div class="layui-form-item " style="margin-left: 10%;">-->
 
-                        <input type="checkbox" name="rememberMe" lay-skin="primary" checked title="记住帐号?">
+<!--                        <input type="checkbox" name="rememberMe" lay-skin="primary" checked title="记住帐号?">-->
 
-                    </div>
+<!--                    </div>-->
 
 
                     <button class="layui-btn loginBtn"
@@ -187,14 +187,15 @@
                 var loadIndex = layer.load(2, {
                     shade: [0.3, '#333']
                 });
-                if ($('form').find('input[type="checkbox"]')[0].checked) {
-                    data.field.rememberMe = true;
-                } else {
-                    data.field.rememberMe = false;
-                }
+                // if ($('form').find('input[type="checkbox"]')[0].checked) {
+                //     data.field.rememberMe = true;
+                // } else {
+                //     data.field.rememberMe = false;
+                // }
                 $.post(data.form.action, data.field, function (res) {
                     layer.close(loadIndex);
                     if (res.success) {
+                        console.log(res)
                         location.href = res.data.url;
                     } else {
                         layer.msg(res.message);

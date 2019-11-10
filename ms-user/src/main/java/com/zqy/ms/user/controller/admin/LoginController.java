@@ -104,11 +104,6 @@ public class LoginController {
         if (StringUtils.isBlank(username) || StringUtils.isBlank(password)) {
             return RestResponse.failure("用户名或者密码不能为空");
         }
-        if (StringUtils.isBlank(rememberMe)) {
-            return RestResponse.failure("记住我不能为空");
-        }
-
-
         if (codeVerify&&StringUtils.isBlank(code)) {
             return RestResponse.failure("验证码不能为空");
         }
