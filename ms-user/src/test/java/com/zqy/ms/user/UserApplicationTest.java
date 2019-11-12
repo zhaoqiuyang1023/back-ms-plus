@@ -20,8 +20,8 @@ import java.util.List;
  * @date : 2019/8/1  15:26
  */
 
-@RunWith(SpringRunner.class)
-@SpringBootTest
+//@RunWith(SpringRunner.class)
+//@SpringBootTest
 public class UserApplicationTest {
 
 
