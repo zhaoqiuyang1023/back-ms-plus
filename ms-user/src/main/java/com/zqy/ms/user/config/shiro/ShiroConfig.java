@@ -55,6 +55,7 @@ public class ShiroConfig {
         /* 自定义过滤器*/
         filterChainDefinitionMap.put("/login/**", "anon");
         filterChainDefinitionMap.put("/index/**", "anon");
+        filterChainDefinitionMap.put("/file/download/**", "anon");
         filterChainDefinitionMap.put("/unLogin/**", "anon");
         filterChainDefinitionMap.put("/static/**", "anon");
         filterChainDefinitionMap.put("/genCaptcha/**", "anon");

@@ -43,10 +43,10 @@ public class LoginController {
     private SysUserService sysUserService;
 
 
-   @Value("${code.verify}")
-    private boolean codeVerify=false;
+    @Value("${code.verify}")
+    private boolean codeVerify = false;
 
-    @RequestMapping({"/index", "/index.html","/"})
+    @RequestMapping({"/index", "/index.html", "/"})
     public String index(Model model) {
         Subject s = SecurityUtils.getSubject();
         if (s.isAuthenticated()) {
@@ -55,7 +55,7 @@ public class LoginController {
             model.addAttribute("user", sysUser);
             return "index";
         } else {
-            return  "login";
+            return "login";
         }
     }
 
@@ -63,10 +63,12 @@ public class LoginController {
     public String unauthorized(Model model) {
         return "unauthorized";
     }
+
     @GetMapping("unLogin")
     public String unLogin(Model model) {
         return "logindate";
     }
+
     @GetMapping("locked")
     public String locked(Model model) {
         return "locked";
@@ -81,7 +83,7 @@ public class LoginController {
         if (s.isAuthenticated()) {
             return "redirect:index";
         } else {
-            return  "login";
+            return "login";
         }
     }
 
@@ -104,7 +106,7 @@ public class LoginController {
         if (StringUtils.isBlank(username) || StringUtils.isBlank(password)) {
             return RestResponse.failure("用户名或者密码不能为空");
         }
-        if (codeVerify&&StringUtils.isBlank(code)) {
+        if (codeVerify && StringUtils.isBlank(code)) {
             return RestResponse.failure("验证码不能为空");
         }
         Map<String, Object> map = Maps.newHashMap();
@@ -115,11 +117,11 @@ public class LoginController {
         }
         String trueCode = (String) session.getAttribute(Constants.VALIDATE_CODE);
 
-        if (codeVerify&&StringUtils.isBlank(trueCode)) {
+        if (codeVerify && StringUtils.isBlank(trueCode)) {
             return RestResponse.failure("验证码超时");
         }
 
-        if (codeVerify&&!trueCode.toLowerCase().equals(code.toLowerCase())) {
+        if (codeVerify && !trueCode.toLowerCase().equals(code.toLowerCase())) {
             error = "验证码错误";
         } else {
             /*就是代表当前的用户。*/
@@ -131,8 +133,7 @@ public class LoginController {
                     map.put("url", "index");
                     map.put("code", "index");
                 }
-            }
-            catch (IncorrectCredentialsException e) {
+            } catch (IncorrectCredentialsException e) {
                 error = "登录密码错误.";
             } catch (ExcessiveAttemptsException e) {
                 error = "登录失败次数过多";
@@ -178,8 +179,6 @@ public class LoginController {
         //写给浏览器
         ImageIO.write(bufferedImage, "JPEG", response.getOutputStream());
     }
-
-
 
 
 }

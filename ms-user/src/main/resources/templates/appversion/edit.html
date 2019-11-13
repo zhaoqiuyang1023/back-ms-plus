@@ -45,7 +45,7 @@
         <label class="layui-form-label">升级说明</label>
         <div class="layui-input-block">
             <input type="text" name='content'
-                   autocomplete="off" placeholder="升级说明"  class="layui-input" th:value="${appVersion.content}">
+                   autocomplete="off" placeholder="升级说明" class="layui-input" th:value="${appVersion.content}">
         </div>
     </div>
 
@@ -53,18 +53,22 @@
     <div class="layui-form-item">
         <label class="layui-form-label">下载地址</label>
         <div class="layui-input-block">
-            <input type="text" name='appDownloadUrl' th:value="${appVersion.appDownloadUrl}"
-                   autocomplete="off" placeholder="下载地址" class="layui-input">
+            <input type="text" id="appDownloadUrl" name='appDownloadUrl' th:value="${appVersion.appDownloadUrl}"
+                   autocomplete="off" placeholder="下载地址" class="layui-input param">
+        </div>
+        <div class="layui-input-inline">
+            <button type="button" class="layui-btn" id="upload">
+                <i class="layui-icon">&#xe67c;</i>上传
+            </button>
         </div>
     </div>
-
 
 
     <div class="layui-form-item">
         <label class="layui-form-label">强制更新</label>
         <div class="layui-input-block">
-            <input type="radio" name="forceUpdate" value="1" title="是" th:checked="${appVersion.forceUpdate==1}" >
-            <input type="radio" name="forceUpdate" value="0" title="否" th:checked="${appVersion.forceUpdate==0}" >
+            <input type="radio" name="forceUpdate" value="1" title="是" th:checked="${appVersion.forceUpdate==1}">
+            <input type="radio" name="forceUpdate" value="0" title="否" th:checked="${appVersion.forceUpdate==0}">
         </div>
     </div>
 
@@ -78,10 +82,44 @@
 <script>
 
 
-    layui.use(['form', 'jquery', 'layer'], function () {
+    layui.use(['upload', 'form', 'jquery', 'layer'], function () {
         let form = layui.form,
             $ = layui.jquery,
+            upload = layui.upload,
             layer = layui.layer;
+
+
+        $(function () {
+            initimgupload($("#upload"));
+        });
+
+        function initimgupload(dom) {
+
+            upload.render({
+                elem: dom //绑定元素
+                , url: "/file/upload" //上传接口
+                , multiple: true
+                , field: 'file'
+                , done: function (res) {
+                    console.log(JSON.stringify(res));
+
+                    $('#appDownloadUrl').val(res.data.src);
+
+                    console.log(res.data.src);
+
+                    layer.msg("上传成功");
+
+
+                    //上传完毕回调
+                }
+                , error: function () {
+                    layer.msg("上传失败");
+                    layer.msg(uploadUrl);
+
+                    //请求异常回调
+                }
+            });
+        }
 
 
         form.on('submit(editRole)', function (data) {

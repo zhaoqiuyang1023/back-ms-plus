@@ -8,6 +8,14 @@ spring:
     username: root
     password: ZnA*r0JuuV7B
     driver-class-name: com.mysql.cj.jdbc.Driver
-
-
-
+  redis:
+    host: localhost
+    port: 6379
+    password: ioui*we&wen
+  thymeleaf:
+    cache: true
+    mode: LEGACYHTML5
+code:
+  verify: true
+file:
+  upload: http://122.51.70.250:9898

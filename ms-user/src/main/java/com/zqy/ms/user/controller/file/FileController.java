@@ -1,17 +1,9 @@
 package com.zqy.ms.user.controller.file;
 
-import com.baomidou.mybatisplus.extension.api.R;
-import com.zqy.ms.user.entity.SysRescource;
-import com.zqy.ms.user.entity.SysUser;
 import com.zqy.ms.user.entity.vo.FileVO;
-import com.zqy.ms.user.service.SysRescourceService;
 import com.zqy.ms.user.util.RestResponse;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.subject.Subject;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -37,26 +29,25 @@ import java.util.UUID;
 public class FileController {
 
 
-    @Value("${server.port}")
-    private String port;
 
-    @Autowired
-    private SysRescourceService sysRescourceService;
+    @Value("${file.upload}")
+    private String file_upload;
 
-    private final String getFilePath="http://cxiao.wicp.vip/";
+
 
     @PostMapping("upload")
     @ResponseBody
     public RestResponse localUpload(MultipartFile file, HttpServletRequest request) {
-        RestResponse restResponse=new RestResponse();
+        RestResponse restResponse = new RestResponse();
+        log.info(file_upload);
 
         String ip = request.getServerName();
         String getContextPath = request.getContextPath();
-        String basePath = request.getScheme()+"://"+request.getRemoteHost()+":"+request.getServerPort()+getContextPath+"/";
+        String basePath = request.getScheme() + "://" + request.getRemoteHost() + ":" + request.getServerPort() + getContextPath + "/";
         log.info(basePath);
         log.info(ip);
         //jar包的同目录的files文件夹下
-        String localUploadPath = System.getProperty("user.dir") + "/files/";
+        String localUploadPath = System.getProperty("user.dir") + "/backfiles/";
         try {
             File dir = new File(localUploadPath);
             if (!dir.exists()) {
@@ -66,9 +57,9 @@ public class FileController {
             String rename = md5DigestAsHex + file.getOriginalFilename();
             String filePath = localUploadPath + rename;
 
-            String src = getFilePath+ "/file/" + rename;
+            String src = file_upload + "/file/download/" + rename;
             log.info(src);
-            FileVO fileVO = new FileVO(src, file.getName(), "/file/" + rename, file.getContentType(), "" + file.getSize());
+            FileVO fileVO = new FileVO(src, file.getName(), "/file/download/" + rename, file.getContentType(), "" + file.getSize());
 
             file.transferTo(new File(filePath));
             restResponse.setData(fileVO);
@@ -79,9 +70,9 @@ public class FileController {
         return null;
     }
 
-    @RequestMapping("/{name}")
+    @RequestMapping("/download/{name}")
     public void download(@PathVariable("name") String name, HttpServletResponse response) throws IOException {
-        String localUploadPath = System.getProperty("user.dir") + "/files/" + name;
+        String localUploadPath = System.getProperty("user.dir") + "/backfiles/" + name;
         FileInputStream fileInputStream = new FileInputStream(localUploadPath);
         ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
         byte[] buffer = new byte[1024];
@@ -101,7 +92,6 @@ public class FileController {
         outputStream.flush();
         outputStream.close();
     }
-
 
 
 }
