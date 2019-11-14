@@ -58,7 +58,7 @@
 
     </script>
 </div>
-<script>
+<script th:inline="none">
     layui.use(['layer', 'laytpl', 'form', 'table', 'laydate', 'element'], function () {
         let beginTime;
         let endTime;
@@ -115,7 +115,7 @@
                 where: {
                     "beginTime": beginTime,
                     "endTime": endTime,
-                    "username":$("#username").val(),
+                    "username":$("#username").val()
                 },
                 page: {
                     curr: 1 //重新从第 1 页开始
