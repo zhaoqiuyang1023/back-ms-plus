@@ -15,6 +15,8 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
+import java.nio.ByteBuffer;
+import java.nio.channels.FileChannel;
 import java.nio.charset.StandardCharsets;
 import java.util.UUID;
 
@@ -29,10 +31,8 @@ import java.util.UUID;
 public class FileController {
 
 
-
     @Value("${file.upload}")
     private String file_upload;
-
 
 
     @PostMapping("upload")
@@ -74,6 +74,10 @@ public class FileController {
     public void download(@PathVariable("name") String name, HttpServletResponse response) throws IOException {
         String localUploadPath = System.getProperty("user.dir") + "/backfiles/" + name;
         FileInputStream fileInputStream = new FileInputStream(localUploadPath);
+      //  FileChannel fileChannel = fileInputStream.getChannel();
+      //  ByteBuffer byteBuffer = ByteBuffer.allocate(fileInputStream.available());
+      //  fileChannel.read(byteBuffer);
+
         ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
         byte[] buffer = new byte[1024];
         int ch;
@@ -81,6 +85,7 @@ public class FileController {
             byteStream.write(buffer, 0, ch);
         }
         byte[] data = byteStream.toByteArray();
+    //    byte[] data = byteBuffer.array();
         byteStream.close();
         fileInputStream.close();
         response.reset();

@@ -52,7 +52,7 @@
 
     <div class="layui-form-item">
         <label class="layui-form-label">下载地址</label>
-        <div class="layui-input-block">
+        <div class="layui-input-inline">
             <input type="text" id="appDownloadUrl" name='appDownloadUrl' th:value="${appVersion.appDownloadUrl}"
                    autocomplete="off" placeholder="下载地址" class="layui-input param">
         </div>
@@ -99,6 +99,9 @@
                 elem: dom //绑定元素
                 , url: "/file/upload" //上传接口
                 , multiple: true
+                , accept: 'file'
+                , exts: 'apk',
+                acceptMime: 'apk/*'
                 , field: 'file'
                 , done: function (res) {
                     console.log(JSON.stringify(res));
